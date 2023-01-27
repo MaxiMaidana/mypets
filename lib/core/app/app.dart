@@ -11,6 +11,7 @@ class MyPetsApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp.router(
         title: 'My Pets',
+        debugShowCheckedModeBanner: false,
         routerConfig: goRouter,
         theme: ThemeData(
           useMaterial3: true,

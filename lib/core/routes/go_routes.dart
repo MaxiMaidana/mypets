@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
+import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
 
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/main/presentation/page/main_web_page.dart';
@@ -41,7 +42,10 @@ GoRouter goRouter = GoRouter(
     ),
     GoRoute(
       path: Routes.auth,
-      builder: (context, state) => const AuthPage(),
+      builder: (context, state) {
+        Get.put(AuthController());
+        return const AuthPage();
+      },
     ),
     // ShellRoute(
     //   navigatorKey: _shellNavigatorKey,

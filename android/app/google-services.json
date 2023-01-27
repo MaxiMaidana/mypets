@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "212788224879",
+    "project_id": "mypets-healthbook",
+    "storage_bucket": "mypets-healthbook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212788224879:android:85e1b0e58b07f594a3fe9a",
+        "android_client_info": {
+          "package_name": "ar.com.mypets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.mypets",
+            "certificate_hash": "8051ea3c6579d28ab7a81272e73988051f72fbea"
+          }
+        },
+        {
+          "client_id": "212788224879-dqngnbvam564pufoibi53gs7jpc0k916.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWQ_xNIsALlWH46nTz1L_aEIyvdki6OWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212788224879-dqngnbvam564pufoibi53gs7jpc0k916.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

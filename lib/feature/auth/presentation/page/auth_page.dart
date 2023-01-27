@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
+import '../view/phone_view.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -10,7 +11,7 @@ class AuthPage extends StatelessWidget {
     return const Scaffold(
       body: WidgetTree(
         tiny: Text('tiny'),
-        phone: Text('phone'),
+        phone: PhoneView(),
         tablet: Text('tablet'),
         largeTablet: Text('tablet large'),
         computer: Text('computer'),
