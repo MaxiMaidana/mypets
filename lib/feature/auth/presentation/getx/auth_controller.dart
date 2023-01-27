@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,12 +14,21 @@ class AuthController extends GetxController {
     scopes: ['email'],
   );
   GoogleSignInAccount? googleSignInAccount;
+  final firebaseAuth = FirebaseAuth.instance;
 
   Future<void> loginWithGoogle() async {
     try {
       googleSignInAccount = await _googleSignIn.signIn();
-      isLogued.value = true;
       log(googleSignInAccount!.email);
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+      final fireUser = await firebaseAuth.signInWithCredential(credential);
+      isLogued.value = true;
+      log(fireUser.user!.uid);
     } catch (e) {
       isLogued.value = false;
       rethrow;
@@ -28,6 +38,7 @@ class AuthController extends GetxController {
   Future<void> logoutGoogle() async {
     try {
       await _googleSignIn.signOut();
+      await firebaseAuth.signOut();
       googleSignInAccount = null;
       isLogued.value = false;
     } catch (e) {
