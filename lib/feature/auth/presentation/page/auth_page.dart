@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypets/feature/auth/presentation/view/computer_view.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
 import '../view/phone_view.dart';
@@ -11,10 +12,10 @@ class AuthPage extends StatelessWidget {
     return const Scaffold(
       body: WidgetTree(
         tiny: Text('tiny'),
-        phone: PhoneView(),
+        phone: AuthPhoneView(),
         tablet: Text('tablet'),
         largeTablet: Text('tablet large'),
-        computer: Text('computer'),
+        computer: AuthComputeView(),
       ),
     );
   }
