@@ -1,45 +1,80 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:google_sign_in/google_sign_in.dart';
+import '../../../firebase/firebase_controller.dart';
+
+enum LoginType { google, credentials, googleWeb }
 
 class AuthController extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passController = TextEditingController();
   RxBool isLogued = false.obs;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-  );
-  GoogleSignInAccount? googleSignInAccount;
-  final firebaseAuth = FirebaseAuth.instance;
+  final FirebaseController firebaseController = Get.find();
 
-  Future<void> loginWithGoogle() async {
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
+  Future<void> logIn({
+    required LoginType loginType,
+    String? email,
+    String? pass,
+  }) async {
     try {
-      googleSignInAccount = await _googleSignIn.signIn();
-      log(googleSignInAccount!.email);
-      GoogleSignInAuthentication googleAuth =
-          await googleSignInAccount!.authentication;
-      final credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-        accessToken: googleAuth.accessToken,
-      );
-      final fireUser = await firebaseAuth.signInWithCredential(credential);
-      isLogued.value = true;
-      log(fireUser.user!.uid);
+      if (GetPlatform.isWeb) {
+        await _loginWithGoogleWeb();
+      } else {
+        switch (loginType) {
+          case LoginType.google:
+            await _loginWithGoogle();
+            break;
+          case LoginType.credentials:
+            await _loginWithCredentials();
+            break;
+          default:
+        }
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    try {
+      isLogued.value = await firebaseController.loginWithGoogle();
     } catch (e) {
       isLogued.value = false;
       rethrow;
     }
   }
 
-  Future<void> logoutGoogle() async {
+  Future<void> _loginWithGoogleWeb() async {
     try {
-      await _googleSignIn.signOut();
-      await firebaseAuth.signOut();
-      googleSignInAccount = null;
+      isLogued.value = await firebaseController.loginWithGoogleWeb();
+    } catch (e) {
+      isLogued.value = false;
+      rethrow;
+    }
+  }
+
+  Future<void> _loginWithCredentials() async {
+    try {
+      isLogued.value = await firebaseController.loginWithCredentials(
+        email: usernameController.text,
+        pass: passController.text,
+      );
+    } catch (e) {
+      isLogued.value = false;
+      rethrow;
+    }
+  }
+
+  Future<void> logOut() async {
+    try {
+      await firebaseController.logoutGoogle();
       isLogued.value = false;
     } catch (e) {
       isLogued.value = false;
