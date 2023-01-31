@@ -29,8 +29,24 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js"></script>
   <title>mypets</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E",
+      authDomain: "mypets-healthbook.firebaseapp.com",
+      databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
+      projectId: "mypets-healthbook",
+      storageBucket: "mypets-healthbook.appspot.com",
+      messagingSenderId: "212788224879",
+      appId: "1:212788224879:web:3ed68afc95f14126a3fe9a",
+      measurementId: "G-9MDXPMQYDV",
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
   <script>
     // The value below is injected by flutter build, do not touch.
