@@ -6,6 +6,8 @@ import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 
 import '../../feature/auth/presentation/page/auth_page.dart';
+import '../../feature/home/presentation/getx/home_controller.dart';
+import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_page.dart';
 import '../../feature/web/presentation/page/main_web_page.dart';
@@ -61,6 +63,13 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         Get.put(RegisterController());
         return const RegisterPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.home,
+      builder: (context, state) {
+        Get.put(HomeController(), permanent: true);
+        return const HomePage();
       },
     ),
     // ShellRoute(

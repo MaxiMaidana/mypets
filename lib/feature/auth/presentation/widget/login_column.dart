@@ -33,7 +33,10 @@ class LoginColumn extends GetWidget<AuthController> {
               ],
             ),
           ),
-          onPressed: () => controller.logIn(loginType: LoginType.credentials),
+          onPressed: () async {
+            await controller.logIn(loginType: LoginType.credentials);
+            context.go(Routes.home);
+          },
         ),
         ElevatedButton(
           style: ButtonStyle(
@@ -47,7 +50,10 @@ class LoginColumn extends GetWidget<AuthController> {
               FaIcon(FontAwesomeIcons.google),
             ],
           ),
-          onPressed: () => controller.logIn(loginType: LoginType.google),
+          onPressed: () async {
+            await controller.logIn(loginType: LoginType.google);
+            context.go(Routes.home);
+          },
         ),
         TextButton(
           onPressed: () => context.push(Routes.register),

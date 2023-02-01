@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mypets/core/service/local_storage.dart';
 
 import '../../../firebase/firebase_controller.dart';
 
@@ -45,6 +46,7 @@ class AuthController extends GetxController {
   Future<void> _loginWithGoogle() async {
     try {
       isLogued.value = await firebaseController.loginWithGoogle();
+      LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
       isLogued.value = false;
       rethrow;
@@ -54,6 +56,7 @@ class AuthController extends GetxController {
   Future<void> _loginWithGoogleWeb() async {
     try {
       isLogued.value = await firebaseController.loginWithGoogleWeb();
+      LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
       isLogued.value = false;
       rethrow;
@@ -66,6 +69,7 @@ class AuthController extends GetxController {
         email: usernameController.text,
         pass: passController.text,
       );
+      LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
       isLogued.value = false;
       rethrow;
