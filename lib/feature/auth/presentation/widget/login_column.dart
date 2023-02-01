@@ -42,23 +42,6 @@ class LoginColumn extends GetWidget<AuthController> {
           child: const FaIcon(FontAwesomeIcons.google),
           onPressed: () => controller.logIn(loginType: LoginType.google),
         ),
-        SizedBox(height: 5.h),
-        Obx(() => Visibility(
-              visible: controller.isLogued.value,
-              child: ElevatedButton(
-                child: SizedBox(
-                  height: 5.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.access_time_filled_rounded),
-                      Text('Cerrar Sesion'),
-                    ],
-                  ),
-                ),
-                onPressed: () => controller.logOut(),
-              ),
-            )),
         SizedBox(height: 10.h),
       ],
     );

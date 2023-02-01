@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
-import 'package:mypets/feature/firebase/firebase_controller.dart';
-import 'package:mypets/feature/splash/presentation/page/intro_page.dart';
+import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 
-import '../../feature/app/controller/app_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/web/presentation/page/main_web_page.dart';
 import '../service/local_storage.dart';
@@ -26,9 +22,9 @@ GoRouter goRouter = GoRouter(
       path: Routes.main,
       redirect: (context, state) {
         if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-          if (!LocalStorage.getPref('isFirstTime')) {
+          if (!LocalStorage.getPref(SetPref.isFirstTime)) {
             return Routes.intro;
-          } else if (LocalStorage.getPref('auth')) {
+          } else if (LocalStorage.getPref(SetPref.auth)) {
             return Routes.home;
           } else {
             return Routes.auth;

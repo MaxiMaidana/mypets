@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ResponsiveLayout extends StatelessWidget {
+class ResponsiveLayout extends StatefulWidget {
   final Widget tiny;
   final Widget phone;
   final Widget tablet;
@@ -44,23 +44,28 @@ class ResponsiveLayout extends StatelessWidget {
       MediaQuery.of(context).size.width >= largeTabletLimit;
 
   @override
+  State<ResponsiveLayout> createState() => _ResponsiveLayoutState();
+}
+
+class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth < tinyLimit ||
-            constraints.maxHeight < tinyHeightLimit) {
-          return tiny;
+        if (constraints.maxWidth < ResponsiveLayout.tinyLimit ||
+            constraints.maxHeight < ResponsiveLayout.tinyHeightLimit) {
+          return widget.tiny;
         }
-        if (constraints.maxWidth < phoneLimit) {
-          return phone;
+        if (constraints.maxWidth < ResponsiveLayout.phoneLimit) {
+          return widget.phone;
         }
-        if (constraints.maxWidth < tabletLimit) {
-          return tablet;
+        if (constraints.maxWidth < ResponsiveLayout.tabletLimit) {
+          return widget.tablet;
         }
-        if (constraints.maxWidth < largeTabletLimit) {
-          return largeTablet;
+        if (constraints.maxWidth < ResponsiveLayout.largeTabletLimit) {
+          return widget.largeTablet;
         } else {
-          return computer;
+          return widget.computer;
         }
       },
     );
