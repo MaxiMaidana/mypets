@@ -54,7 +54,6 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.auth,
       builder: (context, state) {
-        Get.put(AuthController());
         return const AuthPage();
       },
     ),

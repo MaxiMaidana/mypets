@@ -26,7 +26,15 @@ class AuthController extends GetxController {
   }) async {
     try {
       if (GetPlatform.isWeb) {
-        await _loginWithGoogleWeb();
+        switch (loginType) {
+          case LoginType.google:
+            await _loginWithGoogleWeb();
+            break;
+          case LoginType.credentials:
+            await _loginWithCredentials();
+            break;
+          default:
+        }
       } else {
         switch (loginType) {
           case LoginType.google:

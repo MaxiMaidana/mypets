@@ -12,31 +12,23 @@ class AuthComputeView extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        // height: 100.h,
-        // width: 100.w,
-        child: Row(
-          children: [
-            Expanded(
-              child: CachedNetworkImage(
-                imageUrl:
-                    'https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/10/Growlithe-and-Arcanine-Sword--Shield.jpg',
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-              //   child: Image.network(
-              //     'https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/10/Growlithe-and-Arcanine-Sword--Shield.jpg',
-              //   ),
+      body: Row(
+        children: [
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl:
+                  'https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/10/Growlithe-and-Arcanine-Sword--Shield.jpg',
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                child: const LoginColumn(),
-              ),
-            )
-          ],
-        ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              child: const LoginColumn(),
+            ),
+          )
+        ],
       ),
     );
   }
