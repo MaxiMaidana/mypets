@@ -10,7 +10,7 @@ class AuthController extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passController = TextEditingController();
   // RxBool isLogued = false.obs;
-  final FirebaseController firebaseController = Get.find();
+  final FirebaseController _firebaseController = Get.find();
 
   @override
   void dispose() {
@@ -54,7 +54,7 @@ class AuthController extends GetxController {
   Future<void> _loginWithGoogle() async {
     try {
       // isLogued.value =
-      await firebaseController.loginWithGoogle();
+      await _firebaseController.loginWithGoogle();
       LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
       // isLogued.value = false;
@@ -65,7 +65,7 @@ class AuthController extends GetxController {
   Future<void> _loginWithGoogleWeb() async {
     try {
       // isLogued.value =
-      await firebaseController.loginWithGoogleWeb();
+      await _firebaseController.loginWithGoogleWeb();
       LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
       // isLogued.value = false;
@@ -76,7 +76,7 @@ class AuthController extends GetxController {
   Future<void> _loginWithCredentials() async {
     try {
       // isLogued.value =
-      await firebaseController.loginWithCredentials(
+      await _firebaseController.loginWithCredentials(
         email: usernameController.text,
         pass: passController.text,
       );
@@ -89,7 +89,7 @@ class AuthController extends GetxController {
 
   Future<void> logOut() async {
     try {
-      await firebaseController.logoutGoogle();
+      await _firebaseController.logoutGoogle();
       // isLogued.value = false;
     } catch (e) {
       // isLogued.value = false;

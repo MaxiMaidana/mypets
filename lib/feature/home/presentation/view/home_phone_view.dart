@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 
-class HomePhoneView extends StatelessWidget {
+import '../../../pets/presentation/view/pets_phone_view.dart';
+import '../../../profile/presentation/view/profile_phone_view.dart';
+
+class HomePhoneView extends GetWidget<HomeController> {
   const HomePhoneView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder(
-      child: Text('home phone view'),
+    return Column(
+      children: const [
+        Center(child: Text('home phone view')),
+      ],
     );
   }
 }
