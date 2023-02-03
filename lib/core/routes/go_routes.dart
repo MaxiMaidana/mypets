@@ -1,13 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
-import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
+import 'package:mypets/feature/firebase/firebase_controller.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 
+import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
+import '../../feature/profile/presentation/getx/profile_controller.dart';
 import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_page.dart';
 import '../../feature/web/presentation/page/main_web_page.dart';
@@ -25,7 +28,7 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.main,
       redirect: (context, state) {
-        if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+        if (!GetPlatform.isWeb) {
           if (!LocalStorage.getPref(SetPref.isFirstTime)) {
             return Routes.intro;
           } else if (LocalStorage.getPref(SetPref.auth)) {
@@ -54,6 +57,7 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.auth,
       builder: (context, state) {
+        Get.put(AuthController());
         return const AuthPage();
       },
     ),
@@ -68,6 +72,7 @@ GoRouter goRouter = GoRouter(
       path: Routes.home,
       builder: (context, state) {
         Get.put(HomeController(), permanent: true);
+        Get.put(ProfileController(), permanent: true);
         return const HomePage();
       },
     ),

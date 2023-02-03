@@ -11,7 +11,7 @@ GetIt locator = GetIt.instance;
 Future<void> setupLocator() async {
   Get.put(FirebaseController(), permanent: true);
   Get.put(AppController(), permanent: true);
-  Get.put(AuthController(), permanent: true);
+  // Get.put(AuthController(), permanent: true);
   await LocalStorage.configPrefs();
   // locator.registerLazySingleton(() => NavigationService());
 }

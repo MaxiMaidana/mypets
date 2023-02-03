@@ -16,8 +16,8 @@ class HomeComputerView extends GetWidget<HomeController> {
       children: [
         ElevatedButton(
           onPressed: () {
-            controller.authController.logOut();
-            context.go(Routes.auth);
+            // controller.authController.logOut();
+            // context.go(Routes.auth);
           },
           child: SizedBox(
             height: 5.h,

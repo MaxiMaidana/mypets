@@ -1,30 +1,32 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseController extends GetxController {
-  final _firebaseAuth = FirebaseAuth.instance;
+  late FirebaseAuth _firebaseAuth;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  GoogleSignInAccount? googleSignInAccount;
+  GoogleSignInAccount? _googleSignInAccount;
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
-
-  late UserCredential userFirebase;
 
   Future<bool> loginWithGoogle() async {
     bool res = false;
     try {
-      googleSignInAccount = await _googleSignIn.signIn();
-      if (googleSignInAccount != null) {
+      _googleSignInAccount = await _googleSignIn.signIn();
+      if (_googleSignInAccount != null) {
         GoogleSignInAuthentication googleAuth =
-            await googleSignInAccount!.authentication;
+            await _googleSignInAccount!.authentication;
         final credential = GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
-        userFirebase = await firebaseAuth.signInWithCredential(credential);
+        // UserCredential userCredential =
+        await firebaseAuth.signInWithCredential(credential);
+        // chargeUserFirebase(userCredential);
         res = true;
       }
       return res;
@@ -37,7 +39,9 @@ class FirebaseController extends GetxController {
     bool res = false;
     try {
       GoogleAuthProvider authProvider = GoogleAuthProvider();
-      userFirebase = await _firebaseAuth.signInWithPopup(authProvider);
+      // UserCredential userCredential =
+      await _firebaseAuth.signInWithPopup(authProvider);
+      // chargeUserFirebase(userCredential);
       res = true;
       return res;
     } catch (e) {
@@ -51,10 +55,12 @@ class FirebaseController extends GetxController {
   }) async {
     bool res = false;
     try {
-      userFirebase = await _firebaseAuth.signInWithEmailAndPassword(
+      // UserCredential userCredential =
+      await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: pass,
       );
+      // chargeUserFirebase(userCredential);
       res = true;
       return res;
     } catch (e) {
@@ -66,9 +72,24 @@ class FirebaseController extends GetxController {
     try {
       await _googleSignIn.signOut();
       await firebaseAuth.signOut();
-      googleSignInAccount = null;
+      _googleSignInAccount = null;
     } catch (e) {
       rethrow;
     }
+  }
+
+  // void chargeUserFirebase(UserCredential userCredential) async {
+  //   userFirebase = userCredential.user;
+  // }
+
+  @override
+  void onInit() {
+    _firebaseAuth = FirebaseAuth.instance;
+    if (_firebaseAuth.currentUser != null) {
+      log('distinto de  null');
+    } else {
+      log('  null');
+    }
+    super.onInit();
   }
 }

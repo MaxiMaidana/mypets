@@ -87,13 +87,13 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> logOut() async {
-    try {
-      await _firebaseController.logoutGoogle();
-      // isLogued.value = false;
-    } catch (e) {
-      // isLogued.value = false;
-      rethrow;
-    }
-  }
+  // Future<void> logOut() async {
+  //   try {
+  //     await _firebaseController.logoutGoogle();
+  //     // isLogued.value = false;
+  //   } catch (e) {
+  //     // isLogued.value = false;
+  //     rethrow;
+  //   }
+  // }
 }
