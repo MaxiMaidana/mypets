@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:sizer/sizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../getx/auth_controller.dart';
 import '../widget/login_column.dart';
@@ -12,18 +13,23 @@ class AuthComputeView extends GetWidget<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
-        height: 100.h,
-        width: 100.w,
+        // height: 100.h,
+        // width: 100.w,
         child: Row(
           children: [
-            SizedBox(
-              width: 50.w,
-              child: Image.network(
-                'https://s3.amazonaws.com/files.lafm.com.co/assets/public/styles/image_1200x1200/public/2022-12/polemica_celebracion_de_dibu_martinez_al_ser_premiado_con_guante_de_oro.jpg.webp?7R5.gCqn7D0leI8wXCFjs0b5CZfGam1u&itok=mybS_y_i',
+            Expanded(
+              child: CachedNetworkImage(
+                imageUrl:
+                    'https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/10/Growlithe-and-Arcanine-Sword--Shield.jpg',
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
+              //   child: Image.network(
+              //     'https://static1.thegamerimages.com/wordpress/wp-content/uploads/2021/10/Growlithe-and-Arcanine-Sword--Shield.jpg',
+              //   ),
             ),
-            SizedBox(
-              width: 50.w,
+            Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: const LoginColumn(),

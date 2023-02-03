@@ -11,8 +11,6 @@ class WebMainPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: Colors.red,
-        height: 100.h,
-        width: 100.w,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
           child: Column(
@@ -24,9 +22,10 @@ class WebMainPage extends StatelessWidget {
                     onPressed: () {},
                     child: SizedBox(
                       height: 5.h,
-                      width: 5.w,
+                      width: 7.w,
                       child: const Center(
-                        child: Text('Soy Veterinaria'),
+                        child: Text('Soy Veterinaria',
+                            textAlign: TextAlign.center),
                       ),
                     ),
                   ),
@@ -35,7 +34,7 @@ class WebMainPage extends StatelessWidget {
                     onPressed: () => context.go(Routes.auth),
                     child: SizedBox(
                       height: 5.h,
-                      width: 5.w,
+                      width: 7.w,
                       child: const Center(
                         child: Text('Ir a mi libreta'),
                       ),
