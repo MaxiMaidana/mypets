@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 
@@ -28,10 +29,57 @@ class HomePage extends GetWidget<HomeController> {
               ],
             ),
           ),
-          tablet: const Text('tablet'),
+          tablet: Obx(
+            () => IndexedStack(
+              index: controller.index.value,
+              children: const [
+                HomePhoneView(),
+                PetsPhoneView(),
+                ProfilePhoneView(),
+              ],
+            ),
+          ),
           largeTablet: const Text('tablet large'),
           computer: const HomeComputerView(),
         ),
+        drawer: GetPlatform.isWeb
+            ? null
+            : ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(25.0),
+                    bottomRight: Radius.circular(25.0)),
+                child: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      Center(
+                        child: Text(
+                          'My Pets',
+                          style: GoogleFonts.roboto(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        title: const Text('Clinicas'),
+                        leading: Icon(Icons.local_hospital),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('Info'),
+                        leading: Icon(Icons.info),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        title: const Text('Mapa'),
+                        leading: Icon(Icons.map_outlined),
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ),
         bottomNavigationBar: GetPlatform.isWeb ? null : const BottomNavBar(),
       ),
     );
