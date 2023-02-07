@@ -1,0 +1,38 @@
+[
+    {
+        "name" : "Mike",
+        "ownerId" : "wePeumimguUx02wxJkHujKZvDg42",
+        "birthday" : "2008/03/03",
+        "type" : "Perro",
+        "race" : "Cocker",
+        "photoUrl" : "https://www.mundoperro.net/wp-content/uploads/Cocker-Spaniel-Ingles-1200x900.jpg",
+        "reminders" : []
+    },
+    {
+        "name" : "Umma",
+        "ownerId" : "wePeumimguUx02wxJkHujKZvDg42",
+        "birthday" : "2008/03/03",
+        "type" : "Perro",
+        "race" : "Bichon Frese",
+        "photoUrl" : "https://nfnatcane.es/blog/wp-content/uploads/2020/06/Bichon-Frise.jpg",
+        "reminders" : []
+    },
+    {
+        "name" : "Aki",
+        "ownerId" : "wePeumimguUx02wxJkHujKZvDg42",
+        "birthday" : "2008/03/03",
+        "type" : "Gato",
+        "race" : "mestizo",
+        "photoUrl" : "https://mejoresmuestrasgratis.com/wp-content/uploads/640x480_97283872.jpg",
+        "reminders" : []
+    },
+    {
+        "name" : "Mike",
+        "ownerId" : "wePeumimguUx02wxJkHujKZvDg42",
+        "birthday" : "2008/03/03",
+        "type" : "Gato",
+        "race" : "mestizo",
+        "photoUrl" : "https://www.zooplus.es/magazine/wp-content/uploads/2020/01/gato-nebelung-768x512.jpeg",
+        "reminders" : []
+    }
+]

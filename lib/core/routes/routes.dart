@@ -4,5 +4,6 @@ class Routes {
   static const String auth = '/auth';
   static const String register = '/register';
   static const String home = '/home';
+  static const String newPet = '/new_pet';
   static const String errorPage = '/error';
 }

@@ -5,11 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/feature/firebase/firebase_controller.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
+import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
+import '../../feature/new_pet/presentation/getx/new_pet_controller.dart';
+import '../../feature/new_pet/presentation/page/new_pet_page.dart';
 import '../../feature/profile/presentation/getx/profile_controller.dart';
 import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_page.dart';
@@ -73,7 +76,15 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         Get.put(HomeController(), permanent: true);
         Get.put(ProfileController(), permanent: true);
+        Get.put(PetsController(), permanent: true);
         return const HomePage();
+      },
+    ),
+    GoRoute(
+      path: Routes.newPet,
+      builder: (context, state) {
+        Get.put(NewPetController());
+        return const NewPetPage();
       },
     ),
     // ShellRoute(

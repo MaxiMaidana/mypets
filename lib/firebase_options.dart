@@ -48,18 +48,19 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: "AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E",
-    authDomain: "mypets-healthbook.firebaseapp.com",
-    databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
-    projectId: "mypets-healthbook",
-    storageBucket: "mypets-healthbook.appspot.com",
-    messagingSenderId: "212788224879",
     appId: "1:212788224879:web:3ed68afc95f14126a3fe9a",
+    databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
+    messagingSenderId: "212788224879",
+    projectId: "mypets-healthbook",
+    authDomain: "mypets-healthbook.firebaseapp.com",
+    storageBucket: "mypets-healthbook.appspot.com",
     measurementId: "G-9MDXPMQYDV",
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E',
     appId: '1:212788224879:android:85e1b0e58b07f594a3fe9a',
+    databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
     storageBucket: 'mypets-healthbook.appspot.com',
