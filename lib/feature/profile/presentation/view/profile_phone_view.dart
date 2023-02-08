@@ -5,6 +5,9 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mypets/core/routes/routes.dart';
+import 'package:mypets/core/theme/theme_provider.dart';
+import 'package:mypets/core/theme/themes.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../getx/profile_controller.dart';
 
@@ -13,6 +16,7 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.w),
       child: SingleChildScrollView(
@@ -83,6 +87,25 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                   ),
                 ],
               ),
+            ),
+            Row(
+              children: [
+                const Text('tema osucro'),
+                const Spacer(),
+                Obx(
+                  () => Switch(
+                    value: controller.themeMode.value,
+                    onChanged: (v) {
+                      if (v) {
+                        theme.setTheme(darkMode);
+                      } else {
+                        theme.setTheme(ligthMode);
+                      }
+                      controller.changeTheme(v);
+                    },
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 5.h),
             Row(

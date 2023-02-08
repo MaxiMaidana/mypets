@@ -15,6 +15,8 @@ class ProfileController extends GetxController {
   User? userProfile;
   String appVersion = '';
 
+  RxBool get themeMode => _appController.isDarkMode;
+
   Future<void> logOut() async {
     try {
       await _firebaseController.logoutGoogle();
@@ -34,6 +36,10 @@ class ProfileController extends GetxController {
   void initialSettings() {
     chargeImage();
     appVersion = _appController.packageInfo.version;
+  }
+
+  void changeTheme(bool value) {
+    _appController.isDarkMode.value = value;
   }
 
   @override
