@@ -1,4 +1,5 @@
 class PetModel {
+  int id;
   String name;
   String ownerId;
   String type;
@@ -8,6 +9,7 @@ class PetModel {
   String? photoUrl;
 
   PetModel({
+    required this.id,
     required this.name,
     required this.ownerId,
     required this.type,
@@ -18,6 +20,7 @@ class PetModel {
   });
 
   static PetModel fromJson(Map<String, dynamic> json) => PetModel(
+        id: json['id'],
         name: json['name'],
         ownerId: json['ownerId'],
         type: json['type'],
@@ -26,4 +29,15 @@ class PetModel {
         birthday: json['birthday'],
         photoUrl: json['photoUrl'],
       );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'ownerId': ownerId,
+        'type': type,
+        'race': race,
+        'reminders': reminders,
+        'birthday': birthday,
+        'photoUrl': photoUrl,
+      };
 }

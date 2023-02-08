@@ -20,21 +20,27 @@ class PetsPhoneView extends GetView<PetsController> {
             child: ListView(
               children: List.generate(
                 state.length,
-                (i) => Column(
-                  children: [
-                    CachedNetworkImage(
-                      height: 20.h,
-                      imageUrl: controller.petsLs[i].photoUrl!,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    Text(controller.petsLs[i].name),
-                    const SizedBox(height: 10),
-                    Text(controller.petsLs[i].type),
-                    const SizedBox(height: 10),
-                    Text(controller.petsLs[i].race),
-                    const SizedBox(height: 10),
-                  ],
+                (i) => InkWell(
+                  onTap: () => context.push(Uri(
+                          path: Routes.infoPet,
+                          queryParameters: {'id': state[i].id.toString()})
+                      .toString()),
+                  child: Column(
+                    children: [
+                      CachedNetworkImage(
+                        height: 20.h,
+                        imageUrl: state[i].photoUrl!,
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                      Text(state[i].name),
+                      const SizedBox(height: 10),
+                      Text(state[i].type),
+                      const SizedBox(height: 10),
+                      Text(state[i].race),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
             ),

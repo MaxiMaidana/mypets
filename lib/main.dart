@@ -7,6 +7,7 @@ import 'core/app/app.dart';
 import 'core/service/local_storage.dart';
 import 'core/service/locator.dart';
 import 'firebase_options.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 // import 'firebase_options.dart';
 // import 'package:flutter_web_plugins/src/navigation_non_web/url_strategy.dart';
@@ -21,5 +22,6 @@ void main() async {
     await Firebase.initializeApp();
   }
   await setupLocator();
+  usePathUrlStrategy();
   runApp(const MyPetsApp());
 }

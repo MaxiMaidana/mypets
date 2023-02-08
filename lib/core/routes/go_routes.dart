@@ -13,6 +13,8 @@ import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/new_pet/presentation/getx/new_pet_controller.dart';
 import '../../feature/new_pet/presentation/page/new_pet_page.dart';
+import '../../feature/pet_info/presentation/getx/info_pet_controller.dart';
+import '../../feature/pet_info/presentation/page/info_pet_page.dart';
 import '../../feature/profile/presentation/getx/profile_controller.dart';
 import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_page.dart';
@@ -85,6 +87,15 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         Get.put(NewPetController());
         return const NewPetPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.infoPet,
+      builder: (context, state) {
+        final infoPetController = Get.put(InfoPetController());
+        infoPetController.setPetId(state.queryParams['id']!);
+        infoPetController.setPetModel();
+        return const InfoPetPage();
       },
     ),
     // ShellRoute(
