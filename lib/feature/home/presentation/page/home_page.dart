@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 
@@ -55,7 +57,7 @@ class HomePage extends GetWidget<HomeController> {
                       Center(
                         child: Text(
                           'My Pets',
-                          style: GoogleFonts.roboto(
+                          style: GoogleFonts.sora(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -63,18 +65,21 @@ class HomePage extends GetWidget<HomeController> {
                       ),
                       ListTile(
                         title: const Text('Clinicas'),
-                        leading: Icon(Icons.local_hospital),
+                        leading: const Icon(Icons.local_hospital),
                         onTap: () {},
                       ),
                       ListTile(
                         title: const Text('Info'),
-                        leading: Icon(Icons.info),
+                        leading: const Icon(Icons.info),
                         onTap: () {},
                       ),
                       ListTile(
                         title: const Text('Mapa'),
-                        leading: Icon(Icons.map_outlined),
-                        onTap: () {},
+                        leading: const Icon(Icons.map_outlined),
+                        onTap: () {
+                          context.pop();
+                          context.push(Routes.map);
+                        },
                       ),
                     ],
                   ),

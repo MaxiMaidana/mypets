@@ -6,5 +6,6 @@ class Routes {
   static const String home = '/home';
   static const String newPet = '/new_pet';
   static const String infoPet = '/info_pet';
+  static const String map = '/map';
   static const String errorPage = '/error';
 }

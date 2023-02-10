@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/feature/firebase/firebase_controller.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
+import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../feature/auth/presentation/getx/auth_controller.dart';
@@ -96,6 +97,12 @@ GoRouter goRouter = GoRouter(
         infoPetController.setPetId(state.queryParams['id']!);
         infoPetController.setPetModel();
         return const InfoPetPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.map,
+      builder: (context, state) {
+        return const MapPage();
       },
     ),
     // ShellRoute(
