@@ -7,14 +7,14 @@ import '../../../firebase/firebase_controller.dart';
 enum LoginType { google, credentials, googleWeb }
 
 class AuthController extends GetxController {
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  // RxBool isLogued = false.obs;
+  RxBool isLogued = false.obs;
   final FirebaseController _firebaseController = Get.find();
 
   @override
   void dispose() {
-    usernameController.dispose();
+    emailController.dispose();
     passController.dispose();
     super.dispose();
   }
@@ -53,11 +53,10 @@ class AuthController extends GetxController {
 
   Future<void> _loginWithGoogle() async {
     try {
-      // isLogued.value =
-      await _firebaseController.loginWithGoogle();
+      isLogued.value = await _firebaseController.loginWithGoogle();
       LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
-      // isLogued.value = false;
+      isLogued.value = false;
       rethrow;
     }
   }
@@ -75,14 +74,13 @@ class AuthController extends GetxController {
 
   Future<void> _loginWithCredentials() async {
     try {
-      // isLogued.value =
-      await _firebaseController.loginWithCredentials(
-        email: usernameController.text,
+      isLogued.value = await _firebaseController.loginWithCredentials(
+        email: emailController.text,
         pass: passController.text,
       );
       LocalStorage.setPref(SetPref.auth, true);
     } catch (e) {
-      // isLogued.value = false;
+      isLogued.value = false;
       rethrow;
     }
   }

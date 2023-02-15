@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../getx/auth_controller.dart';
-import '../widget/login_column.dart';
+import '../widget/login_column_phone.dart';
 
 class AuthComputeView extends GetWidget<AuthController> {
   const AuthComputeView({super.key});
@@ -25,7 +25,7 @@ class AuthComputeView extends GetWidget<AuthController> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: const LoginColumn(),
+              child: const LoginColumnPhone(),
             ),
           )
         ],
