@@ -22,23 +22,20 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      // case TargetPlatform.iOS:
-      //   return ios;
-      // case TargetPlatform.macOS:
-      //   throw UnsupportedError(
-      //     'DefaultFirebaseOptions have not been configured for macos - '
-      //     'you can reconfigure this by running the FlutterFire CLI again.',
-      //   );
-      // case TargetPlatform.windows:
-      //   throw UnsupportedError(
-      //     'DefaultFirebaseOptions have not been configured for windows - '
-      //     'you can reconfigure this by running the FlutterFire CLI again.',
-      //   );
-      // case TargetPlatform.linux:
-      //   throw UnsupportedError(
-      //     'DefaultFirebaseOptions have not been configured for linux - '
-      //     'you can reconfigure this by running the FlutterFire CLI again.',
-      //   );
+      case TargetPlatform.iOS:
+        return ios;
+      case TargetPlatform.macOS:
+        return macos;
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -47,35 +44,50 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E",
-    appId: "1:212788224879:web:3ed68afc95f14126a3fe9a",
-    databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
-    messagingSenderId: "212788224879",
-    projectId: "mypets-healthbook",
-    authDomain: "mypets-healthbook.firebaseapp.com",
-    storageBucket: "mypets-healthbook.appspot.com",
-    measurementId: "G-9MDXPMQYDV",
+    apiKey: 'AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E',
+    appId: '1:212788224879:web:3ed68afc95f14126a3fe9a',
+    messagingSenderId: '212788224879',
+    projectId: 'mypets-healthbook',
+    authDomain: 'mypets-healthbook.firebaseapp.com',
+    databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
+    storageBucket: 'mypets-healthbook.appspot.com',
+    measurementId: 'G-9MDXPMQYDV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E',
+    apiKey: 'AIzaSyAWQ_xNIsALlWH46nTz1L_aEIyvdki6OWo',
     appId: '1:212788224879:android:85e1b0e58b07f594a3fe9a',
-    databaseURL: "https://mypets-healthbook-default-rtdb.firebaseio.com",
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
+    databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
     storageBucket: 'mypets-healthbook.appspot.com',
   );
 
-  // static const FirebaseOptions ios = FirebaseOptions(
-  //   apiKey: 'AIzaSyDLcX_y-dkNgzaRXpk2z7R0xQ0zzR-IFRg',
-  //   appId: '1:627821127710:ios:d855737ee95c939e15260f',
-  //   messagingSenderId: '627821127710',
-  //   projectId: 'scappflutter',
-  //   storageBucket: 'scappflutter.appspot.com',
-  //   androidClientId:
-  //       '627821127710-848vk9dsbns65h75o34vrvpm8lkgpd23.apps.googleusercontent.com',
-  //   iosClientId:
-  //       '627821127710-aak73eb7g4bhbujb1ghk36v9f3ui0qur.apps.googleusercontent.com',
-  //   iosBundleId: 'com.simplecomercio',
-  // );
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAAKWZokhHeLs9DOutU54VLPC1ckRGt45o',
+    appId: '1:212788224879:ios:b172d1909122059ca3fe9a',
+    messagingSenderId: '212788224879',
+    projectId: 'mypets-healthbook',
+    databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
+    storageBucket: 'mypets-healthbook.appspot.com',
+    androidClientId:
+        '212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com',
+    iosClientId:
+        '212788224879-h3j7gnkpejs23d04rh0jql7gvk633p1h.apps.googleusercontent.com',
+    iosBundleId: 'ar.com.mypets',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAAKWZokhHeLs9DOutU54VLPC1ckRGt45o',
+    appId: '1:212788224879:ios:b172d1909122059ca3fe9a',
+    messagingSenderId: '212788224879',
+    projectId: 'mypets-healthbook',
+    databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
+    storageBucket: 'mypets-healthbook.appspot.com',
+    androidClientId:
+        '212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com',
+    iosClientId:
+        '212788224879-h3j7gnkpejs23d04rh0jql7gvk633p1h.apps.googleusercontent.com',
+    iosBundleId: 'ar.com.mypets',
+  );
 }
