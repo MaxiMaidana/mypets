@@ -75,7 +75,6 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                   InkWell(
                     onTap: () {
                       controller.logOut();
-
                       context.go(Routes.auth);
                     },
                     child: const ListTile(

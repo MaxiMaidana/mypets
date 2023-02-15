@@ -35,7 +35,7 @@ class ProfileController extends GetxController {
 
   void initialSettings() {
     chargeImage();
-    appVersion = _appController.packageInfo.version;
+    appVersion = _appController.packageInfo?.version ?? '';
   }
 
   void changeTheme(bool value) {

@@ -1,9 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
-import 'package:mypets/feature/firebase/firebase_controller.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
@@ -12,6 +10,7 @@ import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
+import '../../feature/map/presentation/getx/map_controller.dart';
 import '../../feature/new_pet/presentation/getx/new_pet_controller.dart';
 import '../../feature/new_pet/presentation/page/new_pet_page.dart';
 import '../../feature/pet_info/presentation/getx/info_pet_controller.dart';
@@ -102,6 +101,7 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.map,
       builder: (context, state) {
+        Get.put(MapController());
         return const MapPage();
       },
     ),

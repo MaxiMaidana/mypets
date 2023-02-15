@@ -4,7 +4,7 @@ import 'package:mypets/core/theme/themes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppController extends GetxController {
-  late PackageInfo packageInfo;
+  PackageInfo? packageInfo;
 
   RxBool isDarkMode = false.obs;
 

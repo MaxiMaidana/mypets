@@ -22,7 +22,6 @@ class WebMainPage extends StatelessWidget {
                     onPressed: () {},
                     child: SizedBox(
                       height: 5.h,
-                      width: 7.w,
                       child: const Center(
                         child: Text('Soy Veterinaria',
                             textAlign: TextAlign.center),
@@ -34,7 +33,6 @@ class WebMainPage extends StatelessWidget {
                     onPressed: () => context.go(Routes.auth),
                     child: SizedBox(
                       height: 5.h,
-                      width: 7.w,
                       child: const Center(
                         child: Text('Ir a mi libreta'),
                       ),
