@@ -5,12 +5,14 @@ class InputCustom extends StatefulWidget {
   final String? hint;
   final Function(String)? onChange;
   final bool isPassword;
+  final TextInputType? textInputType;
   const InputCustom({
     Key? key,
     required this.controller,
     this.hint,
     this.isPassword = false,
     this.onChange,
+    this.textInputType,
   }) : super(key: key);
 
   factory InputCustom.base({
@@ -18,12 +20,14 @@ class InputCustom extends StatefulWidget {
     bool isPassword = false,
     String? hint,
     Function(String)? onChange,
+    TextInputType? textInputType,
   }) =>
       InputCustom(
         controller: controller,
         isPassword: isPassword,
         hint: hint,
         onChange: onChange,
+        textInputType: textInputType,
       );
 
   @override
@@ -45,6 +49,7 @@ class _InputCustomState extends State<InputCustom> {
         obscureText: widget.isPassword && !eyeOpen ? true : false,
         autofocus: false,
         onChanged: widget.onChange,
+        keyboardType: widget.textInputType,
         decoration: InputDecoration(
           hintStyle:
               const TextStyle().copyWith(color: Colors.black.withOpacity(0.3)),

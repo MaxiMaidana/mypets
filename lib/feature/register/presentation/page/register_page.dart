@@ -8,13 +8,15 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: WidgetTree(
-        tiny: Text('tiny'),
-        phone: RegisterPhoneView(),
-        tablet: Text('tablet'),
-        largeTablet: Text('tablet large'),
-        computer: Text('computer'),
+    return const SafeArea(
+      child: Scaffold(
+        body: WidgetTree(
+          tiny: Text('tiny'),
+          phone: RegisterPhoneView(),
+          tablet: Text('tablet'),
+          largeTablet: Text('tablet large'),
+          computer: Text('computer'),
+        ),
       ),
     );
   }

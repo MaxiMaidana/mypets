@@ -12,6 +12,7 @@ void buttonSheetLogin(
   required Function() googleFunction,
 }) =>
     showModalBottomSheet(
+      backgroundColor: Colors.white,
       context: context,
       builder: (context) => Container(
         color: Colors.transparent,
@@ -41,6 +42,7 @@ void buttonSheetLogin(
                 InputCustom.base(
                   controller: emailController,
                   hint: 'Email',
+                  textInputType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 1.h),
                 InputCustom.base(
