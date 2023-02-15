@@ -9,14 +9,13 @@ import 'core/service/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // if (GetPlatform.isWeb) {
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  // } else {
-  //   await Firebase.initializeApp();
-  // }
-  await Firebase.initializeApp();
+  if (GetPlatform.isWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
   await setupLocator();
   usePathUrlStrategy();
   runApp(const MyPetsApp());
