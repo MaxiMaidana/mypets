@@ -6,7 +6,7 @@ class ThemeProvider extends ChangeNotifier {
 
   // ThemeProvider(this._themeData);
 
-  getTheme() => _themeData ?? ligthMode;
+  ThemeData getTheme() => _themeData ?? ligthMode;
 
   setTheme(ThemeData themeData) {
     _themeData = themeData;

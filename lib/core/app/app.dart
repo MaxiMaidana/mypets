@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:mypets/feature/app/controller/app_controller.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +19,24 @@ class MyPetsApp extends StatelessWidget {
       child: Sizer(
         builder: (context, orientation, deviceType) {
           final theme = Provider.of<ThemeProvider>(context);
-          return MaterialApp.router(
-            title: 'My Pets',
-            debugShowCheckedModeBanner: false,
-            routerConfig: goRouter,
-            theme: theme.getTheme(),
+          return GlobalLoaderOverlay(
+            child: LoaderOverlay(
+              useDefaultLoading: false,
+              overlayWidget: Center(
+                child: SizedBox(
+                  height: 250,
+                  width: 250,
+                  child: Image.network(
+                      'https://thumbs.gfycat.com/FlakySmoggyGourami-max-1mb.gif'),
+                ),
+              ),
+              child: MaterialApp.router(
+                title: 'My Pets',
+                debugShowCheckedModeBanner: false,
+                routerConfig: goRouter,
+                theme: theme.getTheme(),
+              ),
+            ),
           );
         },
       ),

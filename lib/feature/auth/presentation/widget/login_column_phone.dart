@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
@@ -34,14 +35,19 @@ class LoginColumnPhone extends GetWidget<AuthController> {
               emailController: controller.emailController,
               passController: controller.passController,
               credentialsFunction: () async {
-                await controller.logIn(loginType: LoginType.credentials);
+                context.loaderOverlay.show();
+                await Future.delayed(Duration(seconds: 2));
+                // await controller.logIn(loginType: LoginType.credentials);
+                context.loaderOverlay.hide();
                 if (controller.isLogued.value) {
                   context.go(Routes.home);
                 }
               },
               googleFunction: () async {
+                context.loaderOverlay.show();
                 await controller.logIn(loginType: LoginType.google);
                 if (controller.isLogued.value) {
+                  context.loaderOverlay.hide();
                   context.go(Routes.home);
                 }
               },
