@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
-import 'package:mypets/feature/app/controller/app_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../routes/go_routes.dart';
-import '../theme/themes.dart';
 
 class MyPetsApp extends StatelessWidget {
   const MyPetsApp({super.key});
@@ -23,11 +20,8 @@ class MyPetsApp extends StatelessWidget {
             child: LoaderOverlay(
               useDefaultLoading: false,
               overlayWidget: Center(
-                child: SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: Image.network(
-                      'https://thumbs.gfycat.com/FlakySmoggyGourami-max-1mb.gif'),
+                child: CircularProgressIndicator(
+                  color: theme.getTheme().primaryColor,
                 ),
               ),
               child: MaterialApp.router(

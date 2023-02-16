@@ -6,10 +6,10 @@ import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/core/widgets/input_custom.dart';
 import 'package:sizer/sizer.dart';
 
-import '../getx/register_controller.dart';
+import '../../getx/register_controller.dart';
 
-class RegisterPhoneView extends GetView<RegisterController> {
-  const RegisterPhoneView({super.key});
+class RegisterPV extends GetView<RegisterController> {
+  const RegisterPV({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +52,13 @@ class RegisterPhoneView extends GetView<RegisterController> {
           SizedBox(height: 2.h),
           InputCustom.base(
             controller: controller.confirmPassController,
-            hint: 'Repetir Contraseña',
-          ),
-          SizedBox(height: 2.h),
-          InputCustom.base(
-            controller: controller.phoneController,
-            hint: 'Telefono*',
-            textInputType: TextInputType.phone,
+            hint: 'Repetir Contraseña*',
           ),
           const Spacer(),
           ButtonCustom.principal(
             text: 'Registrarme',
-            onPress: () {},
+            onPress: () =>
+                controller.statusRegister.value = StatusRegister.emailSended,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
