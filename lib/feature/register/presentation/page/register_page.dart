@@ -15,6 +15,7 @@ class RegisterPage extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: WidgetTree(
           tiny: const Text('tiny'),
           phone: Obx(

@@ -61,6 +61,7 @@ void buttonSheetLogin(
                 ),
                 SizedBox(height: 1.h),
                 ButtonCustom.loginGoogle(
+                  text: 'Ingresar con Google',
                   onPress: googleFunction,
                 ),
                 SizedBox(height: 2.h),

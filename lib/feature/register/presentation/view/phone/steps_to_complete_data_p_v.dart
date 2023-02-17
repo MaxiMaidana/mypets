@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/core/widgets/input_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../widget/buttons_steps.dart';
 
 class StepsToCompleteDataPV extends GetView<RegisterController> {
   const StepsToCompleteDataPV({super.key});
@@ -17,17 +22,80 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
             height: 96.5.h,
             child: Column(
               children: [
-                SizedBox(height: 10.h),
-                Icon(
-                  Icons.graphic_eq_outlined,
-                  size: 30.h,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: SizedBox(
+                    height: 10.h,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: Container(
+                                width: 75.w,
+                                height: 35.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 4.w, vertical: 2.h),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Importante!',
+                                        style: TextStyle(
+                                          fontSize: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .fontSize,
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      Text(
+                                        'Si no completas este formulario no vas a poder entrar al app',
+                                        style: TextStyle(
+                                          fontSize: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .fontSize,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      ButtonCustom.principal(
+                                        text: 'Continuar',
+                                        onPress: () => context.pop(),
+                                      ),
+                                      ButtonCustom.text(
+                                        text: 'Seguir Despues',
+                                        onPress: () async => goToMain(context),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: const SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Icon(Icons.close),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                Icon(Icons.graphic_eq_outlined, size: 30.h),
                 const Spacer(),
                 Container(
                   width: double.infinity,
                   height: 50.h,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -44,6 +112,13 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
     );
   }
 
+  Future<void> goToMain(BuildContext context) async {
+    context.loaderOverlay.show();
+    await controller.clearData();
+    context.loaderOverlay.hide();
+    context.go(Routes.main);
+  }
+
   Widget step(BuildContext context, CompletedDataStatus completedDataStatus) =>
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -57,35 +132,9 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
               ),
             ),
             SizedBox(height: 2.h),
-            inputTextStep(completedDataStatus),
+            inputTextStep(context, completedDataStatus),
             const Spacer(),
-            ButtonCustom.principal(
-              text: controller.completedDataStatus.value ==
-                      CompletedDataStatus.checkData
-                  ? 'Finalizar'
-                  : 'Siguiente',
-              onPress: () {
-                switch (completedDataStatus) {
-                  case CompletedDataStatus.firstStep:
-                    controller.completedDataStatus.value =
-                        CompletedDataStatus.secondStep;
-                    break;
-                  case CompletedDataStatus.secondStep:
-                    controller.completedDataStatus.value =
-                        CompletedDataStatus.thirtStep;
-                    break;
-                  case CompletedDataStatus.thirtStep:
-                    controller.completedDataStatus.value =
-                        CompletedDataStatus.checkData;
-                    break;
-                  case CompletedDataStatus.checkData:
-                    controller.completedDataStatus.value =
-                        CompletedDataStatus.completed;
-                    break;
-                  default:
-                }
-              },
-            ),
+            const ButtonsSteps(),
             SizedBox(height: 2.h),
           ],
         ),
@@ -101,7 +150,9 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
                   : completedDataStatus == CompletedDataStatus.checkData
                       ? 'Repasemos'
                       : '';
-  Widget inputTextStep(CompletedDataStatus completedDataStatus) =>
+
+  Widget inputTextStep(
+          BuildContext context, CompletedDataStatus completedDataStatus) =>
       completedDataStatus == CompletedDataStatus.firstStep
           ? Column(
               children: [
@@ -120,31 +171,66 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
               ? InputCustom.base(
                   controller: controller.dniController,
                   hint: 'DNI*',
+                  textInputType: TextInputType.number,
                 )
               : completedDataStatus == CompletedDataStatus.thirtStep
                   ? InputCustom.base(
                       controller: controller.phoneController,
                       hint: 'Telefono*',
+                      textInputType: TextInputType.phone,
                     )
                   : completedDataStatus == CompletedDataStatus.checkData
                       ? Column(
                           children: [
-                            const Text('Nombre'),
-                            SizedBox(height: 1.h),
-                            const Text('Apellido'),
-                            SizedBox(height: 1.h),
-                            const Text('Dni'),
-                            SizedBox(height: 1.h),
-                            const Text('Telefono'),
+                            Text(
+                              '${controller.nameController.text} ${controller.lastNameController.text}',
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .fontSize,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    Icon(Icons.badge, size: 10.h),
+                                    SizedBox(height: 1.h),
+                                    const Icon(Icons.arrow_downward),
+                                    Text(
+                                      controller.dniController.text,
+                                      style: TextStyle(
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .fontSize,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Icon(Icons.phone_android_outlined,
+                                        size: 10.h),
+                                    SizedBox(height: 1.h),
+                                    const Icon(Icons.arrow_downward),
+                                    Text(
+                                      controller.phoneController.text,
+                                      style: TextStyle(
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .fontSize,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ],
                         )
                       : Container();
-} 
-
-
-          // SizedBox(height: 2.h),
-          // InputCustom.base(
-          //   controller: controller.phoneController,
-          //   hint: 'Telefono*',
-          //   textInputType: TextInputType.phone,
-          // ),
+}

@@ -29,11 +29,12 @@ class ButtonCustom extends StatelessWidget {
       );
 
   factory ButtonCustom.loginGoogle({
+    required String text,
     required Function() onPress,
   }) =>
       ButtonCustom(
         type: ButtonType.google,
-        text: 'Ingresar con Google',
+        text: text,
         onPress: onPress,
       );
   factory ButtonCustom.text({
@@ -55,7 +56,7 @@ class ButtonCustom extends StatelessWidget {
         return ElevatedButton(
           onPressed: onPress,
           child: SizedBox(
-            height: 7.h,
+            height: 5.h,
             width: 100.w,
             child: Center(
               child: Text(text!),
@@ -66,7 +67,7 @@ class ButtonCustom extends StatelessWidget {
         return ElevatedButton(
           onPressed: onPress,
           child: SizedBox(
-            height: 7.h,
+            height: 5.h,
             width: 100.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

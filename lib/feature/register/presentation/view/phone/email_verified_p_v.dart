@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
@@ -26,10 +27,17 @@ class EmailVerifiedPV extends GetView<RegisterController> {
           SizedBox(height: 1.h),
           ButtonCustom.principal(
             text: 'Despues :/',
-            onPress: () => context.go(Routes.main),
+            onPress: () async => goToMain(context),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> goToMain(BuildContext context) async {
+    context.loaderOverlay.show();
+    await controller.clearData();
+    context.loaderOverlay.hide();
+    context.go(Routes.main);
   }
 }

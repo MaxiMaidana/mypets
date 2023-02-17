@@ -42,4 +42,16 @@ class RegisterController extends GetxController {
     lastNameController.dispose();
     super.dispose();
   }
+
+  Future<void> clearData() async {
+    emailController.clear();
+    passController.clear();
+    confirmPassController.clear();
+    phoneController.clear();
+    dniController.clear();
+    nameController.clear();
+    lastNameController.clear();
+    statusRegister.value = StatusRegister.init;
+    completedDataStatus.value = CompletedDataStatus.firstStep;
+  }
 }
