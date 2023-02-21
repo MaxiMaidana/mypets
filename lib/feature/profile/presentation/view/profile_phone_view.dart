@@ -26,7 +26,8 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(25.h),
               child: CachedNetworkImage(
-                imageUrl: controller.userProfile!.photoURL!,
+                imageUrl: controller.userProfile!.photoURL ?? '',
+                errorWidget: (context, url, error) => Icon(Icons.percent),
                 height: 20.h,
                 fit: BoxFit.contain,
               ),

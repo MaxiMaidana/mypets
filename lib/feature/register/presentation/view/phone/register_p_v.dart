@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/core/widgets/input_custom.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../../core/widgets/dialog_custom.dart';
 import '../../getx/register_controller.dart';
 
 class RegisterPV extends GetView<RegisterController> {
@@ -13,7 +17,10 @@ class RegisterPV extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+        // controller.obx(
+        //   (state) =>
+        SingleChildScrollView(
       child: SizedBox(
         height: 96.5.h,
         child: Padding(
@@ -51,17 +58,38 @@ class RegisterPV extends GetView<RegisterController> {
               InputCustom.base(
                 controller: controller.passController,
                 hint: 'Controseña*',
+                isPassword: true,
               ),
               SizedBox(height: 2.h),
               InputCustom.base(
                 controller: controller.confirmPassController,
                 hint: 'Repetir Contraseña*',
+                isPassword: true,
               ),
               const Spacer(),
               ButtonCustom.principal(
-                text: 'Registrarme',
-                onPress: () => controller.statusRegister.value =
-                    StatusRegister.emailSended,
+                  text: 'Registrarme',
+                  onPress: () async {
+                    bool res = false;
+                    if (controller.validateInputs()) {
+                      context.loaderOverlay.show();
+                      res = await controller.registerWithEmail();
+                      context.loaderOverlay.hide();
+                    }
+                    if (!res) {
+                      DialogCustom.infoDialog(
+                        context,
+                        title: controller.errorModel!.code,
+                        message: controller.errorModel!.message,
+                        // content: [
+                        //   Text(controller.errorModel!.message),
+                        // ],
+                      );
+                    }
+                  }),
+              ButtonCustom.loginGoogle(
+                text: 'Registrarme con Google',
+                onPress: () async {},
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

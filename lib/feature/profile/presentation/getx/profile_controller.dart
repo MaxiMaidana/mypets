@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../../core/service/local_storage.dart';
 // import '../../../auth/presentation/getx/auth_controller.dart';
 import '../../../app/controller/app_controller.dart';
-import '../../../firebase/firebase_controller.dart';
+import '../../../firebase/getx/firebase_controller.dart';
 import '../../../home/presentation/getx/home_controller.dart';
 
 class ProfileController extends GetxController {
@@ -20,7 +20,7 @@ class ProfileController extends GetxController {
   Future<void> logOut() async {
     try {
       await _firebaseController.logoutGoogle();
-      LocalStorage.setPref(SetPref.auth, false);
+      LocalStorage.setPref(setPref: SetPref.auth, dataBool: false);
       _homeController.index.value = 0;
     } catch (e) {
       rethrow;

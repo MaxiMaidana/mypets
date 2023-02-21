@@ -19,9 +19,10 @@ class IntroPage extends StatelessWidget {
           children: [
             const Text('aca va el carousel del intro'),
             ElevatedButton(
-              child: Text('Ingresar  :)'),
+              child: const Text('Ingresar  :)'),
               onPressed: () {
-                LocalStorage.setPref(SetPref.isFirstTime, true);
+                LocalStorage.setPref(
+                    setPref: SetPref.isFirstTime, dataBool: true);
                 context.go(Routes.auth);
               },
             )

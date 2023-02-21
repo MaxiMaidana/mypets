@@ -4,13 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
+import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
 import 'package:sizer/sizer.dart';
 
-import 'login_button_sheet_phone.dart';
+import 'login_button_sheet_p_v.dart';
 
-class LoginColumnPhone extends GetWidget<AuthController> {
-  const LoginColumnPhone({super.key});
+class LoginColumnPV extends GetWidget<AuthController> {
+  const LoginColumnPV({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +37,50 @@ class LoginColumnPhone extends GetWidget<AuthController> {
               passController: controller.passController,
               credentialsFunction: () async {
                 context.loaderOverlay.show();
-                await Future.delayed(Duration(seconds: 2));
-                // await controller.logIn(loginType: LoginType.credentials);
+                await controller.logIn(loginType: LoginType.credentials);
                 context.loaderOverlay.hide();
-                if (controller.isLogued.value) {
-                  context.go(Routes.home);
+                switch (controller.userStatus.value) {
+                  case UserStatus.dataCompleted:
+                    context.go(Routes.home);
+                    break;
+                  case UserStatus.needCompleteData:
+                    context.push(Routes.register);
+                    break;
+                  case UserStatus.needValidateEmail:
+                    context.push(Routes.register);
+                    break;
+                  case UserStatus.error:
+                    DialogCustom.infoDialog(
+                      context,
+                      title: controller.errorModel!.code,
+                      message: controller.errorModel!.message,
+                    );
+                    break;
+                  default:
                 }
               },
               googleFunction: () async {
                 context.loaderOverlay.show();
                 await controller.logIn(loginType: LoginType.google);
-                if (controller.isLogued.value) {
-                  context.loaderOverlay.hide();
-                  context.go(Routes.home);
+                context.loaderOverlay.hide();
+                switch (controller.userStatus.value) {
+                  case UserStatus.dataCompleted:
+                    context.go(Routes.home);
+                    break;
+                  case UserStatus.needCompleteData:
+                    context.push(Routes.register);
+                    break;
+                  case UserStatus.needValidateEmail:
+                    context.push(Routes.register);
+                    break;
+                  case UserStatus.error:
+                    DialogCustom.infoDialog(
+                      context,
+                      title: controller.errorModel!.code,
+                      message: controller.errorModel!.message,
+                    );
+                    break;
+                  default:
                 }
               },
             );

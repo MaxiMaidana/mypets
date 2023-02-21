@@ -30,8 +30,7 @@ class WaithingValidationPV extends GetView<RegisterController> {
           ),
           ButtonCustom.principal(
             text: 'Ya valida el email',
-            onPress: () =>
-                controller.statusRegister.value = StatusRegister.emailVerified,
+            onPress: () async => controller.checkIfEmailIsVerify(),
           ),
           SizedBox(height: 1.h),
           ButtonCustom.text(

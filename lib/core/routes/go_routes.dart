@@ -34,9 +34,9 @@ GoRouter goRouter = GoRouter(
       path: Routes.main,
       redirect: (context, state) {
         if (!GetPlatform.isWeb) {
-          if (!LocalStorage.getPref(SetPref.isFirstTime)) {
+          if (!LocalStorage.getPrefBool(SetPref.isFirstTime)) {
             return Routes.intro;
-          } else if (LocalStorage.getPref(SetPref.auth)) {
+          } else if (LocalStorage.getPrefBool(SetPref.auth)) {
             return Routes.home;
           } else {
             return Routes.auth;

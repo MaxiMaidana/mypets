@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/button_custom.dart';
 
 class ButtonsSteps extends GetView<RegisterController> {
@@ -37,7 +40,19 @@ class ButtonsSteps extends GetView<RegisterController> {
                   : 'Siguiente',
               onPress: controller.completedDataStatus.value ==
                       CompletedDataStatus.checkData
-                  ? () {}
+                  ? () async {
+                      bool res = await controller.createUser();
+                      if (res) {
+                        context.go(Routes.home);
+                      } else {
+                        DialogCustom.infoDialog(
+                          context,
+                          title: controller.errorModel!.code,
+                          message: controller.errorModel!.message,
+                          aceptar: () => context.go(Routes.auth),
+                        );
+                      }
+                    }
                   : () => switchNext(),
             ),
           ),

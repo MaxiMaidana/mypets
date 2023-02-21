@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
-enum ButtonType { principal, google, text }
+enum ButtonType { principal, principalShort, google, text }
 
 class ButtonCustom extends StatelessWidget {
   final ButtonType type;
@@ -24,6 +24,16 @@ class ButtonCustom extends StatelessWidget {
   }) =>
       ButtonCustom(
         type: ButtonType.principal,
+        text: text,
+        onPress: onPress,
+      );
+
+  factory ButtonCustom.principalShort({
+    required String text,
+    required Function() onPress,
+  }) =>
+      ButtonCustom(
+        type: ButtonType.principalShort,
         text: text,
         onPress: onPress,
       );
@@ -63,6 +73,17 @@ class ButtonCustom extends StatelessWidget {
             ),
           ),
         );
+      case ButtonType.principalShort:
+        return ElevatedButton(
+          onPressed: onPress,
+          child: SizedBox(
+            height: 5.h,
+            width: 30.w,
+            child: Center(
+              child: Text(text!),
+            ),
+          ),
+        );
       case ButtonType.google:
         return ElevatedButton(
           onPressed: onPress,
@@ -74,7 +95,7 @@ class ButtonCustom extends StatelessWidget {
               children: [
                 const FaIcon(FontAwesomeIcons.google),
                 SizedBox(width: 2.w),
-                const Text('Ingresar con Google')
+                Text(text!)
               ],
             ),
           ),
