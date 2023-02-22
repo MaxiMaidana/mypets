@@ -8,6 +8,8 @@ import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
+import '../../feature/change_password/presentation/getx/change_password_controller.dart';
+import '../../feature/change_password/presentation/page/change_password_page.dart';
 import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/map/presentation/getx/map_controller.dart';
@@ -71,6 +73,13 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         Get.put(RegisterController());
         return const RegisterPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.changePassword,
+      builder: (context, state) {
+        Get.put(ChangePasswordController());
+        return const ChangePasswordPage();
       },
     ),
     GoRoute(

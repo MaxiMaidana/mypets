@@ -10,6 +10,7 @@ void buttonSheetLogin(
   required TextEditingController passController,
   required Function() credentialsFunction,
   required Function() googleFunction,
+  required Function() changePassword,
 }) =>
     showModalBottomSheet(
       backgroundColor: Colors.white,
@@ -52,7 +53,7 @@ void buttonSheetLogin(
                 ),
                 ButtonCustom.text(
                   text: 'Olvide mi contraseña.',
-                  onPress: () {},
+                  onPress: changePassword,
                 ),
                 const Spacer(),
                 ButtonCustom.principal(

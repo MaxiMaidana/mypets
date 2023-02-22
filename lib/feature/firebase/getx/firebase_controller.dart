@@ -143,6 +143,15 @@ class FirebaseController extends GetxController {
     }
   }
 
+  Future<bool> sendEmailToResetPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> getUserData() async {
     try {
       DocumentSnapshot res =

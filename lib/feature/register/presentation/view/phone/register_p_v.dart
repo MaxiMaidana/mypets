@@ -17,10 +17,7 @@ class RegisterPV extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // controller.obx(
-        //   (state) =>
-        SingleChildScrollView(
+    return SingleChildScrollView(
       child: SizedBox(
         height: 96.5.h,
         child: Padding(

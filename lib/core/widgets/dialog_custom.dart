@@ -7,11 +7,13 @@ class DialogCustom {
     BuildContext context, {
     required String title,
     String? message,
+    bool barrierDismissible = false,
     // List<Widget> content = const [],
     Function()? aceptar,
   }) =>
       showDialog(
         context: context,
+        barrierDismissible: barrierDismissible!,
         builder: (context) => AlertDialog(
           title: Text(title),
           actions: [

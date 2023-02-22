@@ -83,6 +83,7 @@ class LoginColumnPV extends GetWidget<AuthController> {
                   default:
                 }
               },
+              changePassword: () => context.push(Routes.changePassword),
             );
           },
         ),
