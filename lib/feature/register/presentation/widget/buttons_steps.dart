@@ -41,9 +41,12 @@ class ButtonsSteps extends GetView<RegisterController> {
               onPress: controller.completedDataStatus.value ==
                       CompletedDataStatus.checkData
                   ? () async {
-                      bool res = await controller.createUser();
+                      bool res = await controller.updateUser(isLastStep: true);
                       if (res) {
                         context.go(Routes.home);
+                        controller.statusRegister.value = StatusRegister.init;
+                        controller.completedDataStatus.value =
+                            CompletedDataStatus.firstStep;
                       } else {
                         DialogCustom.infoDialog(
                           context,

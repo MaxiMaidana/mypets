@@ -81,15 +81,24 @@ class RegisterPV extends GetView<RegisterController> {
                         context,
                         title: controller.errorModel!.code,
                         message: controller.errorModel!.message,
-                        // content: [
-                        //   Text(controller.errorModel!.message),
-                        // ],
                       );
                     }
                   }),
               ButtonCustom.loginGoogle(
                 text: 'Registrarme con Google',
-                onPress: () async {},
+                onPress: () async {
+                  bool res = false;
+                  context.loaderOverlay.show();
+                  res = await controller.registerWithGoogle();
+                  context.loaderOverlay.hide();
+                  if (!res) {
+                    DialogCustom.infoDialog(
+                      context,
+                      title: controller.errorModel!.code,
+                      message: controller.errorModel!.message,
+                    );
+                  }
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

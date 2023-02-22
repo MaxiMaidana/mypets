@@ -13,7 +13,6 @@ class AppController extends GetxController {
   @override
   void onInit() async {
     packageInfo = await PackageInfo.fromPlatform();
-
     super.onInit();
   }
 }

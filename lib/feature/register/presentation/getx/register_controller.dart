@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
-import 'package:mypets/feature/firebase/data/model/user_model.dart';
+import 'package:mypets/data/models/user/user_model.dart';
 
 import '../../../../core/service/local_storage.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -78,6 +78,7 @@ class RegisterController extends GetxController with StateMixin {
     try {
       await _firebaseController.registerUserWithEmail(
           email: emailController.text, pass: 'asd123');
+      await createUser();
       emailSended = await _firebaseController.sendVerifyEmail();
       if (emailSended) {
         statusRegister.value = StatusRegister.emailSended;
@@ -99,11 +100,42 @@ class RegisterController extends GetxController with StateMixin {
     }
   }
 
+  Future<bool> registerWithGoogle() async {
+    try {
+      await _firebaseController.loginWithGoogle();
+      nameController.text = _firebaseController
+          .firebaseAuth.currentUser!.displayName!
+          .split(' ')
+          .first;
+      lastNameController.text = _firebaseController
+          .firebaseAuth.currentUser!.displayName!
+          .split(' ')
+          .last;
+      await createUser(emailVarified: true);
+      statusRegister.value = StatusRegister.emailVerified;
+      completedDataStatus.value = CompletedDataStatus.secondStep;
+      return true;
+    } on FirebaseAuthException catch (e) {
+      String title = '';
+      String message = '';
+      if (e.code == 'email-already-in-use') {
+        title = 'Email en uso';
+        message =
+            'El email ya se encuentra registrado.\nTrata de registrarte con otro por favor, o si no recuerdas tu clave, puede recuperarla =D';
+      }
+      errorModel = ErrorModel(code: title, message: message);
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> checkIfEmailIsVerify() async {
     try {
       await _firebaseController.verifyIfUserValidate(
           email: emailController.text);
       if (_firebaseController.firebaseAuth.currentUser!.emailVerified) {
+        await updateUser(emailVerified: true);
         bool res = await _firebaseController.changePasswordUser(
             pass: passController.text);
         if (res) {
@@ -119,20 +151,60 @@ class RegisterController extends GetxController with StateMixin {
     }
   }
 
-  Future<bool> createUser() async {
+  Future<void> changePassword() async {
+    try {
+      await _firebaseController.changePasswordUser(pass: passController.text);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> createUser({bool? emailVarified}) async {
     try {
       _firebaseController.addUSer(
         UserModel(
           name: nameController.text,
           lastName: lastNameController.text,
-          dni: int.parse(dniController.text),
-          phone: int.parse(phoneController.text),
+          dni: dniController.text,
+          phone: phoneController.text,
           urlPhoto:
               _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
+          emailVerified: emailVarified ?? false,
           petsId: [],
         ),
       );
-      LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
+
+      return true;
+    } catch (e) {
+      String title = '';
+      String message = '';
+      title = 'Erro al crear el usuario';
+      message =
+          'Tuvimos un problema a la hora de crear tu usuario, intentelo mas tarde por favor.';
+      errorModel = ErrorModel(code: title, message: message);
+      return false;
+    }
+  }
+
+  Future<bool> updateUser(
+      {bool? emailVerified, bool isLastStep = false}) async {
+    try {
+      await _firebaseController.updateUSer(
+        UserModel(
+          name: nameController.text,
+          lastName: lastNameController.text,
+          dni: dniController.text,
+          phone: phoneController.text,
+          urlPhoto:
+              _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
+          emailVerified: emailVerified ??
+              _firebaseController.firebaseAuth.currentUser!.emailVerified,
+          petsId: [],
+        ),
+      );
+      if (isLastStep) {
+        LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
+      }
       return true;
     } catch (e) {
       String title = '';

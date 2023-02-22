@@ -123,6 +123,10 @@ class AuthController extends GetxController {
           title = 'Error';
           message = 'El usuario no se encuentra registrado en el app';
           break;
+        case 'wrong-password':
+          title = 'Error';
+          message = 'El password ingresado es incorrecto';
+          break;
         case 'network-request-failed':
           title = 'Error';
           message =
@@ -136,22 +140,25 @@ class AuthController extends GetxController {
   }
 
   void validateDataUser() {
-    if (!_firebaseController.firebaseAuth.currentUser!.emailVerified) {
+    if (!_firebaseController.userModel.emailVerified) {
       log('need validate email');
       final registerController = Get.put(RegisterController());
       registerController.statusRegister.value = StatusRegister.emailSended;
       userStatus.value = UserStatus.needValidateEmail;
       return;
     }
-    if (_firebaseController.firebaseAuth.currentUser!.displayName == null) {
+    if (_firebaseController.userModel.dni == '') {
       log('need complete data');
       final registerController = Get.put(RegisterController());
       registerController.statusRegister.value = StatusRegister.emailVerified;
+      registerController.completedDataStatus.value =
+          CompletedDataStatus.secondStep;
       userStatus.value = UserStatus.needCompleteData;
       return;
     } else {
       log('all okey');
       LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
+      userStatus.value = UserStatus.dataCompleted;
       return;
     }
   }

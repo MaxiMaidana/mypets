@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mypets/feature/firebase/data/model/user_model.dart';
+import 'package:mypets/data/models/user/user_model.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseDatasource {

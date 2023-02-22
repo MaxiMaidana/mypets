@@ -1,9 +1,10 @@
 class UserModel {
   String name;
   String lastName;
-  int dni;
-  int phone;
+  bool emailVerified;
   String urlPhoto;
+  String dni;
+  String phone;
   List<String> petsId;
 
   UserModel({
@@ -12,6 +13,7 @@ class UserModel {
     required this.dni,
     required this.phone,
     required this.urlPhoto,
+    required this.emailVerified,
     required this.petsId,
   });
 
@@ -21,6 +23,7 @@ class UserModel {
         dni: json['dni'],
         phone: json['phone'],
         urlPhoto: json['urlPhoto'],
+        emailVerified: json['emailVerified'],
         petsId: List<String>.from(json['petsId']),
       );
 
@@ -30,6 +33,7 @@ class UserModel {
         'dni': dni,
         'phone': phone,
         'urlPhoto': urlPhoto,
+        'emailVerified': emailVerified,
         'petsId': petsId,
       };
 }

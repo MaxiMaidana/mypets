@@ -4,9 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mypets/feature/firebase/data/model/user_model.dart';
-
-import '../data/datasource/firebase_datasource.dart';
+import 'package:mypets/data/models/user/user_model.dart';
 
 class FirebaseController extends GetxController {
   late FirebaseAuth _firebaseAuth;
@@ -18,6 +16,8 @@ class FirebaseController extends GetxController {
   GoogleSignInAccount? _googleSignInAccount;
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
+
+  late UserModel userModel;
 
   Future<bool> loginWithGoogle() async {
     bool res = false;
@@ -31,6 +31,7 @@ class FirebaseController extends GetxController {
           accessToken: googleAuth.accessToken,
         );
         await firebaseAuth.signInWithCredential(credential);
+        await getUserData();
         res = true;
       }
       return res;
@@ -62,6 +63,7 @@ class FirebaseController extends GetxController {
         password: pass,
       );
       log('login con credenciales');
+      await getUserData();
       res = true;
       return res;
     } catch (e) {
@@ -141,23 +143,42 @@ class FirebaseController extends GetxController {
     }
   }
 
-  Future<void> getUserData(String uid) async {
+  Future<void> getUserData() async {
     try {
-      DocumentSnapshot res = await _collectionReference.doc(uid).get();
+      DocumentSnapshot res =
+          await _collectionReference.doc(firebaseAuth.currentUser!.uid).get();
       if (res.exists) {
-        print('Document data: ${res.data()}');
+        userModel = UserModel.fromJson(res.data() as Map<String, dynamic>);
       } else {
         print('Document does not exist on the database');
       }
-    } catch (e) {}
+    } catch (e) {
+      log('rompio al traer el usuario de la base');
+    }
   }
 
   Future<void> addUSer(UserModel userModel) async {
     try {
-      _collectionReference
+      await _collectionReference
           .doc(_firebaseAuth.currentUser!.uid)
           .set(userModel.toJson());
-    } catch (e) {}
+      log('se creo el usuario');
+    } catch (e) {
+      log('no se creo el usuario');
+      rethrow;
+    }
+  }
+
+  Future<void> updateUSer(UserModel userModel) async {
+    try {
+      _collectionReference
+          .doc(_firebaseAuth.currentUser!.uid)
+          .update(userModel.toJson());
+      log('se actualizo el usuario');
+    } catch (e) {
+      log('no se actualizo el usuario');
+      rethrow;
+    }
   }
 
   @override
@@ -165,7 +186,7 @@ class FirebaseController extends GetxController {
     _firebaseAuth = FirebaseAuth.instance;
     _collectionReference = FirebaseFirestore.instance.collection('users');
     if (_firebaseAuth.currentUser != null) {
-      getUserData(_firebaseAuth.currentUser!.uid);
+      getUserData();
     } else {
       // getUserData('aa');
     }
