@@ -139,9 +139,10 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
   }
 
   Future<void> goToMain(BuildContext context) async {
-    context.loaderOverlay.show();
-    await controller.clearData();
-    context.loaderOverlay.hide();
+    // context.loaderOverlay.show();
+    // await controller.clearData();
+    // context.loaderOverlay.hide();
+    Get.delete<RegisterController>(force: true);
     context.go(Routes.main);
   }
 

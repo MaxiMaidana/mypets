@@ -22,7 +22,6 @@ enum UserStatus {
 class AuthController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  // RxBool isLogued = false.obs;
   final FirebaseController _firebaseController = Get.find();
 
   Rx<UserStatus> userStatus = UserStatus.init.obs;
@@ -113,7 +112,6 @@ class AuthController extends GetxController {
         pass: passController.text,
       );
       validateDataUser();
-      // LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       String title = '';
@@ -126,6 +124,10 @@ class AuthController extends GetxController {
         case 'wrong-password':
           title = 'Error';
           message = 'El password ingresado es incorrecto';
+          break;
+        case 'invalid-email':
+          title = 'Error';
+          message = 'El email esta mal escrito';
           break;
         case 'network-request-failed':
           title = 'Error';
@@ -143,6 +145,8 @@ class AuthController extends GetxController {
     if (!_firebaseController.userModel.emailVerified) {
       log('need validate email');
       final registerController = Get.put(RegisterController());
+      registerController.passController.text = passController.text;
+      registerController.emailController.text = emailController.text;
       registerController.statusRegister.value = StatusRegister.emailSended;
       userStatus.value = UserStatus.needValidateEmail;
       return;

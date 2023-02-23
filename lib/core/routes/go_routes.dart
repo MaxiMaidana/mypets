@@ -88,6 +88,8 @@ GoRouter goRouter = GoRouter(
         Get.put(HomeController(), permanent: true);
         Get.put(ProfileController(), permanent: true);
         Get.put(PetsController(), permanent: true);
+        // Get.delete<RegisterController>(force: true);
+        // Get.delete<AuthController>(force: true);
         return const HomePage();
       },
     ),

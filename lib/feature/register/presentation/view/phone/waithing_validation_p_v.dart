@@ -4,12 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
+import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../../core/pages/page_with_widget_at_end.dart';
 
-class WaithingValidationPV extends GetView<RegisterController> {
+class WaithingValidationPV extends GetWidget<RegisterController> {
   const WaithingValidationPV({super.key});
 
   @override
@@ -24,13 +25,37 @@ class WaithingValidationPV extends GetView<RegisterController> {
               const Text('No te llego el email?'),
               ButtonCustom.text(
                 text: 'Reenviar',
-                onPress: () {},
+                onPress: () async => controller.sendEmailToValidate(),
               ),
             ],
           ),
           ButtonCustom.principal(
-            text: 'Ya valida el email',
-            onPress: () async => controller.checkIfEmailIsVerify(),
+            text: 'Ya valide el email',
+            onPress: () async {
+              if (await controller.checkIfEmailIsVerify()) {
+                controller.statusRegister.value = StatusRegister.emailVerified;
+              } else {
+                DialogCustom.infoDialogWhitOptions(
+                  context,
+                  title: controller.errorModel!.code,
+                  message: controller.errorModel!.message,
+                  barrierDismissible: false,
+                  actions: [
+                    ButtonCustom.text(
+                      text: 'Ir al login',
+                      onPress: () {
+                        context.go(Routes.main);
+                        Get.delete<RegisterController>();
+                      },
+                    ),
+                    ButtonCustom.principalShort(
+                      text: 'Volver a intentar',
+                      onPress: () => context.pop(),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
           SizedBox(height: 1.h),
           ButtonCustom.text(
@@ -43,9 +68,10 @@ class WaithingValidationPV extends GetView<RegisterController> {
   }
 
   Future<void> goToMain(BuildContext context) async {
-    context.loaderOverlay.show();
-    await controller.clearData();
-    context.loaderOverlay.hide();
+    // context.loaderOverlay.show();
+    // await controller.clearData();
+    // context.loaderOverlay.hide();
+    Get.delete<RegisterController>(force: true);
     context.go(Routes.main);
   }
 }

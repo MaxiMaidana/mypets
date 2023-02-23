@@ -109,7 +109,7 @@ class FirebaseController extends GetxController {
           .sendEmailVerification(actionCodeSettings);
       log('se envio email para validar');
       return true;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       await logoutGoogle();
       rethrow;
     } catch (e) {
@@ -118,13 +118,14 @@ class FirebaseController extends GetxController {
     }
   }
 
-  Future<void> verifyIfUserValidate({required String email}) async {
+  Future<void> verifyIfUserValidate(
+      {required String email, String? pass}) async {
     try {
       await _firebaseAuth.signOut();
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: 'asd123');
-      log('se creo al user con pass generica');
-    } on FirebaseAuthException catch (e) {
+          email: email, password: pass ?? 'asd123');
+      log('se desloguea y loguea para refrescar datos del usuario');
+    } on FirebaseAuthException catch (_) {
       await logoutGoogle();
       rethrow;
     } catch (e) {

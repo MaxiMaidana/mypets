@@ -22,7 +22,7 @@ enum CompletedDataStatus {
   secondStep,
   thirtStep,
   checkData,
-  completed
+  completed,
 }
 
 class RegisterController extends GetxController with StateMixin {
@@ -56,17 +56,17 @@ class RegisterController extends GetxController with StateMixin {
     super.dispose();
   }
 
-  Future<void> clearData() async {
-    emailController.clear();
-    passController.clear();
-    confirmPassController.clear();
-    phoneController.clear();
-    dniController.clear();
-    nameController.clear();
-    lastNameController.clear();
-    statusRegister.value = StatusRegister.init;
-    completedDataStatus.value = CompletedDataStatus.firstStep;
-  }
+  // Future<void> clearData() async {
+  //   emailController.clear();
+  //   passController.clear();
+  //   confirmPassController.clear();
+  //   phoneController.clear();
+  //   dniController.clear();
+  //   nameController.clear();
+  //   lastNameController.clear();
+  //   statusRegister.value = StatusRegister.init;
+  //   completedDataStatus.value = CompletedDataStatus.firstStep;
+  // }
 
   bool validateInputs() =>
       emailController.text != '' &&
@@ -103,6 +103,11 @@ class RegisterController extends GetxController with StateMixin {
   Future<bool> registerWithGoogle() async {
     try {
       await _firebaseController.loginWithGoogle();
+      if (_firebaseController.userModel.emailVerified &&
+          _firebaseController.userModel.dni != '') {
+        completedDataStatus.value = CompletedDataStatus.completed;
+        return true;
+      }
       nameController.text = _firebaseController
           .firebaseAuth.currentUser!.displayName!
           .split(' ')
@@ -130,24 +135,25 @@ class RegisterController extends GetxController with StateMixin {
     }
   }
 
-  Future<void> checkIfEmailIsVerify() async {
+  Future<bool> checkIfEmailIsVerify() async {
     try {
       await _firebaseController.verifyIfUserValidate(
-          email: emailController.text);
+          email: emailController.text,
+          pass: passController.text == '' ? null : passController.text);
       if (_firebaseController.firebaseAuth.currentUser!.emailVerified) {
         await updateUser(emailVerified: true);
-        bool res = await _firebaseController.changePasswordUser(
-            pass: passController.text);
-        if (res) {
-          statusRegister.value = StatusRegister.emailVerified;
-        } else {
-          Exception('cambiar la pass');
-        }
+        await _firebaseController.changePasswordUser(pass: passController.text);
+        return true;
       } else {
-        Exception('No pudimos validar tu email');
+        errorModel = ErrorModel(
+            code: 'Algo andvo mal',
+            message: 'No  pudimos  validar tu email =(');
+        return false;
       }
     } catch (e) {
-      rethrow;
+      errorModel = ErrorModel(
+          code: 'Algo andvo mal', message: 'No  pudimos  validar tu email :(');
+      return false;
     }
   }
 
@@ -159,12 +165,21 @@ class RegisterController extends GetxController with StateMixin {
     }
   }
 
+  Future<void> sendEmailToValidate() async {
+    try {
+      await _firebaseController.sendVerifyEmail();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> createUser({bool? emailVarified}) async {
     try {
       _firebaseController.addUSer(
         UserModel(
           name: nameController.text,
           lastName: lastNameController.text,
+          email: emailController.text,
           dni: dniController.text,
           phone: phoneController.text,
           urlPhoto:
@@ -193,6 +208,7 @@ class RegisterController extends GetxController with StateMixin {
         UserModel(
           name: nameController.text,
           lastName: lastNameController.text,
+          email: _firebaseController.firebaseAuth.currentUser!.email!,
           dni: dniController.text,
           phone: phoneController.text,
           urlPhoto:

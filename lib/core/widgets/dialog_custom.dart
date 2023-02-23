@@ -13,7 +13,7 @@ class DialogCustom {
   }) =>
       showDialog(
         context: context,
-        barrierDismissible: barrierDismissible!,
+        barrierDismissible: barrierDismissible,
         builder: (context) => AlertDialog(
           title: Text(title),
           actions: [
@@ -36,17 +36,22 @@ class DialogCustom {
     required String title,
     required List<Widget> actions,
     String? message,
+    bool barrierDismissible = false,
     List<Widget> content = const [],
     Function()? aceptar,
   }) =>
       showDialog(
         context: context,
+        barrierDismissible: barrierDismissible,
         builder: (context) => AlertDialog(
           title: Text(title),
           actions: actions,
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: content,
+            children: [
+              Text(message ?? ''),
+              ...content,
+            ],
           ),
         ),
       );

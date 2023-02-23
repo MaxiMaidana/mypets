@@ -26,7 +26,13 @@ class RegisterPV extends GetView<RegisterController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () => context.go(Routes.main),
+                onTap: () {
+                  controller.emailController.text = '';
+                  controller.passController.text = '';
+                  controller.confirmPassController.text = '';
+                  context.go(Routes.main);
+                  // await Get.delete<RegisterController>(force: true);
+                },
                 child: const SizedBox(
                   height: 40,
                   width: 40,
@@ -88,6 +94,11 @@ class RegisterPV extends GetView<RegisterController> {
                   context.loaderOverlay.show();
                   res = await controller.registerWithGoogle();
                   context.loaderOverlay.hide();
+                  if (controller.completedDataStatus.value ==
+                      CompletedDataStatus.completed) {
+                    context.go(Routes.home);
+                    // Get.delete<RegisterController>(force: true);
+                  }
                   if (!res) {
                     DialogCustom.infoDialog(
                       context,
@@ -103,7 +114,10 @@ class RegisterPV extends GetView<RegisterController> {
                   const Text('Ya tenes cuenta?'),
                   ButtonCustom.text(
                     text: 'Logueate',
-                    onPress: () => context.go(Routes.main),
+                    onPress: () {
+                      context.go(Routes.main);
+                      Get.delete<RegisterController>(force: true);
+                    },
                   ),
                 ],
               ),

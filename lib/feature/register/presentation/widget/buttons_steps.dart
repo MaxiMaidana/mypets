@@ -47,6 +47,7 @@ class ButtonsSteps extends GetView<RegisterController> {
                         controller.statusRegister.value = StatusRegister.init;
                         controller.completedDataStatus.value =
                             CompletedDataStatus.firstStep;
+                        Get.delete<RegisterController>();
                       } else {
                         DialogCustom.infoDialog(
                           context,

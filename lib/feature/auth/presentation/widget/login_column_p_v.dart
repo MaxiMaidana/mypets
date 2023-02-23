@@ -41,6 +41,7 @@ class LoginColumnPV extends GetWidget<AuthController> {
                 context.loaderOverlay.hide();
                 switch (controller.userStatus.value) {
                   case UserStatus.dataCompleted:
+                    Get.delete<AuthController>(force: true);
                     context.go(Routes.home);
                     break;
                   case UserStatus.needCompleteData:
@@ -65,6 +66,7 @@ class LoginColumnPV extends GetWidget<AuthController> {
                 context.loaderOverlay.hide();
                 switch (controller.userStatus.value) {
                   case UserStatus.dataCompleted:
+                    Get.delete<AuthController>(force: true);
                     context.go(Routes.home);
                     break;
                   case UserStatus.needCompleteData:

@@ -73,7 +73,10 @@ class ChangePasswordPV extends GetView<ChangePasswordController> {
                         title: 'Genial !',
                         message:
                             'Revisa tu casilla de email para restablecer contraseña',
-                        aceptar: () => context.go(Routes.main),
+                        aceptar: () {
+                          context.go(Routes.main);
+                          Get.delete<ChangePasswordController>();
+                        },
                       );
                     } else {
                       DialogCustom.infoDialog(
