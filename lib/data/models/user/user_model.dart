@@ -1,6 +1,7 @@
 class UserModel {
   String name;
   String lastName;
+  String email;
   bool emailVerified;
   String urlPhoto;
   String dni;
@@ -10,6 +11,7 @@ class UserModel {
   UserModel({
     required this.name,
     required this.lastName,
+    required this.email,
     required this.dni,
     required this.phone,
     required this.urlPhoto,
@@ -20,6 +22,7 @@ class UserModel {
   static UserModel fromJson(Map<String, dynamic> json) => UserModel(
         name: json['name'],
         lastName: json['lastName'],
+        email: json['email'],
         dni: json['dni'],
         phone: json['phone'],
         urlPhoto: json['urlPhoto'],
@@ -30,6 +33,7 @@ class UserModel {
   Map<String, dynamic> toJson() => {
         'name': name,
         'lastName': lastName,
+        'email': email,
         'dni': dni,
         'phone': phone,
         'urlPhoto': urlPhoto,
