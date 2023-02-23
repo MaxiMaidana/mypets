@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mypets/core/service/local_storage.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../data/models/error_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -27,6 +28,8 @@ class AuthController extends GetxController {
   Rx<UserStatus> userStatus = UserStatus.init.obs;
 
   ErrorModel? errorModel;
+
+  RxDouble heightTotal = 0.0.obs;
 
   @override
   void dispose() {

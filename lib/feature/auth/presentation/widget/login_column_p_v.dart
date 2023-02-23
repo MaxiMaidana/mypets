@@ -8,6 +8,7 @@ import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/widgets/input_custom.dart';
 import 'login_button_sheet_p_v.dart';
 
 class LoginColumnPV extends GetWidget<AuthController> {
@@ -15,97 +16,52 @@ class LoginColumnPV extends GetWidget<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        SizedBox(height: 15.h),
-        Text(
-          'Bienvenido a',
-          style: Theme.of(context).textTheme.displaySmall,
-          textAlign: TextAlign.left,
-        ),
-        Center(
-          child: Icon(Icons.pets, size: 30.h),
-        ),
-        const Spacer(),
-        ButtonCustom.principal(
-          text: 'Ingresar',
-          onPress: () {
-            buttonSheetLogin(
-              context,
-              emailController: controller.emailController,
-              passController: controller.passController,
-              credentialsFunction: () async {
-                context.loaderOverlay.show();
-                await controller.logIn(loginType: LoginType.credentials);
-                context.loaderOverlay.hide();
-                switch (controller.userStatus.value) {
-                  case UserStatus.dataCompleted:
-                    Get.delete<AuthController>(force: true);
-                    context.go(Routes.home);
-                    break;
-                  case UserStatus.needCompleteData:
-                    context.push(Routes.register);
-                    break;
-                  case UserStatus.needValidateEmail:
-                    context.push(Routes.register);
-                    break;
-                  case UserStatus.error:
-                    DialogCustom.infoDialog(
-                      context,
-                      title: controller.errorModel!.code,
-                      message: controller.errorModel!.message,
-                    );
-                    break;
-                  default:
-                }
-              },
-              googleFunction: () async {
-                context.loaderOverlay.show();
-                await controller.logIn(loginType: LoginType.google);
-                context.loaderOverlay.hide();
-                switch (controller.userStatus.value) {
-                  case UserStatus.dataCompleted:
-                    Get.delete<AuthController>(force: true);
-                    context.go(Routes.home);
-                    break;
-                  case UserStatus.needCompleteData:
-                    context.push(Routes.register);
-                    break;
-                  case UserStatus.needValidateEmail:
-                    context.push(Routes.register);
-                    break;
-                  case UserStatus.error:
-                    DialogCustom.infoDialog(
-                      context,
-                      title: controller.errorModel!.code,
-                      message: controller.errorModel!.message,
-                    );
-                    break;
-                  default:
-                }
-              },
-              changePassword: () => context.push(Routes.changePassword),
-            );
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'No tenes cuenta ?',
-              style: const TextStyle().copyWith(
-                color: Colors.black,
-                fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15.h),
+              Text(
+                'Bienvenido a',
+                style: Theme.of(context).textTheme.displaySmall,
+                textAlign: TextAlign.left,
               ),
-            ),
-            ButtonCustom.text(
-              text: 'Registrate.',
-              onPress: () => context.push(Routes.register),
-            ),
-          ],
+              Center(
+                child: Icon(Icons.pets, size: 30.h),
+              ),
+              const Spacer(),
+              ButtonCustom.principal(
+                text: 'Ingresar',
+                onPress: () => controller.heightTotal.value = 75.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'No tenes cuenta ?',
+                    style: const TextStyle().copyWith(
+                      color: Colors.black,
+                      fontSize:
+                          Theme.of(context).textTheme.bodyMedium!.fontSize,
+                    ),
+                  ),
+                  ButtonCustom.text(
+                    text: 'Registrate.',
+                    onPress: () => context.push(Routes.register),
+                  ),
+                ],
+              ),
+              SizedBox(height: 2.h),
+            ],
+          ),
         ),
-        SizedBox(height: 2.h),
+        const Positioned(
+          bottom: 0.0,
+          child: LoginButtonSheetPV(),
+        ),
       ],
     );
   }

@@ -9,16 +9,22 @@ class AuthPV extends GetWidget<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: SizedBox(
-            height: 100.h,
-            child: const LoginColumnPV(),
+    return WillPopScope(
+      onWillPop: () async {
+        controller.heightTotal.value = 0.0;
+        return false;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
+        body: GestureDetector(
+          onTap: () => controller.heightTotal.value = 0.0,
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: SizedBox(
+              height: 100.h,
+              child: const LoginColumnPV(),
+            ),
           ),
         ),
       ),
