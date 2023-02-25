@@ -180,7 +180,7 @@ class RegisterController extends GetxController {
           urlPhoto:
               _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
           emailVerified: emailVarified ?? false,
-          petsId: [],
+          pets: [],
         ),
       );
 
@@ -210,7 +210,7 @@ class RegisterController extends GetxController {
               _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
           emailVerified: emailVerified ??
               _firebaseController.firebaseAuth.currentUser!.emailVerified,
-          petsId: [],
+          pets: [],
         ),
       );
       if (isLastStep) {
