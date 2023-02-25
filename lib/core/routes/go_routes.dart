@@ -6,6 +6,7 @@ import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
+import '../../feature/ads/presentation/getx/ads_controller.dart';
 import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/change_password/presentation/getx/change_password_controller.dart';
@@ -88,6 +89,7 @@ GoRouter goRouter = GoRouter(
         Get.put(HomeController(), permanent: true);
         Get.put(ProfileController(), permanent: true);
         Get.put(PetsController(), permanent: true);
+        Get.put(AdsController(), permanent: true);
         // Get.delete<RegisterController>(force: true);
         // Get.delete<AuthController>(force: true);
         return const HomePage();
