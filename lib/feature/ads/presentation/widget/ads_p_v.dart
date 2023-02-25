@@ -11,13 +11,15 @@ class AdsPV extends GetView<AdsController> {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        autoPlay: false,
-        height: 17.h,
-        enableInfiniteScroll: false,
+    return Obx(
+      () => CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: false,
+          height: 17.h,
+          enableInfiniteScroll: false,
+        ),
+        items: controller.adsList.map((item) => AdItem(adModel: item)).toList(),
       ),
-      items: controller.adsList.map((item) => AdItem(adModel: item)).toList(),
     );
   }
 }
