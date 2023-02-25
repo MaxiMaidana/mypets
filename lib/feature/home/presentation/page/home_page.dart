@@ -8,8 +8,8 @@ import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
 import '../../../profile/presentation/view/profile_phone_view.dart';
-import '../view/home_computer_view.dart';
-import '../view/home_phone_view.dart';
+import '../view/home_c_v.dart';
+import '../view/home_p_v.dart';
 import '../widget/bottom_nav_bar_phone.dart';
 
 class HomePage extends GetWidget<HomeController> {
@@ -25,7 +25,7 @@ class HomePage extends GetWidget<HomeController> {
             () => IndexedStack(
               index: controller.index.value,
               children: const [
-                HomePhoneView(),
+                HomePV(),
                 PetsPhoneView(),
                 ProfilePhoneView(),
               ],
@@ -35,14 +35,14 @@ class HomePage extends GetWidget<HomeController> {
             () => IndexedStack(
               index: controller.index.value,
               children: const [
-                HomePhoneView(),
+                HomePV(),
                 PetsPhoneView(),
                 ProfilePhoneView(),
               ],
             ),
           ),
           largeTablet: const Text('tablet large'),
-          computer: const HomeComputerView(),
+          computer: const HomeCV(),
         ),
         drawer: GetPlatform.isWeb
             ? null

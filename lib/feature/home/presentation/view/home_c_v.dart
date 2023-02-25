@@ -5,8 +5,8 @@ import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:sizer/sizer.dart';
 
-class HomeComputerView extends GetWidget<HomeController> {
-  const HomeComputerView({super.key});
+class HomeCV extends GetWidget<HomeController> {
+  const HomeCV({super.key});
 
   @override
   Widget build(BuildContext context) {
