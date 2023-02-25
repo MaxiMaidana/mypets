@@ -10,7 +10,6 @@ import '../../../../core/responsive/widget_tree.dart';
 import '../../../profile/presentation/view/profile_phone_view.dart';
 import '../view/home_c_v.dart';
 import '../view/home_p_v.dart';
-import '../widget/bottom_nav_bar_phone.dart';
 
 class HomePage extends GetWidget<HomeController> {
   const HomePage({super.key});
@@ -21,16 +20,7 @@ class HomePage extends GetWidget<HomeController> {
       child: Scaffold(
         body: WidgetTree(
           tiny: const Text('tiny'),
-          phone: Obx(
-            () => IndexedStack(
-              index: controller.index.value,
-              children: const [
-                HomePV(),
-                PetsPhoneView(),
-                ProfilePhoneView(),
-              ],
-            ),
-          ),
+          phone: const HomePV(),
           tablet: Obx(
             () => IndexedStack(
               index: controller.index.value,
@@ -85,7 +75,6 @@ class HomePage extends GetWidget<HomeController> {
                   ),
                 ),
               ),
-        bottomNavigationBar: GetPlatform.isWeb ? null : const BottomNavBar(),
       ),
     );
   }

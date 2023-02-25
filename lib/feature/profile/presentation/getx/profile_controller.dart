@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
     try {
       await _firebaseController.logoutGoogle();
       LocalStorage.setPref(setPref: SetPref.auth, dataBool: false);
-      _homeController.index.value = 0;
+      // _homeController.index.value = 0;
     } catch (e) {
       rethrow;
     }
