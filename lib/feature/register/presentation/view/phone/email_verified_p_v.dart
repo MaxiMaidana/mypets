@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
@@ -9,7 +8,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../../core/pages/page_with_widget_at_end.dart';
 
-class EmailVerifiedPV extends GetView<RegisterController> {
+class EmailVerifiedPV extends GetWidget<RegisterController> {
   const EmailVerifiedPV({super.key});
 
   @override

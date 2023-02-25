@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
 import 'package:mypets/data/models/user/user_model.dart';
+import 'package:mypets/feature/app/controller/app_controller.dart';
 
 import '../../../../core/service/local_storage.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -25,7 +27,7 @@ enum CompletedDataStatus {
   completed,
 }
 
-class RegisterController extends GetxController with StateMixin {
+class RegisterController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
@@ -39,6 +41,9 @@ class RegisterController extends GetxController with StateMixin {
       CompletedDataStatus.firstStep.obs;
 
   final FirebaseController _firebaseController = Get.find();
+  final AppController _appController = Get.find();
+
+  late CollectionReference _collectionReference;
 
   bool emailSended = false;
 
@@ -55,18 +60,6 @@ class RegisterController extends GetxController with StateMixin {
     lastNameController.dispose();
     super.dispose();
   }
-
-  // Future<void> clearData() async {
-  //   emailController.clear();
-  //   passController.clear();
-  //   confirmPassController.clear();
-  //   phoneController.clear();
-  //   dniController.clear();
-  //   nameController.clear();
-  //   lastNameController.clear();
-  //   statusRegister.value = StatusRegister.init;
-  //   completedDataStatus.value = CompletedDataStatus.firstStep;
-  // }
 
   bool validateInputs() =>
       emailController.text != '' &&
@@ -103,8 +96,10 @@ class RegisterController extends GetxController with StateMixin {
   Future<bool> registerWithGoogle() async {
     try {
       await _firebaseController.loginWithGoogle();
-      if (_firebaseController.userModel.emailVerified &&
-          _firebaseController.userModel.dni != '') {
+      await _appController.getUserData(_collectionReference,
+          _firebaseController.firebaseAuth.currentUser!.uid);
+      if (_appController.userModel.emailVerified &&
+          _appController.userModel.dni != '') {
         completedDataStatus.value = CompletedDataStatus.completed;
         return true;
       }
@@ -175,7 +170,7 @@ class RegisterController extends GetxController with StateMixin {
 
   Future<bool> createUser({bool? emailVarified}) async {
     try {
-      _firebaseController.addUSer(
+      addUSer(
         UserModel(
           name: nameController.text,
           lastName: lastNameController.text,
@@ -204,7 +199,7 @@ class RegisterController extends GetxController with StateMixin {
   Future<bool> updateUser(
       {bool? emailVerified, bool isLastStep = false}) async {
     try {
-      await _firebaseController.updateUSer(
+      await updateUSer(
         UserModel(
           name: nameController.text,
           lastName: lastNameController.text,
@@ -231,5 +226,36 @@ class RegisterController extends GetxController with StateMixin {
       errorModel = ErrorModel(code: title, message: message);
       return false;
     }
+  }
+
+  Future<void> addUSer(UserModel userModel) async {
+    try {
+      await _collectionReference
+          .doc(_firebaseController.firebaseAuth.currentUser!.uid)
+          .set(userModel.toJson());
+      log('se creo el usuario');
+    } catch (e) {
+      log('no se creo el usuario');
+      rethrow;
+    }
+  }
+
+  Future<void> updateUSer(UserModel userModel) async {
+    try {
+      _collectionReference
+          .doc(_firebaseController.firebaseAuth.currentUser!.uid)
+          .update(userModel.toJson());
+      log('se actualizo el usuario');
+    } catch (e) {
+      log('no se actualizo el usuario');
+      rethrow;
+    }
+  }
+
+  @override
+  void onInit() {
+    _collectionReference =
+        _firebaseController.connectWithFirebaseCollection('users');
+    super.onInit();
   }
 }

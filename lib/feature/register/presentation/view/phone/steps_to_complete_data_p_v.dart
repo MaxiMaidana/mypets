@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/core/widgets/dialog_custom.dart';
@@ -11,7 +10,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../widget/buttons_steps.dart';
 
-class StepsToCompleteDataPV extends GetView<RegisterController> {
+class StepsToCompleteDataPV extends GetWidget<RegisterController> {
   const StepsToCompleteDataPV({super.key});
 
   @override
@@ -56,55 +55,6 @@ class StepsToCompleteDataPV extends GetView<RegisterController> {
                               ),
                             ],
                           );
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (context) => Center(
-                          //     child: Container(
-                          //       width: 75.w,
-                          //       height: 35.h,
-                          //       decoration: BoxDecoration(
-                          //         color: Colors.white,
-                          //         borderRadius: BorderRadius.circular(20),
-                          //       ),
-                          //       child: Padding(
-                          //         padding: EdgeInsets.symmetric(
-                          //             horizontal: 4.w, vertical: 2.h),
-                          //         child: Column(
-                          //           children: [
-                          //             Text(
-                          //               'Importante!',
-                          //               style: TextStyle(
-                          //                 fontSize: Theme.of(context)
-                          //                     .textTheme
-                          //                     .titleLarge!
-                          //                     .fontSize,
-                          //               ),
-                          //             ),
-                          //             SizedBox(height: 2.h),
-                          //             Text(
-                          //               'Si no completas este formulario no vas a poder entrar al app',
-                          //               style: TextStyle(
-                          //                 fontSize: Theme.of(context)
-                          //                     .textTheme
-                          //                     .bodyMedium!
-                          //                     .fontSize,
-                          //               ),
-                          //             ),
-                          //             const Spacer(),
-                          //             ButtonCustom.principal(
-                          //               text: 'Continuar',
-                          //               onPress: () => context.pop(),
-                          //             ),
-                          //             ButtonCustom.text(
-                          //               text: 'Seguir Despues',
-                          //               onPress: () async => goToMain(context),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // );
                         },
                         child: const SizedBox(
                           height: 40,

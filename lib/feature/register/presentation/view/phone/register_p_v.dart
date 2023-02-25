@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +10,7 @@ import 'package:sizer/sizer.dart';
 import '../../../../../core/widgets/dialog_custom.dart';
 import '../../getx/register_controller.dart';
 
-class RegisterPV extends GetView<RegisterController> {
+class RegisterPV extends GetWidget<RegisterController> {
   const RegisterPV({super.key});
 
   @override

@@ -4,12 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mypets/data/models/user/user_model.dart';
+// import 'package:mypets/data/models/user/user_model.dart';
+
+// import '../../app/controller/app_controller.dart';
 
 class FirebaseController extends GetxController {
   late FirebaseAuth _firebaseAuth;
 
-  late CollectionReference _collectionReference;
+  late FirebaseFirestore _firebaseFirestore;
+
+  // late CollectionReference _collectionReferenceUser;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
@@ -17,7 +21,11 @@ class FirebaseController extends GetxController {
 
   FirebaseAuth get firebaseAuth => _firebaseAuth;
 
-  late UserModel userModel;
+  bool logued = false;
+
+  // final AppController _appController = Get.find();
+
+  // late UserModel userModel;
 
   Future<bool> loginWithGoogle() async {
     bool res = false;
@@ -31,7 +39,7 @@ class FirebaseController extends GetxController {
           accessToken: googleAuth.accessToken,
         );
         await firebaseAuth.signInWithCredential(credential);
-        await getUserData();
+        // await getUserData();
         res = true;
       }
       return res;
@@ -63,7 +71,7 @@ class FirebaseController extends GetxController {
         password: pass,
       );
       log('login con credenciales');
-      await getUserData();
+      // await getUserData();
       res = true;
       return res;
     } catch (e) {
@@ -123,10 +131,18 @@ class FirebaseController extends GetxController {
     try {
       await _firebaseAuth.signOut();
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: pass ?? 'asd123');
-      log('se desloguea y loguea para refrescar datos del usuario');
-    } on FirebaseAuthException catch (_) {
-      await logoutGoogle();
+          email: email, password: 'asd123');
+      log('se desloguea de firebase');
+    } on FirebaseAuthException catch (e) {
+      log(e.toString());
+      if (e.code == 'wrong-password') {
+        await _firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: pass!);
+        log('se loguea otra vez para refrescar datos');
+        return;
+      } else {
+        await logoutGoogle();
+      }
       rethrow;
     } catch (e) {
       await logoutGoogle();
@@ -153,50 +169,57 @@ class FirebaseController extends GetxController {
     }
   }
 
-  Future<void> getUserData() async {
-    try {
-      DocumentSnapshot res =
-          await _collectionReference.doc(firebaseAuth.currentUser!.uid).get();
-      if (res.exists) {
-        userModel = UserModel.fromJson(res.data() as Map<String, dynamic>);
-      } else {
-        print('Document does not exist on the database');
-      }
-    } catch (e) {
-      log('rompio al traer el usuario de la base');
-    }
-  }
+  // Future<void> getUserData() async {
+  //   try {
+  //     DocumentSnapshot res = await _collectionReferenceUser
+  //         .doc(firebaseAuth.currentUser!.uid)
+  //         .get();
+  //     if (res.exists) {
+  //       userModel = UserModel.fromJson(res.data() as Map<String, dynamic>);
+  //     } else {
+  //       print('Document does not exist on the database');
+  //     }
+  //   } catch (e) {
+  //     log('rompio al traer el usuario de la base');
+  //   }
+  // }
 
-  Future<void> addUSer(UserModel userModel) async {
-    try {
-      await _collectionReference
-          .doc(_firebaseAuth.currentUser!.uid)
-          .set(userModel.toJson());
-      log('se creo el usuario');
-    } catch (e) {
-      log('no se creo el usuario');
-      rethrow;
-    }
-  }
+  // Future<void> addUSer(UserModel userModel) async {
+  //   try {
+  //     await _collectionReferenceUser
+  //         .doc(_firebaseAuth.currentUser!.uid)
+  //         .set(userModel.toJson());
+  //     log('se creo el usuario');
+  //   } catch (e) {
+  //     log('no se creo el usuario');
+  //     rethrow;
+  //   }
+  // }
 
-  Future<void> updateUSer(UserModel userModel) async {
-    try {
-      _collectionReference
-          .doc(_firebaseAuth.currentUser!.uid)
-          .update(userModel.toJson());
-      log('se actualizo el usuario');
-    } catch (e) {
-      log('no se actualizo el usuario');
-      rethrow;
-    }
-  }
+  // Future<void> updateUSer(UserModel userModel) async {
+  //   try {
+  //     _collectionReferenceUser
+  //         .doc(_firebaseAuth.currentUser!.uid)
+  //         .update(userModel.toJson());
+  //     log('se actualizo el usuario');
+  //   } catch (e) {
+  //     log('no se actualizo el usuario');
+  //     rethrow;
+  //   }
+  // }
+
+  CollectionReference connectWithFirebaseCollection(String collection) =>
+      _firebaseFirestore.collection(collection);
 
   @override
   void onInit() {
     _firebaseAuth = FirebaseAuth.instance;
-    _collectionReference = FirebaseFirestore.instance.collection('users');
+    _firebaseFirestore = FirebaseFirestore.instance;
+    // connectWithFirebaseCollection('users');
+    // _collectionReferenceUser = _firebaseFirestore.collection('users');
     if (_firebaseAuth.currentUser != null) {
-      getUserData();
+      // getUserData();
+      logued = true;
     } else {
       // getUserData('aa');
     }

@@ -1,13 +1,14 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mypets/core/service/local_storage.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../data/models/error_model.dart';
+import '../../../app/controller/app_controller.dart';
 import '../../../firebase/getx/firebase_controller.dart';
 
 enum LoginType { google, credentials, googleWeb }
@@ -24,6 +25,9 @@ class AuthController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final FirebaseController _firebaseController = Get.find();
+  final AppController _appController = Get.find();
+
+  late CollectionReference _collectionReference;
 
   Rx<UserStatus> userStatus = UserStatus.init.obs;
 
@@ -71,7 +75,8 @@ class AuthController extends GetxController {
     try {
       // isLogued.value =
       await _firebaseController.loginWithGoogle();
-      validateDataUser();
+      await validateDataUser();
+
       // LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
     } on FirebaseAuthException catch (e) {
       log(e.toString());
@@ -114,7 +119,8 @@ class AuthController extends GetxController {
         email: emailController.text,
         pass: passController.text,
       );
-      validateDataUser();
+      await validateDataUser();
+      // await getUserData();
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       String title = '';
@@ -144,8 +150,10 @@ class AuthController extends GetxController {
     } catch (e) {}
   }
 
-  void validateDataUser() {
-    if (!_firebaseController.userModel.emailVerified) {
+  Future<void> validateDataUser() async {
+    await _appController.getUserData(_collectionReference,
+        _firebaseController.firebaseAuth.currentUser!.uid);
+    if (!_appController.userModel.emailVerified) {
       log('need validate email');
       final registerController = Get.put(RegisterController());
       registerController.passController.text = passController.text;
@@ -154,7 +162,7 @@ class AuthController extends GetxController {
       userStatus.value = UserStatus.needValidateEmail;
       return;
     }
-    if (_firebaseController.userModel.dni == '') {
+    if (_appController.userModel.dni == '') {
       log('need complete data');
       final registerController = Get.put(RegisterController());
       registerController.statusRegister.value = StatusRegister.emailVerified;
@@ -170,13 +178,10 @@ class AuthController extends GetxController {
     }
   }
 
-  // Future<void> logOut() async {
-  //   try {
-  //     await _firebaseController.logoutGoogle();
-  //     // isLogued.value = false;
-  //   } catch (e) {
-  //     // isLogued.value = false;
-  //     rethrow;
-  //   }
-  // }
+  @override
+  void onInit() {
+    _collectionReference =
+        _firebaseController.connectWithFirebaseCollection('users');
+    super.onInit();
+  }
 }
