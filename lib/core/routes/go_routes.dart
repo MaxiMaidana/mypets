@@ -21,6 +21,7 @@ import '../../feature/pet_info/presentation/page/info_pet_page.dart';
 import '../../feature/profile/presentation/getx/profile_controller.dart';
 import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_page.dart';
+import '../../feature/reminders/presentation/getx/reminder_controller.dart';
 import '../../feature/web/presentation/page/main_web_page.dart';
 import '../service/local_storage.dart';
 
@@ -90,6 +91,7 @@ GoRouter goRouter = GoRouter(
         Get.put(ProfileController(), permanent: true);
         Get.put(PetsController(), permanent: true);
         Get.put(AdsController(), permanent: true);
+        Get.put(ReminderController(), permanent: true);
         // Get.delete<RegisterController>(force: true);
         // Get.delete<AuthController>(force: true);
         return const HomePage();
