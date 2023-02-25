@@ -35,7 +35,7 @@ class AdsController extends GetxController with StateMixin {
   @override
   void onInit() {
     _collectionReference =
-        _firebaseController.connectWithFirebaseCollection('users');
+        _firebaseController.connectWithFirebaseCollection('ads');
 
     super.onInit();
   }
