@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-import '../model/pet_model.dart';
+import '../../../../data/models/pet/pet_model.dart';
 
 class PetsRepository {
   Future<List<PetModel>> getPets() async {
