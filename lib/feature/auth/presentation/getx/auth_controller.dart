@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +6,7 @@ import 'package:mypets/core/service/local_storage.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 
 import '../../../../data/models/error_model.dart';
-import '../../../app/controller/app_controller.dart';
+import '../../../app/presentation/getx/app_controller.dart';
 import '../../../firebase/getx/firebase_controller.dart';
 
 enum LoginType { google, credentials, googleWeb }
@@ -22,18 +20,17 @@ enum UserStatus {
 }
 
 class AuthController extends GetxController {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
   final FirebaseController _firebaseController = Get.find();
   final AppController _appController = Get.find();
 
-  late CollectionReference _collectionReference;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
 
   Rx<UserStatus> userStatus = UserStatus.init.obs;
 
-  ErrorModel? errorModel;
-
   RxDouble heightTotal = 0.0.obs;
+
+  ErrorModel? errorModel;
 
   @override
   void dispose() {
@@ -151,9 +148,11 @@ class AuthController extends GetxController {
   }
 
   Future<void> validateDataUser() async {
-    await _appController.getUserData(_collectionReference,
-        _firebaseController.firebaseAuth.currentUser!.uid);
-    if (!_appController.userModel.emailVerified) {
+    await _appController
+        .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
+    // await _appController.getUserData(_collectionReference,
+    //     _firebaseController.firebaseAuth.currentUser!.uid);
+    if (!_appController.userModel!.emailVerified) {
       log('need validate email');
       final registerController = Get.put(RegisterController());
       registerController.passController.text = passController.text;
@@ -162,7 +161,7 @@ class AuthController extends GetxController {
       userStatus.value = UserStatus.needValidateEmail;
       return;
     }
-    if (_appController.userModel.dni == '') {
+    if (_appController.userModel!.dni == '') {
       log('need complete data');
       final registerController = Get.put(RegisterController());
       registerController.statusRegister.value = StatusRegister.emailVerified;
@@ -180,8 +179,8 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    _collectionReference =
-        _firebaseController.connectWithFirebaseCollection('users');
+    // _collectionReference =
+    //     _firebaseController.connectWithFirebaseCollection('users');
     super.onInit();
   }
 }

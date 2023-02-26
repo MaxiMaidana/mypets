@@ -41,6 +41,6 @@ class UserModel {
         'phone': phone,
         'urlPhoto': urlPhoto,
         'emailVerified': emailVerified,
-        'petsId': pets,
+        'pets': pets,
       };
 }

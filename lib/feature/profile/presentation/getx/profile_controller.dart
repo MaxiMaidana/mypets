@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/service/local_storage.dart';
 // import '../../../auth/presentation/getx/auth_controller.dart';
-import '../../../app/controller/app_controller.dart';
+import '../../../app/presentation/getx/app_controller.dart';
 import '../../../firebase/getx/firebase_controller.dart';
 import '../../../home/presentation/getx/home_controller.dart';
 

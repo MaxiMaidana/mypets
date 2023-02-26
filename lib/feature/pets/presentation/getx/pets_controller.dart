@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:mypets/feature/pets/domain/model/pet_model.dart';
+import 'package:mypets/data/models/pet/pet_model.dart';
 
 import '../../domain/data/pets_repository.dart';
 

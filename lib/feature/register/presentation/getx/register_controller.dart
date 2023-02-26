@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
 import 'package:mypets/data/models/user/user_model.dart';
-import 'package:mypets/feature/app/controller/app_controller.dart';
+import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
+import 'package:mypets/feature/register/domain/provider/register_provider.dart';
 
 import '../../../../core/service/local_storage.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -28,6 +28,7 @@ enum CompletedDataStatus {
 }
 
 class RegisterController extends GetxController {
+  final RegisterProvider _registerProvider = RegisterProvider();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
@@ -35,15 +36,12 @@ class RegisterController extends GetxController {
   final TextEditingController dniController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
+  final FirebaseController _firebaseController = Get.find();
+  final AppController _appController = Get.find();
 
   Rx<StatusRegister> statusRegister = StatusRegister.init.obs;
   Rx<CompletedDataStatus> completedDataStatus =
       CompletedDataStatus.firstStep.obs;
-
-  final FirebaseController _firebaseController = Get.find();
-  final AppController _appController = Get.find();
-
-  late CollectionReference _collectionReference;
 
   bool emailSended = false;
 
@@ -66,7 +64,6 @@ class RegisterController extends GetxController {
       passController.text != '' &&
       passController.text == confirmPassController.text;
 
-  // change(null, status: RxStatus.loading());
   Future<bool> registerWithEmail() async {
     try {
       await _firebaseController.registerUserWithEmail(
@@ -96,22 +93,21 @@ class RegisterController extends GetxController {
   Future<bool> registerWithGoogle() async {
     try {
       await _firebaseController.loginWithGoogle();
-      await _appController.getUserData(_collectionReference,
-          _firebaseController.firebaseAuth.currentUser!.uid);
-      if (_appController.userModel.emailVerified &&
-          _appController.userModel.dni != '') {
+      User? user = _firebaseController.firebaseAuth.currentUser!;
+      await _appController.getUserData(user.uid);
+      if (_appController.userModel != null &&
+          _appController.userModel!.dni != '') {
         completedDataStatus.value = CompletedDataStatus.completed;
         return true;
       }
-      nameController.text = _firebaseController
-          .firebaseAuth.currentUser!.displayName!
-          .split(' ')
-          .first;
-      lastNameController.text = _firebaseController
-          .firebaseAuth.currentUser!.displayName!
-          .split(' ')
-          .last;
-      await createUser(emailVarified: true);
+      await createUser(
+        emailVarified: true,
+        email: user.email,
+        name: user.displayName!.split(' ').first,
+        lastName: user.displayName!.split(' ').last,
+      );
+      nameController.text = user.displayName!.split(' ').first;
+      lastNameController.text = user.displayName!.split(' ').last;
       statusRegister.value = StatusRegister.emailVerified;
       completedDataStatus.value = CompletedDataStatus.secondStep;
       return true;
@@ -168,22 +164,27 @@ class RegisterController extends GetxController {
     }
   }
 
-  Future<bool> createUser({bool? emailVarified}) async {
+  Future<bool> createUser({
+    bool? emailVarified,
+    String? email,
+    String? name,
+    String? lastName,
+  }) async {
     try {
-      addUSer(
-        UserModel(
-          name: nameController.text,
-          lastName: lastNameController.text,
-          email: emailController.text,
-          dni: dniController.text,
-          phone: phoneController.text,
-          urlPhoto:
-              _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
-          emailVerified: emailVarified ?? false,
-          pets: [],
-        ),
+      UserModel userModel = UserModel(
+        name: name ?? nameController.text,
+        lastName: lastName ?? lastNameController.text,
+        email: email ?? emailController.text,
+        dni: dniController.text,
+        phone: phoneController.text,
+        urlPhoto: _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
+        emailVerified: emailVarified ?? false,
+        pets: [],
       );
-
+      await _registerProvider.addUSer(
+          _firebaseController.firebaseAuth.currentUser!.uid, userModel);
+      _appController.userModel = userModel;
+      log('se creo el usuario');
       return true;
     } catch (e) {
       String title = '';
@@ -199,25 +200,27 @@ class RegisterController extends GetxController {
   Future<bool> updateUser(
       {bool? emailVerified, bool isLastStep = false}) async {
     try {
-      await updateUSer(
-        UserModel(
-          name: nameController.text,
-          lastName: lastNameController.text,
-          email: _firebaseController.firebaseAuth.currentUser!.email!,
-          dni: dniController.text,
-          phone: phoneController.text,
-          urlPhoto:
-              _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
-          emailVerified: emailVerified ??
-              _firebaseController.firebaseAuth.currentUser!.emailVerified,
-          pets: [],
-        ),
+      UserModel userModel = UserModel(
+        name: nameController.text,
+        lastName: lastNameController.text,
+        email: _firebaseController.firebaseAuth.currentUser!.email!,
+        dni: dniController.text,
+        phone: phoneController.text,
+        urlPhoto: _firebaseController.firebaseAuth.currentUser!.photoURL ?? '',
+        emailVerified: emailVerified ??
+            _firebaseController.firebaseAuth.currentUser!.emailVerified,
+        pets: [],
       );
+      await _registerProvider.updateUserData(
+          _firebaseController.firebaseAuth.currentUser!.uid, userModel);
+      _appController.userModel = userModel;
+      log('se actualizo el usuario');
       if (isLastStep) {
         LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
       }
       return true;
     } catch (e) {
+      log('no se actualizo el usuario');
       String title = '';
       String message = '';
       title = 'Erro al crear el usuario';
@@ -226,36 +229,5 @@ class RegisterController extends GetxController {
       errorModel = ErrorModel(code: title, message: message);
       return false;
     }
-  }
-
-  Future<void> addUSer(UserModel userModel) async {
-    try {
-      await _collectionReference
-          .doc(_firebaseController.firebaseAuth.currentUser!.uid)
-          .set(userModel.toJson());
-      log('se creo el usuario');
-    } catch (e) {
-      log('no se creo el usuario');
-      rethrow;
-    }
-  }
-
-  Future<void> updateUSer(UserModel userModel) async {
-    try {
-      _collectionReference
-          .doc(_firebaseController.firebaseAuth.currentUser!.uid)
-          .update(userModel.toJson());
-      log('se actualizo el usuario');
-    } catch (e) {
-      log('no se actualizo el usuario');
-      rethrow;
-    }
-  }
-
-  @override
-  void onInit() {
-    _collectionReference =
-        _firebaseController.connectWithFirebaseCollection('users');
-    super.onInit();
   }
 }

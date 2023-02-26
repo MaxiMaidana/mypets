@@ -6,10 +6,11 @@ import '../repository/firebase_datasource_repository.dart';
 
 class FirebaseDatasource implements FirebaseDatasourceRepository {
   final String collection;
-  final FirebaseFirestore _firebaseFirestore;
+  final CollectionReference _collectionReference;
 
   FirebaseDatasource(this.collection)
-      : _firebaseFirestore = FirebaseFirestore.instance;
+      : _collectionReference =
+            FirebaseFirestore.instance.collection(collection);
 
   @override
   Future<ResponseModel> deleteData({required String id}) {
@@ -20,9 +21,7 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
   Future<ResponseModel> getAllData() async {
     try {
       List lsRes = [];
-      CollectionReference collectionReference =
-          _firebaseFirestore.collection(collection);
-      QuerySnapshot res = await collectionReference.get();
+      QuerySnapshot res = await _collectionReference.get();
       if (res.docs.isNotEmpty) {
         lsRes.addAll(res.docs);
         return ResponseModel(code: 200, data: lsRes);
@@ -37,17 +36,42 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
   }
 
   @override
-  Future<ResponseModel> postData({required Object data}) {
-    throw UnimplementedError();
+  Future<ResponseModel> postData(
+      {required String uid, required Map<String, dynamic> data}) async {
+    try {
+      await _collectionReference.doc(uid).set(data);
+      return ResponseModel(
+          code: 200, data: 'Se creo el registro de manera correcta');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<ResponseModel> putData({required Object data}) {
-    throw UnimplementedError();
+  Future<ResponseModel> putData(
+      {required String uid, required Map<String, dynamic> data}) async {
+    try {
+      await _collectionReference.doc(uid).update(data);
+      return ResponseModel(
+          code: 200, data: 'Se modifico el registro de manera correcta');
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<ResponseModel> getDataById({required String id}) {
-    throw UnimplementedError();
+  Future<ResponseModel> getDataById({required String id}) async {
+    try {
+      DocumentSnapshot res = await _collectionReference.doc(id).get();
+      if (res.exists) {
+        return ResponseModel(code: 200, data: res.data());
+      }
+      throw ErrorModel(
+        code: 'Error',
+        message: 'No se pudo traer la data de la collection: $collection',
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
