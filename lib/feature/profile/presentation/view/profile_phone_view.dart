@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:mypets/core/theme/themes.dart';
+import 'package:mypets/core/widgets/dialog_custom.dart';
+import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../getx/profile_controller.dart';
@@ -75,8 +77,16 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                   Divider(endIndent: 2.w, indent: 2.w),
                   InkWell(
                     onTap: () {
-                      controller.logOut();
-                      context.go(Routes.auth);
+                      DialogCustom.infoDialogWhitOptions(
+                        context,
+                        title: 'Desloguearse',
+                        message: 'Te estaremos esperado a que vuelvas :)',
+                        aceptar: () {
+                          controller.logOut();
+                          context.go(Routes.auth);
+                          Get.delete<HomeController>();
+                        },
+                      );
                     },
                     child: const ListTile(
                       title: Text('Cerrar Sesion'),

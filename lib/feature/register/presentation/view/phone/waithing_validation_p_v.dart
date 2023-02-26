@@ -34,7 +34,7 @@ class WaithingValidationPV extends GetWidget<RegisterController> {
               if (await controller.checkIfEmailIsVerify()) {
                 controller.statusRegister.value = StatusRegister.emailVerified;
               } else {
-                DialogCustom.infoDialogWhitOptions(
+                DialogCustom.infoDialogWhitOptionsCustom(
                   context,
                   title: controller.errorModel!.code,
                   message: controller.errorModel!.message,

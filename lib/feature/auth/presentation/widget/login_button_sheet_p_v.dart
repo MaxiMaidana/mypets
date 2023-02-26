@@ -73,8 +73,8 @@ class LoginButtonSheetPV extends GetWidget<AuthController> {
                         context.loaderOverlay.hide();
                         switch (controller.userStatus.value) {
                           case UserStatus.dataCompleted:
-                            Get.delete<AuthController>(force: true);
                             context.go(Routes.home);
+                            Get.delete<AuthController>(force: true);
                             break;
                           case UserStatus.needCompleteData:
                             context.push(Routes.register);

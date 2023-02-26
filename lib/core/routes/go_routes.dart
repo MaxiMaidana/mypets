@@ -87,7 +87,7 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.home,
       builder: (context, state) {
-        Get.put(HomeController(), permanent: true);
+        Get.put(HomeController());
         Get.put(ProfileController(), permanent: true);
         Get.put(PetsController(), permanent: true);
         Get.put(AdsController(), permanent: true);

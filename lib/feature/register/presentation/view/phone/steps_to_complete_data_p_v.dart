@@ -30,7 +30,7 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
                       alignment: Alignment.centerRight,
                       child: InkWell(
                         onTap: () {
-                          DialogCustom.infoDialogWhitOptions(
+                          DialogCustom.infoDialogWhitOptionsCustom(
                             context,
                             title: 'Importante!',
                             actions: [
