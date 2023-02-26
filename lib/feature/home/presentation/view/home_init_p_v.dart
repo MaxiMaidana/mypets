@@ -20,8 +20,8 @@ class HomeInitPV extends GetWidget<HomeController> {
           physics: const NeverScrollableScrollPhysics(),
           children: const [
             HomePV(),
-            ReminderPage(),
             PetsPhoneView(),
+            ReminderPage(),
             ProfilePhoneView(),
           ],
         ),

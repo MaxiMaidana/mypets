@@ -58,12 +58,12 @@ class ButtomNavBarPV extends GetWidget<HomeController> {
                   width: 40,
                   child: controller.index.value == 1
                       ? Icon(
-                          Icons.book,
-                          color: Theme.of(context).colorScheme.primary,
+                          Icons.pest_control_rodent,
                           size: 35,
+                          color: Theme.of(context).colorScheme.primary,
                         )
                       : const Icon(
-                          Icons.book_outlined,
+                          Icons.pest_control_rodent_outlined,
                           size: 35,
                         ),
                 ),
@@ -77,12 +77,12 @@ class ButtomNavBarPV extends GetWidget<HomeController> {
                   width: 40,
                   child: controller.index.value == 2
                       ? Icon(
-                          Icons.pest_control_rodent,
-                          size: 35,
+                          Icons.book,
                           color: Theme.of(context).colorScheme.primary,
+                          size: 35,
                         )
                       : const Icon(
-                          Icons.pest_control_rodent_outlined,
+                          Icons.book_outlined,
                           size: 35,
                         ),
                 ),
