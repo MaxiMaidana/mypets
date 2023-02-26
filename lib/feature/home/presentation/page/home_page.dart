@@ -9,7 +9,7 @@ import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 import '../../../../core/responsive/widget_tree.dart';
 import '../../../profile/presentation/view/profile_phone_view.dart';
 import '../view/home_c_v.dart';
-import '../view/home_p_v.dart';
+import '../view/home_init_p_v.dart';
 
 class HomePage extends GetWidget<HomeController> {
   const HomePage({super.key});
@@ -20,12 +20,12 @@ class HomePage extends GetWidget<HomeController> {
       child: Scaffold(
         body: WidgetTree(
           tiny: const Text('tiny'),
-          phone: const HomePV(),
+          phone: const HomeInitPV(),
           tablet: Obx(
             () => IndexedStack(
               index: controller.index.value,
               children: const [
-                HomePV(),
+                HomeInitPV(),
                 PetsPhoneView(),
                 ProfilePhoneView(),
               ],
