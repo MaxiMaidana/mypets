@@ -70,11 +70,8 @@ class AuthController extends GetxController {
 
   Future<void> _loginWithGoogle() async {
     try {
-      // isLogued.value =
       await _firebaseController.loginWithGoogle();
       await validateDataUser();
-
-      // LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       String title = '';
@@ -98,7 +95,6 @@ class AuthController extends GetxController {
 
   Future<void> _loginWithGoogleWeb() async {
     try {
-      // isLogued.value =
       await _firebaseController.loginWithGoogleWeb();
       LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
     } catch (e) {
@@ -106,7 +102,6 @@ class AuthController extends GetxController {
       errorModel!.code = 'Error';
       errorModel!.message = 'No pudimos iniciar sesion';
       userStatus.value = UserStatus.error;
-      // rethrow;
     }
   }
 
@@ -117,7 +112,6 @@ class AuthController extends GetxController {
         pass: passController.text,
       );
       await validateDataUser();
-      // await getUserData();
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       String title = '';
@@ -148,10 +142,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> validateDataUser() async {
-    await _appController
-        .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
-    // await _appController.getUserData(_collectionReference,
-    //     _firebaseController.firebaseAuth.currentUser!.uid);
+    User? user = _firebaseController.firebaseAuth.currentUser!;
+    await _appController.getUserData(user.uid);
     if (!_appController.userModel!.emailVerified) {
       log('need validate email');
       final registerController = Get.put(RegisterController());
@@ -168,6 +160,10 @@ class AuthController extends GetxController {
       registerController.completedDataStatus.value =
           CompletedDataStatus.secondStep;
       userStatus.value = UserStatus.needCompleteData;
+      registerController.nameController.text =
+          user.displayName!.split(' ').first;
+      registerController.lastNameController.text =
+          user.displayName!.split(' ').last;
       return;
     } else {
       log('all okey');
@@ -175,12 +171,5 @@ class AuthController extends GetxController {
       userStatus.value = UserStatus.dataCompleted;
       return;
     }
-  }
-
-  @override
-  void onInit() {
-    // _collectionReference =
-    //     _firebaseController.connectWithFirebaseCollection('users');
-    super.onInit();
   }
 }
