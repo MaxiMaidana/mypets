@@ -43,11 +43,10 @@ class ButtonsSteps extends GetWidget<RegisterController> {
                   ? () async {
                       bool res = await controller.updateUser(isLastStep: true);
                       if (res) {
-                        context.go(Routes.home);
                         controller.statusRegister.value = StatusRegister.init;
                         controller.completedDataStatus.value =
                             CompletedDataStatus.firstStep;
-                        Get.delete<RegisterController>();
+                        context.go(Routes.registerComplete);
                       } else {
                         DialogCustom.infoDialog(
                           context,

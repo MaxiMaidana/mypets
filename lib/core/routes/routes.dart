@@ -3,6 +3,7 @@ class Routes {
   static const String intro = '/intro';
   static const String auth = '/auth';
   static const String register = '/register';
+  static const String registerComplete = '/registerComplete';
   static const String changePassword = '/changePassword';
   static const String home = '/home';
   static const String newPet = '/new_pet';
