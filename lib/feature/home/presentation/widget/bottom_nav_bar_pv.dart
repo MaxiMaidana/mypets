@@ -9,11 +9,7 @@ class ButtomNavBarPV extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        left: 1.w,
-        right: 1.w,
-        bottom: 0.5.h,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 1.w),
       child: Container(
         width: 98.w,
         height: 10.h,
