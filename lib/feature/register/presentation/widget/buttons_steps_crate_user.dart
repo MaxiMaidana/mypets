@@ -8,8 +8,8 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/button_custom.dart';
 
-class ButtonsSteps extends GetWidget<RegisterController> {
-  const ButtonsSteps({super.key});
+class ButtonsStepsCreateUser extends GetWidget<RegisterController> {
+  const ButtonsStepsCreateUser({super.key});
 
   @override
   Widget build(BuildContext context) {

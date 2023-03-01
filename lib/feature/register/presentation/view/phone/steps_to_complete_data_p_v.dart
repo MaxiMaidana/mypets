@@ -8,7 +8,7 @@ import 'package:mypets/core/widgets/input_custom.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../widget/buttons_steps.dart';
+import '../../widget/buttons_steps_crate_user.dart';
 
 class StepsToCompleteDataPV extends GetWidget<RegisterController> {
   const StepsToCompleteDataPV({super.key});
@@ -104,7 +104,7 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
             SizedBox(height: 2.h),
             inputTextStep(context, completedDataStatus),
             const Spacer(),
-            const ButtonsSteps(),
+            const ButtonsStepsCreateUser(),
             SizedBox(height: 2.h),
           ],
         ),
