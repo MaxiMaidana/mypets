@@ -28,15 +28,15 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(25.h),
               child: CachedNetworkImage(
-                imageUrl: controller.userProfile!.photoURL ?? '',
-                errorWidget: (context, url, error) => Icon(Icons.percent),
+                imageUrl: controller.userModel.value.urlPhoto,
+                errorWidget: (context, url, error) => const Icon(Icons.percent),
                 height: 20.h,
                 fit: BoxFit.contain,
               ),
             ),
             SizedBox(height: 2.h),
             Text(
-              '${controller.userProfile!.displayName}',
+              controller.userModel.value.name,
               style: GoogleFonts.roboto(
                 fontSize: 35,
                 fontWeight: FontWeight.w700,
@@ -44,7 +44,7 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
             ),
             SizedBox(height: 1.h),
             Text(
-              '${controller.userProfile!.email}',
+              controller.userModel.value.email,
               style: GoogleFonts.roboto(
                 fontSize: 15,
               ),

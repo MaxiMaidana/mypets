@@ -10,13 +10,13 @@ import '../../domain/provider/app_provider.dart';
 
 class AppController extends GetxController {
   final AppProvider appProvider = AppProvider();
+
   PackageInfo? packageInfo;
+  UserModel? userModel;
 
   RxBool isDarkMode = false.obs;
 
   Rx<ThemeData> actualTheme = ligthMode.obs;
-
-  UserModel? userModel;
 
   Future<void> getUserData(String uid) async {
     try {
