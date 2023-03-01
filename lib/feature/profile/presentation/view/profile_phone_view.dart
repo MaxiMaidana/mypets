@@ -8,6 +8,7 @@ import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:mypets/core/theme/themes.dart';
 import 'package:mypets/core/widgets/dialog_custom.dart';
+import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -85,6 +86,7 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                           controller.logOut();
                           context.go(Routes.auth);
                           Get.delete<HomeController>();
+                          // Get.reload<AppController>();
                         },
                       );
                     },

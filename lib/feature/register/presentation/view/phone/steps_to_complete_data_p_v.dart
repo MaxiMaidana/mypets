@@ -15,85 +15,78 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: 96.5.h,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: SizedBox(
-                    height: 10.h,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          DialogCustom.infoDialogWhitOptionsCustom(
-                            context,
-                            title: 'Importante!',
-                            actions: [
-                              ButtonCustom.text(
-                                text: 'Seguir Despues',
-                                onPress: () async => goToMain(context),
-                              ),
-                              ButtonCustom.principalShort(
-                                text: 'Continuar',
-                                onPress: () => context.pop(),
-                              ),
-                            ],
-                            content: [
-                              Text(
-                                'Si no completas este formulario no vas a poder entrar al app',
-                                style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .fontSize,
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        child: const SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: Icon(Icons.close),
-                        ),
-                      ),
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 96.5.h,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: SizedBox(
+                height: 10.h,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () {
+                      DialogCustom.infoDialogWhitOptionsCustom(
+                        context,
+                        title: 'Importante!',
+                        actions: [
+                          ButtonCustom.text(
+                            text: 'Seguir Despues',
+                            onPress: () async => goToMain(context),
+                          ),
+                          ButtonCustom.principalShort(
+                            text: 'Continuar',
+                            onPress: () => context.pop(),
+                          ),
+                        ],
+                        content: [
+                          Text(
+                            'Si no completas este formulario no vas a poder entrar al app',
+                            style: TextStyle(
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .fontSize,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    child: const SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: Icon(Icons.close),
                     ),
                   ),
                 ),
-                Icon(Icons.graphic_eq_outlined, size: 30.h),
-                const Spacer(),
-                Container(
-                  width: double.infinity,
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.2),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Obx(() =>
-                      step(context, controller.completedDataStatus.value)),
-                )
-              ],
+              ),
             ),
-          ),
+            Icon(Icons.graphic_eq_outlined, size: 30.h),
+            const Spacer(),
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor.withOpacity(0.2),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Obx(
+                  () => step(context, controller.completedDataStatus.value)),
+            )
+          ],
         ),
       ),
     );
   }
 
   Future<void> goToMain(BuildContext context) async {
-    // context.loaderOverlay.show();
-    // await controller.clearData();
-    // context.loaderOverlay.hide();
-    Get.delete<RegisterController>(force: true);
     context.go(Routes.main);
+    Get.delete<RegisterController>(force: true);
   }
 
   Widget step(BuildContext context, CompletedDataStatus completedDataStatus) =>
