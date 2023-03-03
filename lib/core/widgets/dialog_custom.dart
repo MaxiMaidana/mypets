@@ -36,7 +36,7 @@ class DialogCustom {
     required String title,
     required List<Widget> actions,
     String? message,
-    bool barrierDismissible = false,
+    bool barrierDismissible = true,
     List<Widget> content = const [],
   }) =>
       showDialog(

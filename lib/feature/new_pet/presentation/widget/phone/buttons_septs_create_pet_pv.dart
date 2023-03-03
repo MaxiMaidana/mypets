@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mypets/feature/new_pet/presentation/getx/new_pet_controller.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/routes/routes.dart';
-import '../../../../core/widgets/button_custom.dart';
-import '../../../../core/widgets/dialog_custom.dart';
+import '../../../../../core/widgets/button_custom.dart';
 
 class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   const ButtonsStepsCreatePets({super.key});
@@ -61,45 +58,67 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   }
 
   void switchBack() {
-    //   switch (controller.PetStep.value) {
-    //     case PetStep.firstStep:
-    //       controller.PetStep.value = PetStep.firstStep;
-    //       break;
-    //     case PetStep.secondStep:
-    //       controller.PetStep.value = PetStep.firstStep;
-    //       break;
-    //     case PetStep.thirtStep:
-    //       controller.PetStep.value = PetStep.secondStep;
-    //       break;
-    //     case PetStep.checkData:
-    //       controller.PetStep.value = PetStep.thirtStep;
-    //       break;
-    //     default:
-    //   }
+    switch (controller.petStepToCreate.value) {
+      case PetStep.selectSpecie:
+        controller.petStepToCreate.value = PetStep.selectSpecie;
+        break;
+      case PetStep.name:
+        controller.petStepToCreate.value = PetStep.selectSpecie;
+        break;
+      case PetStep.sex:
+        controller.petStepToCreate.value = PetStep.name;
+        break;
+      case PetStep.birthDate:
+        controller.petStepToCreate.value = PetStep.sex;
+        break;
+      case PetStep.other:
+        controller.petStepToCreate.value = PetStep.birthDate;
+        break;
+      case PetStep.last:
+        controller.petStepToCreate.value = PetStep.other;
+        break;
+      case PetStep.check:
+        controller.petStepToCreate.value = PetStep.last;
+        break;
+      default:
+    }
   }
 
   void switchNext() {
-    // switch (controller.PetStep.value) {
-    //   case PetStep.firstStep:
-    //     if (controller.nameController.text != '' &&
-    //         controller.lastNameController.text != '') {
-    //       controller.PetStep.value = PetStep.secondStep;
-    //     }
-    //     break;
-    //   case PetStep.secondStep:
-    //     if (controller.dniController.text != '') {
-    //       controller.PetStep.value = PetStep.thirtStep;
-    //     }
-    //     break;
-    //   case PetStep.thirtStep:
-    //     if (controller.phoneController.text != '') {
-    //       controller.PetStep.value = PetStep.checkData;
-    //     }
-    //     break;
-    //   case PetStep.checkData:
-    //     controller.PetStep.value = PetStep.completed;
-    //     break;
-    //   default:
-    // }
+    switch (controller.petStepToCreate.value) {
+      case PetStep.selectSpecie:
+        if (controller.petModel.value.type != '') {
+          controller.petStepToCreate.value = PetStep.name;
+        }
+        break;
+      case PetStep.name:
+        if (controller.nameController.text != '') {
+          controller.petModel.value.name = controller.nameController.text;
+          controller.petStepToCreate.value = PetStep.sex;
+        }
+        break;
+      case PetStep.sex:
+        if (controller.petModel.value.sex != '') {
+          controller.petStepToCreate.value = PetStep.birthDate;
+        }
+        break;
+      case PetStep.birthDate:
+        if (controller.petModel.value.type == 'Dog' ||
+            controller.petModel.value.type == 'Cat') {
+          if (controller.petModel.value.birthday != '') {
+            controller.petStepToCreate.value = PetStep.other;
+          }
+        } else {
+          controller.petStepToCreate.value = PetStep.check;
+        }
+        break;
+      case PetStep.other:
+        controller.petStepToCreate.value = PetStep.last;
+        break;
+      case PetStep.last:
+        controller.petStepToCreate.value = PetStep.check;
+        break;
+      default:
+    }
   }
 }
