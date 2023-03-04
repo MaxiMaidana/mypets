@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mypets/feature/new_pet/presentation/getx/new_pet_controller.dart';
+import 'package:mypets/feature/new_pet/presentation/widget/phone/check_items_pv.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../../core/widgets/input_custom.dart';
@@ -167,7 +168,10 @@ class StepToCreate extends GetWidget<NewPetController> {
                                     ),
                                   ],
                                 )
-                              : Container(),
+                              : controller.petStepToCreate.value ==
+                                      PetStep.check
+                                  ? const CheckItemsPV()
+                                  : Container(),
     );
   }
 }
