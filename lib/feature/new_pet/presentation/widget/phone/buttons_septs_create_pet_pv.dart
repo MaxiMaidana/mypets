@@ -87,7 +87,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   void switchNext() {
     switch (controller.petStepToCreate.value) {
       case PetStep.selectSpecie:
-        if (controller.petModel.value.type != '') {
+        if (controller.petModel.value.species != '') {
           controller.petStepToCreate.value = PetStep.name;
         }
         break;
@@ -103,9 +103,9 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         }
         break;
       case PetStep.birthDate:
-        if (controller.petModel.value.type == 'Dog' ||
-            controller.petModel.value.type == 'Cat') {
-          if (controller.petModel.value.birthday != '') {
+        if (controller.petModel.value.species == 'Dog' ||
+            controller.petModel.value.species == 'Cat') {
+          if (controller.petModel.value.birthDate != '') {
             controller.petStepToCreate.value = PetStep.other;
           }
         } else {

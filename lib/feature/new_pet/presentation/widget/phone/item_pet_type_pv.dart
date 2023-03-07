@@ -31,7 +31,7 @@ class ItemPetType extends GetWidget<NewPetController> {
                 ? controller.petModel.value.sex == type
                     ? Colors.green
                     : Colors.transparent
-                : controller.petModel.value.type == type
+                : controller.petModel.value.species == type
                     ? Colors.green
                     : Colors.transparent,
           ),

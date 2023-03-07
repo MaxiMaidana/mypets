@@ -50,7 +50,7 @@ class NewPetController extends GetxController {
     String month = temp.split('-')[1];
     String day = temp.split('-')[2];
     res = '$day/$month/$year';
-    petModel.value.birthday = res;
+    petModel.value.birthDate = res;
     petModel.refresh();
     return res;
   }

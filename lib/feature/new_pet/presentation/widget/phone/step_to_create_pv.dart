@@ -26,7 +26,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                         size: 80,
                       ),
                       onTap: () {
-                        controller.petModel.value.type = 'Dog';
+                        controller.petModel.value.species = 'Dog';
                         controller.petModel.refresh();
                       },
                       type: 'Dog',
@@ -38,7 +38,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                         size: 80,
                       ),
                       onTap: () {
-                        controller.petModel.value.type = 'Cat';
+                        controller.petModel.value.species = 'Cat';
                         controller.petModel.refresh();
                       },
                       type: 'Cat',

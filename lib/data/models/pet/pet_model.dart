@@ -1,57 +1,80 @@
+import 'vaccine_model.dart';
+
 class PetModel {
-  int? id;
+  String species;
   String name;
-  String ownerId;
-  String type;
-  String race;
   String sex;
+  List<String> owners;
+  String birthDate;
   List<String> reminders;
-  String? birthday;
+  String? id;
+  String? breed;
   String? photoUrl;
+  String? fur;
+  String? size;
+  String? weigth;
+  VaccineModel? vaccine;
 
   PetModel({
+    required this.species,
     required this.name,
-    required this.ownerId,
-    required this.type,
-    required this.race,
     required this.sex,
+    required this.owners,
+    required this.birthDate,
     required this.reminders,
     this.id,
-    this.birthday,
+    this.breed,
     this.photoUrl,
+    this.fur,
+    this.size,
+    this.weigth,
+    this.vaccine,
   });
 
   static PetModel fromJson(Map<String, dynamic> json) => PetModel(
-        id: json['id'],
+        species: json['species'],
         name: json['name'],
-        ownerId: json['ownerId'],
-        type: json['type'],
-        race: json['race'],
         sex: json['sex'],
+        owners: List<String>.from(json['owners']),
+        birthDate: json['birthDate'],
         reminders: List<String>.from(json['reminders']),
-        birthday: json['birthday'],
+        id: json['id'],
+        breed: json['breed'],
         photoUrl: json['photoUrl'],
+        fur: json['fur'],
+        size: json['size'],
+        weigth: json['weigth'],
+        vaccine: json['vaccine'],
       );
 
   static PetModel init() => PetModel(
+        species: '',
         name: '',
-        ownerId: '',
-        type: '',
-        race: '',
         sex: '',
+        owners: [],
+        birthDate: '',
         reminders: [],
-        birthday: '',
+        id: '',
+        breed: '',
         photoUrl: '',
+        fur: '',
+        size: '',
+        weigth: '',
+        vaccine: VaccineModel.init(),
       );
 
   Map<String, dynamic> toJson() => {
+        'species': species,
         'name': name,
-        'ownerId': ownerId,
-        'type': type,
-        'race': race,
         'sex': sex,
+        'owners': owners,
+        'birthDate': birthDate,
         'reminders': reminders,
-        'birthday': birthday,
+        'id': id,
+        'breed': breed,
         'photoUrl': photoUrl,
+        'fur': fur,
+        'size': size,
+        'weigth': weigth,
       };
 }
