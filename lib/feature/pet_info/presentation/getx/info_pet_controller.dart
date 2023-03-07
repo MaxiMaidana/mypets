@@ -3,14 +3,14 @@ import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 class InfoPetController extends GetxController {
-  late int petId;
+  late String petId;
   final PetsController petsController = Get.find();
 
   late PetModel _petModel;
 
-  void setPetId(String id) => petId = int.parse(id);
+  void setPetId(String id) => petId = id;
 
-  setPetModel() => _petModel = petsController.petsLs[petId - 1];
+  setPetModel(PetModel petModel) => _petModel = petModel;
 
   PetModel get selectPet => _petModel;
 

@@ -123,7 +123,10 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         final infoPetController = Get.put(InfoPetController());
         infoPetController.setPetId(state.queryParams['id']!);
-        infoPetController.setPetModel();
+        final _petsController = Get.find<PetsController>();
+
+        infoPetController
+            .setPetModel(_petsController.searchPet(state.queryParams['id']!));
         return const InfoPetPage();
       },
     ),
