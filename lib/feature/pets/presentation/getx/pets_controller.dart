@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 
-import '../../domain/data/pets_repository.dart';
-
 class PetsController extends GetxController {
   RxList<PetModel> petsLs = <PetModel>[].obs;
   RxBool isChargingPets = false.obs;

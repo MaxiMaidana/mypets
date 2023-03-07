@@ -7,17 +7,23 @@ import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
+import '../../../firebase/getx/firebase_controller.dart';
+import '../../domain/provider/new_pet_provider.dart';
 
 enum PetStep { selectSpecie, name, sex, birthDate, other, last, check }
 
 class NewPetController extends GetxController {
   // File _imageFile;
   // final picker = ImagePicker();
+  final FirebaseController _firebaseController = Get.find();
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController breedController = TextEditingController();
   final TextEditingController furController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
   final TextEditingController weigthController = TextEditingController();
+
+  final NewPetProvider _newPetProvider = NewPetProvider();
 
   Rx<PetStep> petStepToCreate = PetStep.selectSpecie.obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -53,5 +59,17 @@ class NewPetController extends GetxController {
     petModel.value.birthDate = res;
     petModel.refresh();
     return res;
+  }
+
+  Future<bool> addPet() async {
+    try {
+      petModel.value.owners
+          .add(_firebaseController.firebaseAuth.currentUser!.uid);
+      await _newPetProvider.addNewPet(
+          _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

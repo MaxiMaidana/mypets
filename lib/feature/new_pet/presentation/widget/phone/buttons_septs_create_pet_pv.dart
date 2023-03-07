@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mypets/feature/new_pet/presentation/getx/new_pet_controller.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../../core/routes/routes.dart';
 import '../../../../../core/widgets/button_custom.dart';
+import '../../../../../core/widgets/dialog_custom.dart';
 
 class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   const ButtonsStepsCreatePets({super.key});
@@ -32,24 +35,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
               text: controller.petStepToCreate.value == PetStep.check
                   ? 'Finalizar'
                   : 'Siguiente',
-              onPress: controller.petStepToCreate.value == PetStep.check
-                  ? () async {
-                      // bool res = await controller.updateUser(isLastStep: true);
-                      // if (res) {
-                      //   controller.statusRegister.value = StatusRegister.init;
-                      //   controller.petStepToCreate.value =
-                      //       PetStep.firstStep;
-                      //   context.go(Routes.registerComplete);
-                      // } else {
-                      //   DialogCustom.infoDialog(
-                      //     context,
-                      //     title: controller.errorModel!.code,
-                      //     message: controller.errorModel!.message,
-                      //     aceptar: () => context.go(Routes.auth),
-                      //   );
-                      // }
-                    }
-                  : () => switchNext(),
+              onPress: () async => await switchNext(context),
             ),
           ),
         ],
@@ -84,7 +70,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
     }
   }
 
-  void switchNext() {
+  Future<void> switchNext(BuildContext context) async {
     switch (controller.petStepToCreate.value) {
       case PetStep.selectSpecie:
         if (controller.petModel.value.species != '') {
@@ -113,10 +99,27 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         }
         break;
       case PetStep.other:
+        controller.petModel.value.breed = controller.breedController.text;
+        controller.petModel.value.fur = controller.furController.text;
         controller.petStepToCreate.value = PetStep.last;
         break;
       case PetStep.last:
+        controller.petModel.value.size = controller.sizeController.text;
+        controller.petModel.value.weigth = controller.weigthController.text;
         controller.petStepToCreate.value = PetStep.check;
+        break;
+      case PetStep.check:
+        bool res = await controller.addPet();
+        if (res) {
+          context.go(Routes.registerComplete);
+        } else {
+          DialogCustom.infoDialog(
+            context,
+            title: controller.errorModel!.code,
+            message: controller.errorModel!.message,
+            aceptar: () => context.go(Routes.auth),
+          );
+        }
         break;
       default:
     }

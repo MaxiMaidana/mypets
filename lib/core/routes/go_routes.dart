@@ -16,6 +16,7 @@ import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/map/presentation/getx/map_controller.dart';
 import '../../feature/new_pet/presentation/getx/new_pet_controller.dart';
 import '../../feature/new_pet/presentation/page/new_pet_page.dart';
+import '../../feature/new_pet/presentation/view/pet_added_correct_page.dart';
 import '../../feature/pet_info/presentation/getx/info_pet_controller.dart';
 import '../../feature/pet_info/presentation/page/info_pet_page.dart';
 import '../../feature/profile/presentation/getx/profile_controller.dart';
@@ -109,6 +110,12 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         Get.put(NewPetController());
         return const NewPetPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.newPet,
+      builder: (context, state) {
+        return const PetAddedCorrectPage();
       },
     ),
     GoRoute(

@@ -6,8 +6,9 @@ class Routes {
   static const String registerComplete = '/registerComplete';
   static const String changePassword = '/changePassword';
   static const String home = '/home';
-  static const String newPet = '/new_pet';
-  static const String infoPet = '/info_pet';
+  static const String newPet = '/newPet';
+  static const String newPetCompleted = '/newPetCompleted';
+  static const String infoPet = '/infoPet';
   static const String map = '/map';
   static const String errorPage = '/error';
 }
