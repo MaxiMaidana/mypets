@@ -10,13 +10,20 @@ class AdsProvider {
     try {
       List<AdModel> lsRes = [];
       log('get all ads');
-      ResponseModel res = await FirebaseDatasource('ads').getAllData();
-      if (res.data != null) {
-        for (var item in res.data as List) {
-          Map<String, dynamic> itemMap = item.data() as Map<String, dynamic>;
-          lsRes.add(AdModel.fromJson(itemMap));
+      ResponseModel responseModel =
+          await FirebaseDatasource('ads').getAllData();
+      if (responseModel.data != null) {
+        List res = responseModel.data as List;
+        for (var item in res) {
+          lsRes.add(AdModel.fromJson(item));
         }
       }
+      // if (res.data != null) {
+      //   for (var item in res.data as List) {
+      //     Map<String, dynamic> itemMap = item.data() as Map<String, dynamic>;
+      //     lsRes.add(AdModel.fromJson(itemMap));
+      //   }
+      // }
       return lsRes;
     } catch (e) {
       rethrow;

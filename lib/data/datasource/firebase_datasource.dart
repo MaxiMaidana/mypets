@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mypets/data/models/error_model.dart';
 
@@ -23,7 +25,11 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
       List lsRes = [];
       QuerySnapshot res = await _collectionReference.get();
       if (res.docs.isNotEmpty) {
-        lsRes.addAll(res.docs);
+        for (var item in res.docs) {
+          Map<String, dynamic> map = item.data() as Map<String, dynamic>;
+          map['id'] = item.id;
+          lsRes.add(map);
+        }
         return ResponseModel(code: 200, data: lsRes);
       }
       throw ErrorModel(
