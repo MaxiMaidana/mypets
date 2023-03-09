@@ -30,13 +30,13 @@ class CheckItemsPV extends GetWidget<NewPetController> {
                   height: 50,
                   width: 50,
                   child: ItemPetType(
-                    icon: const FaIcon(
-                      FontAwesomeIcons.dog,
+                    icon: FaIcon(
+                     controller.petModel.value.species == 'Dog' ? FontAwesomeIcons.dog : FontAwesomeIcons.cat,
                       size: 30,
                     ),
                     onTap: () {},
-                    type: 'Dog',
-                    typeSelect: 'Sepecie',
+                    type: '',
+                    typeSelect: 'Specie',
                   ),
                 ),
                 SizedBox(width: 10.w),
@@ -44,12 +44,12 @@ class CheckItemsPV extends GetWidget<NewPetController> {
                   height: 50,
                   width: 50,
                   child: ItemPetType(
-                    icon: const Icon(
-                      Icons.male,
+                    icon: Icon(
+                      controller.petModel.value.sex == 'Male' ? Icons.male : Icons.female,
                       size: 30,
                     ),
                     onTap: () {},
-                    type: 'Male',
+                    type: '',
                     typeSelect: 'Sex',
                   ),
                 ),

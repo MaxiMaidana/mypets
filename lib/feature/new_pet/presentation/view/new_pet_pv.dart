@@ -23,7 +23,7 @@ class NewPetsPV extends GetWidget<NewPetController> {
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: InkWell(
+                child: GestureDetector(
                   onTap: () {
                     DialogCustom.infoDialogWhitOptionsCustom(
                       context,

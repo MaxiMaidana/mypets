@@ -79,7 +79,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         break;
       case PetStep.name:
         if (controller.nameController.text != '') {
-          controller.petModel.value.name = controller.nameController.text;
+          controller.petModel.value.name = controller.nameController.text[0].toUpperCase() + controller.nameController.text.substring(1);
           controller.petStepToCreate.value = PetStep.sex;
         }
         break;

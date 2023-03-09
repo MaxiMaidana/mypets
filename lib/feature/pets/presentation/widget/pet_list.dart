@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/routes/routes.dart';
 import 'add_pet_button.dart';
+import 'pet_item.dart';
 
 class PetList extends GetWidget<PetsController> {
   const PetList({super.key});
@@ -19,65 +20,7 @@ class PetList extends GetWidget<PetsController> {
         children: [
           ...List.generate(
             controller.petsLs.length,
-            (i) => InkWell(
-              onTap: () => context.push(Uri(
-                  path: Routes.infoPet,
-                  queryParameters: {
-                    'id': controller.petsLs[i].id.toString()
-                  }).toString()),
-              child: Column(
-                children: [
-                  Container(
-                    height: 17.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey[300],
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 4,
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // CachedNetworkImage(
-                        //   height: 20.h,
-                        //   imageUrl: controller
-                        //       .petsLs[i].photoUrl!,
-                        //   errorWidget:
-                        //       (context, url, error) =>
-                        //           const Icon(Icons.error),
-                        // ),
-                        SizedBox(height: 0.5.h),
-                        Row(
-                          children: [
-                            SizedBox(width: 5.w),
-                            Text(
-                              controller.petsLs[i].name,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ],
-                        ),
-                        const Expanded(
-                          child: Center(
-                            child: Icon(
-                              Icons.pets,
-                              size: 50,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                ],
-              ),
-            ),
+            (i) => PetItem(petModel: controller.petsLs[i]),
           ),
           const AddPetButton(),
           SizedBox(height: 20.h),

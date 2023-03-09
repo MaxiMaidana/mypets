@@ -45,10 +45,12 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
   Future<ResponseModel> postData(
       {required String uid, required Map<String, dynamic> data}) async {
     try {
-      await _collectionReference.doc(uid).set(data);
+      // await _collectionReference.doc(uid).set(data);
+      await _collectionReference.add(data);
       return ResponseModel(
           code: 200, data: 'Se creo el registro de manera correcta');
     } catch (e) {
+      log('No se pudo agregar el registro');
       rethrow;
     }
   }

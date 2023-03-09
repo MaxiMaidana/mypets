@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
+import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -24,6 +25,8 @@ class NewPetController extends GetxController {
   final TextEditingController weigthController = TextEditingController();
 
   final NewPetProvider _newPetProvider = NewPetProvider();
+
+  final petController = Get.find<PetsController>();
 
   Rx<PetStep> petStepToCreate = PetStep.selectSpecie.obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -67,6 +70,7 @@ class NewPetController extends GetxController {
           .add(_firebaseController.firebaseAuth.currentUser!.uid);
       await _newPetProvider.addNewPet(
           _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
+      await petController.getPets();
       return true;
     } catch (e) {
       return false;
