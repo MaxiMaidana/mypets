@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:mypets/feature/new_pet/presentation/getx/new_pet_controller.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
-import '../widget/phone/pet_added_complete_pv.dart';
+import '../view/pet_added_complete_pv.dart';
 
-class PetAddedCorrectPage extends StatelessWidget {
+class PetAddedCorrectPage extends GetWidget<NewPetController> {
   const PetAddedCorrectPage({super.key});
 
   @override

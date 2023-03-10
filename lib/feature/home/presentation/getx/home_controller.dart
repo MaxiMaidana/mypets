@@ -16,13 +16,15 @@ class HomeController extends GetxController {
   // RxInt actualPage = 0.obs;
 
   void paginaActual(int value) {
+    // if (pageController.hasClients) {
     index.value = value;
     pageController.animateToPage(
       value,
-      duration: Duration(milliseconds: 10),
+      duration: const Duration(milliseconds: 10),
       curve: Curves.linear,
     );
     update();
+    // }
   }
 
   void setIndexWeb(int value) {

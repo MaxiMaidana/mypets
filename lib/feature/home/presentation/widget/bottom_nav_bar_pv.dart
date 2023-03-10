@@ -36,8 +36,8 @@ class ButtomNavBarPV extends GetWidget<HomeController> {
                   child: controller.index.value == 0
                       ? Icon(
                           Icons.house,
-                          size: 35,
                           color: Theme.of(context).colorScheme.primary,
+                          size: 35,
                         )
                       : const Icon(
                           Icons.house_outlined,

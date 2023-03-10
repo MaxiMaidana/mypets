@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -9,14 +7,17 @@ import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
+import '../../../home/presentation/getx/home_controller.dart';
 import '../../domain/provider/new_pet_provider.dart';
 
 enum PetStep { selectSpecie, name, sex, birthDate, other, last, check }
 
+enum StepCreate { creating, getPets, allOkey, error }
+
 class NewPetController extends GetxController {
   // File _imageFile;
   // final picker = ImagePicker();
-  final FirebaseController _firebaseController = Get.find();
+  final _firebaseController = Get.find<FirebaseController>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController breedController = TextEditingController();
@@ -26,13 +27,16 @@ class NewPetController extends GetxController {
 
   final NewPetProvider _newPetProvider = NewPetProvider();
 
-  final petController = Get.find<PetsController>();
+  final _petController = Get.find<PetsController>();
+  final _homeController = Get.find<HomeController>();
 
   Rx<PetStep> petStepToCreate = PetStep.selectSpecie.obs;
   Rx<XFile> petImage = XFile('').obs;
   Rx<PetModel> petModel = PetModel.init().obs;
   Rx<DateTime?> dateTimeToBirthDate = DateTime(2000).obs;
   ErrorModel? errorModel;
+  RxString petMessage =
+      'Muy bien ! estamos agregando a tu mascota, aguarde un momento !'.obs;
 
   @override
   void dispose() {
@@ -64,16 +68,22 @@ class NewPetController extends GetxController {
     return res;
   }
 
-  Future<bool> addPet() async {
+  Future<void> addPet() async {
     try {
       petModel.value.owners
           .add(_firebaseController.firebaseAuth.currentUser!.uid);
       await _newPetProvider.addNewPet(
           _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
-      await petController.getPets();
-      return true;
+      await Future.delayed(const Duration(seconds: 2));
+      petMessage.value = 'Un momento mas, retoques finales :P';
+      await Future.delayed(const Duration(seconds: 2));
+      await _petController.getPets();
+      petMessage.value =
+          'Buenisimo !!!!!! Ya tenes tu pefil creado !! Ahora ya podes agregar a tu primer mascota, queres?';
+      _homeController.index.value = 0;
     } catch (e) {
-      return false;
+      _homeController.index.value = 0;
+      petMessage.value = 'Ohhhh, algo anduvo mal :(';
     }
   }
 }

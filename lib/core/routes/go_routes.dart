@@ -16,7 +16,7 @@ import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/map/presentation/getx/map_controller.dart';
 import '../../feature/new_pet/presentation/getx/new_pet_controller.dart';
 import '../../feature/new_pet/presentation/page/new_pet_page.dart';
-import '../../feature/new_pet/presentation/view/pet_added_correct_page.dart';
+import '../../feature/new_pet/presentation/page/pet_added_correct_page.dart';
 import '../../feature/pet_info/presentation/getx/info_pet_controller.dart';
 import '../../feature/pet_info/presentation/page/info_pet_page.dart';
 import '../../feature/profile/presentation/getx/profile_controller.dart';
@@ -96,10 +96,10 @@ GoRouter goRouter = GoRouter(
       path: Routes.home,
       builder: (context, state) {
         Get.put(HomeController());
-        Get.put(ProfileController(), permanent: true);
-        Get.put(PetsController(), permanent: true);
-        Get.put(AdsController(), permanent: true);
-        Get.put(ReminderController(), permanent: true);
+        Get.put(ProfileController());
+        Get.put(PetsController());
+        Get.put(AdsController());
+        Get.put(ReminderController());
         // Get.delete<RegisterController>(force: true);
         // Get.delete<AuthController>(force: true);
         return const HomePage();
@@ -113,7 +113,7 @@ GoRouter goRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: Routes.newPet,
+      path: Routes.newPetCompleted,
       builder: (context, state) {
         return const PetAddedCorrectPage();
       },
@@ -123,10 +123,10 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         final infoPetController = Get.put(InfoPetController());
         infoPetController.setPetId(state.queryParams['id']!);
-        final _petsController = Get.find<PetsController>();
+        final petsController = Get.find<PetsController>();
 
         infoPetController
-            .setPetModel(_petsController.searchPet(state.queryParams['id']!));
+            .setPetModel(petsController.searchPet(state.queryParams['id']!));
         return const InfoPetPage();
       },
     ),

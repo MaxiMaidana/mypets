@@ -6,7 +6,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../../core/routes/routes.dart';
 import '../../../../../core/widgets/button_custom.dart';
-import '../../../../../core/widgets/dialog_custom.dart';
 
 class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   const ButtonsStepsCreatePets({super.key});
@@ -79,7 +78,9 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         break;
       case PetStep.name:
         if (controller.nameController.text != '') {
-          controller.petModel.value.name = controller.nameController.text[0].toUpperCase() + controller.nameController.text.substring(1);
+          controller.petModel.value.name =
+              controller.nameController.text[0].toUpperCase() +
+                  controller.nameController.text.substring(1);
           controller.petStepToCreate.value = PetStep.sex;
         }
         break;
@@ -109,17 +110,8 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         controller.petStepToCreate.value = PetStep.check;
         break;
       case PetStep.check:
-        bool res = await controller.addPet();
-        if (res) {
-          context.go(Routes.registerComplete);
-        } else {
-          DialogCustom.infoDialog(
-            context,
-            title: controller.errorModel!.code,
-            message: controller.errorModel!.message,
-            aceptar: () => context.go(Routes.auth),
-          );
-        }
+        context.go(Routes.newPetCompleted);
+        controller.addPet();
         break;
       default:
     }
