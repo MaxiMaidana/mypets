@@ -4,7 +4,7 @@ import '../../../../core/responsive/widget_tree.dart';
 import '../getx/info_pet_controller.dart';
 import '../view/info_pet_phone_view.dart';
 
-class InfoPetPage extends GetWidget<InfoPetController> {
+class InfoPetPage extends GetWidget<PetInfoController> {
   const InfoPetPage({super.key});
 
   @override

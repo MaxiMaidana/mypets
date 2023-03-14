@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
-class InfoPetController extends GetxController {
+class PetInfoController extends GetxController {
   late String petId;
   final PetsController petsController = Get.find();
 
