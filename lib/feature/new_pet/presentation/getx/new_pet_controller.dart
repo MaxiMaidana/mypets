@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,6 +26,8 @@ class NewPetController extends GetxController {
   final TextEditingController sizeController = TextEditingController();
   final TextEditingController weigthController = TextEditingController();
 
+  final CarouselController carouselController = CarouselController();
+
   final NewPetProvider _newPetProvider = NewPetProvider();
 
   final _petController = Get.find<PetsController>();
@@ -35,8 +38,11 @@ class NewPetController extends GetxController {
   Rx<PetModel> petModel = PetModel.init().obs;
   Rx<DateTime?> dateTimeToBirthDate = DateTime(2000).obs;
   ErrorModel? errorModel;
-  RxString petMessage =
+  RxString textWaithing =
       'Muy bien ! estamos agregando a tu mascota, aguarde un momento !'.obs;
+  RxString textMoreWaithing = ''.obs;
+  RxString textCompleteGood = ''.obs;
+  RxString textError = ''.obs;
 
   @override
   void dispose() {
@@ -75,15 +81,23 @@ class NewPetController extends GetxController {
       await _newPetProvider.addNewPet(
           _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
       await Future.delayed(const Duration(seconds: 2));
-      petMessage.value = 'Un momento mas, retoques finales :P';
+      textWaithing.value = '';
+      textMoreWaithing.value = 'Un momento mas, retoques finales :P';
+      carouselController.nextPage();
       await Future.delayed(const Duration(seconds: 2));
       await _petController.getPets();
-      petMessage.value =
-          'Buenisimo !!!!!! Ya tenes tu pefil creado !! Ahora ya podes agregar a tu primer mascota, queres?';
+      textMoreWaithing.value = '';
+      textCompleteGood.value =
+          'Buenisimo !!!!!! Ya agregaste a tu mascota !! Ahora podes agregar sus datos veterinarios, queres?';
+      carouselController.nextPage();
       _homeController.index.value = 0;
     } catch (e) {
       _homeController.index.value = 0;
-      petMessage.value = 'Ohhhh, algo anduvo mal :(';
+      textWaithing.value = '';
+      textMoreWaithing.value = '';
+      textCompleteGood.value = '';
+      textError.value = 'Ohhhh, algo anduvo mal :(';
+      carouselController.nextPage();
     }
   }
 }

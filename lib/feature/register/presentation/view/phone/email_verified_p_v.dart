@@ -14,8 +14,8 @@ class EmailVerifiedPV extends GetWidget<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return PageWithWitgetAtEnd(
-      bodyText:
-          'Genial ! Ya tenes tu cuenta validada, ahora vamos a pedirte unos datos para poder completar tu perfil =D',
+      textWidget: const Text(
+          'Genial ! Ya tenes tu cuenta validada, ahora vamos a pedirte unos datos para poder completar tu perfil =D'),
       widgetEnd: Column(
         children: [
           ButtonCustom.principal(

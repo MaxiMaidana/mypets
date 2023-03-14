@@ -13,8 +13,8 @@ class RegisterCompletePV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageWithWitgetAtEnd(
-      bodyText:
-          'Buenisimo !!!!!! Ya tenes tu pefil creado !! Ahora ya podes agregar a tu primer mascota, queres?',
+      textWidget: const Text(
+          'Buenisimo !!!!!! Ya tenes tu pefil creado !! Ahora ya podes agregar a tu primer mascota, queres?'),
       widgetEnd: Column(
         children: [
           ButtonCustom.principal(

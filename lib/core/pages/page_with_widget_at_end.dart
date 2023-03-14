@@ -3,11 +3,11 @@ import 'package:sizer/sizer.dart';
 
 class PageWithWitgetAtEnd extends StatelessWidget {
   final Widget widgetEnd;
-  final String bodyText;
+  final Widget textWidget;
   const PageWithWitgetAtEnd({
     super.key,
     required this.widgetEnd,
-    this.bodyText = '',
+    required this.textWidget,
   });
 
   @override
@@ -24,7 +24,7 @@ class PageWithWitgetAtEnd extends StatelessWidget {
                 size: 30.h,
               ),
               SizedBox(height: 3.h),
-              Text(bodyText),
+              textWidget,
               const Spacer(),
               widgetEnd,
               SizedBox(height: 2.h),

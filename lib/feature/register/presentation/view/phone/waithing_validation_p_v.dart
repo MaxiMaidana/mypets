@@ -15,7 +15,7 @@ class WaithingValidationPV extends GetWidget<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return PageWithWitgetAtEnd(
-      bodyText: 'Enviamos un email para validar tu cuenta.',
+      textWidget: const Text('Enviamos un email para validar tu cuenta.'),
       widgetEnd: Column(
         children: [
           Row(

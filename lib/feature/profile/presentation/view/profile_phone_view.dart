@@ -8,7 +8,6 @@ import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:mypets/core/theme/themes.dart';
 import 'package:mypets/core/widgets/dialog_custom.dart';
-import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -93,8 +92,10 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                     child: const ListTile(
                       title: Text('Cerrar Sesion'),
                       leading: FaIcon(Icons.logout),
-                      trailing:
-                          FaIcon(Icons.arrow_forward_ios_rounded, size: 15),
+                      trailing: FaIcon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 15,
+                      ),
                     ),
                   ),
                 ],
