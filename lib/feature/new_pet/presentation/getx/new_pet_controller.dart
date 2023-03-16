@@ -9,6 +9,7 @@ import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 import '../../../../data/models/pet/pet_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
 import '../../../home/presentation/getx/home_controller.dart';
+import '../../../pet_info_support/presentation/getx/pet_info_support_controller.dart';
 import '../../domain/provider/new_pet_provider.dart';
 
 enum PetStep { selectSpecie, name, sex, birthDate, other, last, check }
@@ -32,6 +33,7 @@ class NewPetController extends GetxController {
 
   final _petController = Get.find<PetsController>();
   final _homeController = Get.find<HomeController>();
+  final _petInfoSupportController = Get.find<PetInfoSupportController>();
 
   Rx<PetStep> petStepToCreate = PetStep.selectSpecie.obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -43,6 +45,8 @@ class NewPetController extends GetxController {
   RxString textMoreWaithing = ''.obs;
   RxString textCompleteGood = ''.obs;
   RxString textError = ''.obs;
+
+  List<String> _lsBreeds = [];
 
   @override
   void dispose() {
@@ -99,5 +103,26 @@ class NewPetController extends GetxController {
       textError.value = 'Ohhhh, algo anduvo mal :(';
       carouselController.nextPage();
     }
+  }
+
+  List<String> chargeListBreeds() {
+    _lsBreeds.clear();
+    switch (petModel.value.species) {
+      case 'Dog':
+        for (var element in _petInfoSupportController.lsSpecies) {
+          if (element.type == 'Dog') {
+            _lsBreeds.addAll(element.breeds);
+          }
+        }
+        break;
+      case 'Cat':
+        for (var element in _petInfoSupportController.lsSpecies) {
+          if (element.type == 'Cat') {
+            _lsBreeds.addAll(element.breeds);
+          }
+        }
+        break;
+    }
+    return _lsBreeds;
   }
 }

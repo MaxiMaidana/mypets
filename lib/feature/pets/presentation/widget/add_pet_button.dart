@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,7 +13,16 @@ class AddPetButton extends GetWidget<PetsController> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.push(Routes.newPet),
+      onTap: () {
+        if (controller.petInfoSupportController.lsSpecies.isNotEmpty) {
+          context.push(Routes.newPet);
+        } else {
+          DialogCustom.infoDialog(context,
+              title: 'Upps :/',
+              message:
+                  'En estos momentos no podemos agregar mascota, intente de nuevo mas tarde.');
+        }
+      },
       child: Container(
         height: 15.h,
         width: 100.w,

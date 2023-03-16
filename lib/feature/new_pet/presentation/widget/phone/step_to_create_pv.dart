@@ -6,6 +6,7 @@ import 'package:mypets/feature/new_pet/presentation/widget/phone/check_items_pv.
 import 'package:sizer/sizer.dart';
 
 import '../../../../../core/widgets/input_custom.dart';
+import '../custom_search_delegate.dart';
 import 'item_pet_type_pv.dart';
 
 class StepToCreate extends GetWidget<NewPetController> {
@@ -142,14 +143,30 @@ class StepToCreate extends GetWidget<NewPetController> {
                       : controller.petStepToCreate.value == PetStep.other
                           ? Column(
                               children: [
-                                InputCustom.base(
-                                  controller: controller.breedController,
-                                  hint: 'Raza',
+                                GestureDetector(
+                                  onTap: () => showSearch(
+                                    context: context,
+                                    delegate: CustomSearchDelegate(
+                                      ls: controller.chargeListBreeds(),
+                                      function: (result) => controller
+                                          .breedController.text = result,
+                                    ),
+                                  ),
+                                  child: InputCustom.base(
+                                    controller: controller.breedController,
+                                    hint: controller.breedController.text == ''
+                                        ? 'Raza'
+                                        : '',
+                                    isEnable: false,
+                                  ),
                                 ),
                                 SizedBox(height: 1.h),
                                 InputCustom.base(
                                   controller: controller.furController,
                                   hint: 'Pelaje',
+                                  isEnable: false,
+                                  icon: const Icon(
+                                      Icons.arrow_drop_down_outlined),
                                 ),
                               ],
                             )
