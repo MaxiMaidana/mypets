@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,6 +50,7 @@ class NewPetController extends GetxController {
 
   List<String> _lsBreeds = [];
   List<String> _lsFurs = [];
+  List<String> _lsSizes = [];
 
   @override
   void dispose() {
@@ -124,6 +127,7 @@ class NewPetController extends GetxController {
         }
         break;
     }
+    log('se cargaron ${_lsBreeds.length} breeds');
     return _lsBreeds;
   }
 
@@ -145,12 +149,29 @@ class NewPetController extends GetxController {
         }
         break;
     }
+    log('se cargaron ${_lsFurs.length} furs');
     return _lsFurs;
   }
 
-  @override
-  void onInit() {
-    chargeFurList();
-    super.onInit();
+  List<String> chargeSizesList() {
+    _lsSizes.clear();
+    switch (petModel.value.species) {
+      case 'Dog':
+        for (var element in _petInfoSupportController.lsSizes) {
+          if (element.type == 'Dog') {
+            _lsSizes.addAll(element.sizes);
+          }
+        }
+        break;
+      case 'Cat':
+        for (var element in _petInfoSupportController.lsSizes) {
+          if (element.type == 'Cat') {
+            _lsSizes.addAll(element.sizes);
+          }
+        }
+        break;
+    }
+    log('se cargaron ${_lsSizes.length} sizes');
+    return _lsSizes;
   }
 }

@@ -174,18 +174,18 @@ class StepToCreate extends GetWidget<NewPetController> {
                           : controller.petStepToCreate.value == PetStep.last
                               ? Column(
                                   children: [
-                                    // DropDownMenuCustom(
-                                    //   initTitle: 'Tamaño',
-                                    //   valueCharged:
-                                    //       controller.sizeController.text,
-                                    //   items: controller.chargeFurList(),
-                                    //   function: (v) =>
-                                    //       controller.sizeController.text = v,
-                                    // ),
-                                    InputCustom.base(
-                                      controller: controller.sizeController,
-                                      hint: 'Tamaño',
+                                    DropDownMenuCustom(
+                                      initTitle: 'Tamaño',
+                                      valueCharged:
+                                          controller.sizeController.text,
+                                      items: controller.chargeSizesList(),
+                                      function: (v) =>
+                                          controller.sizeController.text = v,
                                     ),
+                                    // InputCustom.base(
+                                    //   controller: controller.sizeController,
+                                    //   hint: 'Tamaño',
+                                    // ),
                                     SizedBox(height: 1.h),
                                     InputCustom.base(
                                       controller: controller.weigthController,
