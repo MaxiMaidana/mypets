@@ -21,8 +21,12 @@ class PetInfoItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(title, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 10),
-              Text(info, style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 5),
+              Text(
+                info,
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
