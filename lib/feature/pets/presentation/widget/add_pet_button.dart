@@ -14,7 +14,8 @@ class AddPetButton extends GetWidget<PetsController> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (controller.petInfoSupportController.lsSpecies.isNotEmpty) {
+        if (controller.petInfoSupportController.lsSpecies.isNotEmpty &&
+            controller.petInfoSupportController.lsFurs.isNotEmpty) {
           context.push(Routes.newPet);
         } else {
           DialogCustom.infoDialog(context,

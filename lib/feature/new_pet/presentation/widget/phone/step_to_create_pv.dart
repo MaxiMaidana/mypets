@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../../core/widgets/input_custom.dart';
 import '../custom_search_delegate.dart';
+import '../drop_down_menu_custom.dart';
 import 'item_pet_type_pv.dart';
 
 class StepToCreate extends GetWidget<NewPetController> {
@@ -161,18 +162,26 @@ class StepToCreate extends GetWidget<NewPetController> {
                                   ),
                                 ),
                                 SizedBox(height: 1.h),
-                                InputCustom.base(
-                                  controller: controller.furController,
-                                  hint: 'Pelaje',
-                                  isEnable: false,
-                                  icon: const Icon(
-                                      Icons.arrow_drop_down_outlined),
-                                ),
+                                DropDownMenuCustom(
+                                  initTitle: 'Pelaje',
+                                  valueCharged: controller.furController.text,
+                                  items: controller.chargeFurList(),
+                                  function: (v) =>
+                                      controller.furController.text = v,
+                                )
                               ],
                             )
                           : controller.petStepToCreate.value == PetStep.last
                               ? Column(
                                   children: [
+                                    // DropDownMenuCustom(
+                                    //   initTitle: 'Tamaño',
+                                    //   valueCharged:
+                                    //       controller.sizeController.text,
+                                    //   items: controller.chargeFurList(),
+                                    //   function: (v) =>
+                                    //       controller.sizeController.text = v,
+                                    // ),
                                     InputCustom.base(
                                       controller: controller.sizeController,
                                       hint: 'Tamaño',
