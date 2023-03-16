@@ -18,12 +18,6 @@ class AdsProvider {
           lsRes.add(AdModel.fromJson(item));
         }
       }
-      // if (res.data != null) {
-      //   for (var item in res.data as List) {
-      //     Map<String, dynamic> itemMap = item.data() as Map<String, dynamic>;
-      //     lsRes.add(AdModel.fromJson(itemMap));
-      //   }
-      // }
       return lsRes;
     } catch (e) {
       rethrow;

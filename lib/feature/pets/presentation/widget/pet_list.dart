@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/routes/routes.dart';
 import 'add_pet_button.dart';
 import 'pet_item.dart';
 
