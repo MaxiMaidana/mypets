@@ -2,19 +2,39 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
+import '../../../../data/models/pet/fur_model.dart';
 import '../../../../data/models/pet/specie_model.dart';
 import '../../domain/provider/pet_info_support_provider.dart';
 
 class PetInfoSupportController extends GetxController {
   final _petInfoSupportProvider = PetInfoSupportProvider();
   List<SpecieModel> lsSpecies = [];
+  List<FurModel> lsFurs = [];
 
   Future<void> initData() async {
     try {
-      lsSpecies.addAll(await _petInfoSupportProvider.callAlBreeds());
-      log('vinieron todas las especies ${lsSpecies.length}');
+      await Future.wait([
+        callBreeds(),
+        callFurs(),
+      ]);
     } catch (e) {
       return;
+    }
+  }
+
+  Future<void> callBreeds() async {
+    try {
+      lsSpecies.addAll(await _petInfoSupportProvider.callBreeds());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> callFurs() async {
+    try {
+      lsFurs.addAll(await _petInfoSupportProvider.callFurs());
+    } catch (e) {
+      rethrow;
     }
   }
 

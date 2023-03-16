@@ -47,6 +47,7 @@ class NewPetController extends GetxController {
   RxString textError = ''.obs;
 
   List<String> _lsBreeds = [];
+  List<String> _lsFurs = [];
 
   @override
   void dispose() {
@@ -124,5 +125,32 @@ class NewPetController extends GetxController {
         break;
     }
     return _lsBreeds;
+  }
+
+  List<String> chargeFurList() {
+    _lsFurs.clear();
+    switch (petModel.value.species) {
+      case 'Dog':
+        for (var element in _petInfoSupportController.lsFurs) {
+          if (element.type == 'Dog') {
+            _lsFurs.addAll(element.furs);
+          }
+        }
+        break;
+      case 'Cat':
+        for (var element in _petInfoSupportController.lsFurs) {
+          if (element.type == 'Cat') {
+            _lsFurs.addAll(element.furs);
+          }
+        }
+        break;
+    }
+    return _lsFurs;
+  }
+
+  @override
+  void onInit() {
+    chargeFurList();
+    super.onInit();
   }
 }
