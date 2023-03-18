@@ -20,7 +20,7 @@
             "request" : "launch",
             "type": "dart",
             "args" : ["--flavor", "prod"],
-            "program" : "lib/main_prod.dart"
+            "program" : "lib/main.dart"
         },
     ]
 }

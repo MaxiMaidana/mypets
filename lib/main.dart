@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 
 import 'core/app/app.dart';
-import 'core/service/local_storage.dart';
 import 'core/service/locator.dart';
 import 'firebase_options.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
