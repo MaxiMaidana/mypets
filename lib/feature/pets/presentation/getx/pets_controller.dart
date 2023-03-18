@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/pets/domain/provider/pets_provider.dart';
 
-import '../../../pet_info_support/presentation/getx/pet_info_support_controller.dart';
+import '../../../info_pet_support/presentation/getx/pet_info_support_controller.dart';
 
 class PetsController extends GetxController {
   final PetsProvider _petsProvider = PetsProvider();

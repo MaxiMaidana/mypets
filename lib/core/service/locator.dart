@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mypets/feature/firebase/getx/firebase_controller.dart';
 
 import '../../feature/app/presentation/getx/app_controller.dart';
-import '../../feature/pet_info_support/presentation/getx/pet_info_support_controller.dart';
+import '../../feature/info_pet_support/presentation/getx/pet_info_support_controller.dart';
 import 'local_storage.dart';
 
 GetIt locator = GetIt.instance;

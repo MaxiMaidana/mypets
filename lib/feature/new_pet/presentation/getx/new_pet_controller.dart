@@ -11,7 +11,7 @@ import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 import '../../../../data/models/pet/pet_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
 import '../../../home/presentation/getx/home_controller.dart';
-import '../../../pet_info_support/presentation/getx/pet_info_support_controller.dart';
+import '../../../info_pet_support/presentation/getx/pet_info_support_controller.dart';
 import '../../domain/provider/new_pet_provider.dart';
 
 enum PetStep { selectSpecie, name, sex, birthDate, other, last, check }

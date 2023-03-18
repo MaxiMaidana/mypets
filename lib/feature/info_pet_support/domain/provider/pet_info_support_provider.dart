@@ -9,7 +9,7 @@ class PetInfoSupportProvider {
     try {
       List<SpecieModel> lsRes = [];
       ResponseModel responseModel =
-          await FirebaseDatasource('breed').getAllData();
+          await FirebaseDatasource(collection: 'breed').getAllData();
       if (responseModel.data != null) {
         List res = responseModel.data as List;
         for (var item in res) {
@@ -26,7 +26,7 @@ class PetInfoSupportProvider {
     try {
       List<FurModel> lsRes = [];
       ResponseModel responseModel =
-          await FirebaseDatasource('furs').getAllData();
+          await FirebaseDatasource(collection: 'furs').getAllData();
       if (responseModel.data != null) {
         List res = responseModel.data as List;
         for (var item in res) {
@@ -43,7 +43,7 @@ class PetInfoSupportProvider {
     try {
       List<SizeModel> lsRes = [];
       ResponseModel responseModel =
-          await FirebaseDatasource('sizes').getAllData();
+          await FirebaseDatasource(collection: 'sizes').getAllData();
       if (responseModel.data != null) {
         List res = responseModel.data as List;
         for (var item in res) {

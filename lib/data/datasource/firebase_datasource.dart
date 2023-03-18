@@ -2,17 +2,19 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mypets/data/models/error_model.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import '../models/response_model.dart';
 import '../repository/firebase_datasource_repository.dart';
 
 class FirebaseDatasource implements FirebaseDatasourceRepository {
-  final String collection;
-  final CollectionReference _collectionReference;
+  final String? collection;
+  late CollectionReference _collectionReference;
 
-  FirebaseDatasource(this.collection)
-      : _collectionReference =
-            FirebaseFirestore.instance.collection(collection);
+  FirebaseDatasource({this.collection}) {
+    if (collection != null) {
+      _collectionReference = FirebaseFirestore.instance.collection(collection!);
+    }
+  }
 
   @override
   Future<ResponseModel> deleteData({required String id}) {
@@ -27,8 +29,13 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
       if (res.docs.isNotEmpty) {
         for (var item in res.docs) {
           Map<String, dynamic> map = item.data() as Map<String, dynamic>;
-          map['id'] = item.id;
-          lsRes.add(map);
+          if (map['id'] != item.id) {
+            map['id'] = item.id;
+            await putData(uid: item.id, data: map);
+            lsRes.add(map);
+          } else {
+            lsRes.add(map);
+          }
         }
         return ResponseModel(code: 200, data: lsRes);
       }
@@ -46,7 +53,11 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
       {required String uid, required Map<String, dynamic> data}) async {
     try {
       // await _collectionReference.doc(uid).set(data);
-      await _collectionReference.add(data);
+      DocumentReference documentReference =
+          await _collectionReference.add(data);
+      Map<String, dynamic> newData = data;
+      newData['id'] = documentReference.id;
+      await putData(uid: documentReference.id, data: data);
       return ResponseModel(
           code: 200, data: 'Se creo el registro de manera correcta');
     } catch (e) {
@@ -80,6 +91,22 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
       );
     } catch (e) {
       rethrow;
+    }
+  }
+
+  @override
+  Future<ResponseModel> urlImageStorage(
+      {required String folderName, required String imageName}) async {
+    try {
+      final Reference storageRef = FirebaseStorage.instance.ref();
+      final Reference imageRef = storageRef.child('$folderName/$imageName');
+      final String urlImage = await imageRef.getDownloadURL();
+      return ResponseModel(code: 200, data: urlImage);
+    } catch (e) {
+      throw ErrorModel(
+        code: 'Error',
+        message: 'No se pudo traer la url de la imagen: $folderName/$imageName',
+      );
     }
   }
 }

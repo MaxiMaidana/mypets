@@ -11,7 +11,7 @@ class AdsProvider {
       List<AdModel> lsRes = [];
       log('get all ads');
       ResponseModel responseModel =
-          await FirebaseDatasource('ads').getAllData();
+          await FirebaseDatasource(collection: 'ads').getAllData();
       if (responseModel.data != null) {
         List res = responseModel.data as List;
         for (var item in res) {

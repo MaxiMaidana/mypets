@@ -10,7 +10,8 @@ class PetsProvider {
     //     await rootBundle.loadString('lib/data/data_fake/mascotas.json');
     // var dataMap = json.decode(data);
     // lsRes = List<PetModel>.from(dataMap.map((x) => PetModel.fromJson(x)));
-    ResponseModel responseModel = await FirebaseDatasource('pets').getAllData();
+    ResponseModel responseModel =
+        await FirebaseDatasource(collection: 'pets').getAllData();
     if (responseModel.data != null) {
       List res = responseModel.data as List;
       for (var item in res) {
@@ -23,7 +24,7 @@ class PetsProvider {
 
   Future<void> deleteNewPet(String uid, PetModel petModel) async {
     try {
-      await FirebaseDatasource('pets')
+      await FirebaseDatasource(collection: 'pets')
           .postData(uid: uid, data: petModel.toJson());
     } catch (e) {
       rethrow;
@@ -32,7 +33,7 @@ class PetsProvider {
 
   Future<void> updateNewPet(String uid, PetModel petModel) async {
     try {
-      await FirebaseDatasource('pets')
+      await FirebaseDatasource(collection: 'pets')
           .postData(uid: uid, data: petModel.toJson());
     } catch (e) {
       rethrow;

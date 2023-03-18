@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mypets/feature/pet_info/presentation/getx/info_pet_controller.dart';
+import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
 import 'package:sizer/sizer.dart';
 
 import '../pet_info_item.dart';
