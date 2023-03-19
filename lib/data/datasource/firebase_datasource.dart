@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mypets/data/models/error_model.dart';
@@ -98,14 +99,37 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
   Future<ResponseModel> urlImageStorage(
       {required String folderName, required String imageName}) async {
     try {
-      final Reference storageRef = FirebaseStorage.instance.ref();
-      final Reference imageRef = storageRef.child('$folderName/$imageName');
-      final String urlImage = await imageRef.getDownloadURL();
+      final Reference storageRef =
+          FirebaseStorage.instance.ref().child('$folderName/$imageName');
+      final String urlImage = await storageRef.getDownloadURL();
       return ResponseModel(code: 200, data: urlImage);
     } catch (e) {
       throw ErrorModel(
         code: 'Error',
         message: 'No se pudo traer la url de la imagen: $folderName/$imageName',
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel> postImageFile(
+      {required File file, required String filePath}) async {
+    try {
+      final Reference storageRef =
+          FirebaseStorage.instance.ref().child(filePath);
+      TaskSnapshot uploadTask = await storageRef.putFile(file);
+      if (uploadTask.state == TaskState.success) {
+        String urlDownload = await uploadTask.ref.getDownloadURL();
+        return ResponseModel(code: 200, data: urlDownload);
+      }
+      throw ErrorModel(
+        code: 'Error',
+        message: 'No se pudo traer la data de la collection: $collection',
+      );
+    } catch (e) {
+      throw ErrorModel(
+        code: 'Error',
+        message: 'No se pudo traer la url de la imagen: $filePath',
       );
     }
   }

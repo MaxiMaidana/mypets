@@ -62,14 +62,6 @@ class NewPetController extends GetxController {
     super.dispose();
   }
 
-  Future<void> uploadImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      petImage.value = pickedFile;
-    }
-  }
-
   String convertDateTimeToString() {
     String res = '';
     String temp = dateTimeToBirthDate.toString().split(' ').first;

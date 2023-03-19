@@ -1,6 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:path/path.dart';
+import 'package:mypets/data/models/pet/pet_model.dart';
 
 import '../../../../data/datasource/firebase_datasource.dart';
 import '../../../../data/models/response_model.dart';
@@ -16,6 +17,30 @@ class InfoPetProvider {
       }
       log(urlImage);
       return urlImage;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> postImagePetFirebase(File file, String filePath) async {
+    try {
+      String urlImage = '';
+      ResponseModel responseModel = await FirebaseDatasource()
+          .postImageFile(file: file, filePath: 'pets/$filePath');
+      if (responseModel.data != null) {
+        urlImage = responseModel.data as String;
+      }
+      log(urlImage);
+      return urlImage;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updatePetData(uid, PetModel petModel) async {
+    try {
+      await FirebaseDatasource(collection: 'pets')
+          .putData(uid: uid, data: petModel.toJson());
     } catch (e) {
       rethrow;
     }

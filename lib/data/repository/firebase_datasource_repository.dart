@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../models/response_model.dart';
 
 abstract class FirebaseDatasourceRepository {
@@ -10,4 +12,6 @@ abstract class FirebaseDatasourceRepository {
   Future<ResponseModel> deleteData({required String id});
   Future<ResponseModel> urlImageStorage(
       {required String folderName, required String imageName});
+  Future<ResponseModel> postImageFile(
+      {required File file, required String filePath});
 }
