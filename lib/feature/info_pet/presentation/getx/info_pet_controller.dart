@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
@@ -20,6 +21,7 @@ class PetInfoController extends GetxController {
 
   late PetModel _petModel;
   File? _imageFile;
+  Rx<CroppedFile> croppedFile = CroppedFile('').obs;
   Rx<XFile> petImage = XFile('').obs;
   final picker = ImagePicker();
   RxBool isSearchPhoto = false.obs;
@@ -36,16 +38,23 @@ class PetInfoController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       petImage.value = pickedFile;
+    }
+  }
+
+  Future<void> saveImage() async {
+    try {
       String newName =
           '${appController.userModel!.dni}${_petModel.id}${_petModel.name}'
               .replaceAll(' ', '');
       File? file = await ImageCompress.compressAndGetFile(
-          File(pickedFile.path), newName);
+          File(petImage.value.path), newName);
       String petUrlImage =
           await _infoPetProvider.postImagePetFirebase(file!, newName);
       _petModel.photoUrl = petUrlImage;
       await _infoPetProvider.updatePetData(selectPet.id, _petModel);
       await getUrlImage();
+    } catch (e) {
+      rethrow;
     }
   }
 

@@ -11,7 +11,7 @@ class InfoPetProvider {
     try {
       String urlImage = '';
       ResponseModel responseModel = await FirebaseDatasource()
-          .urlImageStorage(folderName: 'pets', imageName: '$imageName.jpg');
+          .urlImageStorage(folderName: 'pets', imageName: '$imageName.jpeg');
       if (responseModel.data != null) {
         urlImage = responseModel.data as String;
       }

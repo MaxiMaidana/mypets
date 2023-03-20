@@ -12,7 +12,6 @@ class ImageCompress {
     if (!isJpeg(file)) {
       File? result = await FlutterImageCompress.compressAndGetFile(
         file.absolute.path,
-        // file.path,
         targetPath,
         quality: 50,
         rotate: 0,
