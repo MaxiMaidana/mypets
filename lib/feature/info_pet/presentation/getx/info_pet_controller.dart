@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
-import 'package:mypets/feature/firebase/getx/firebase_controller.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../core/utils/image_compress.dart';
@@ -16,11 +14,9 @@ class PetInfoController extends GetxController {
   late String petId;
   final PetsController petsController = Get.find();
   final AppController appController = Get.find();
-  final FirebaseController _firebaseController = Get.find();
   final InfoPetProvider _infoPetProvider = InfoPetProvider();
 
   late PetModel _petModel;
-  File? _imageFile;
   Rx<CroppedFile> croppedFile = CroppedFile('').obs;
   Rx<XFile> petImage = XFile('').obs;
   final picker = ImagePicker();
@@ -46,8 +42,14 @@ class PetInfoController extends GetxController {
       String newName =
           '${appController.userModel!.dni}${_petModel.id}${_petModel.name}'
               .replaceAll(' ', '');
-      File? file = await ImageCompress.compressAndGetFile(
-          File(petImage.value.path), newName);
+      File? file;
+      if (croppedFile.value.path != '') {
+        file = await ImageCompress.compressAndGetFile(
+            File(croppedFile.value.path), newName);
+      } else {
+        file = await ImageCompress.compressAndGetFile(
+            File(petImage.value.path), newName);
+      }
       String petUrlImage =
           await _infoPetProvider.postImagePetFirebase(file!, newName);
       _petModel.photoUrl = petUrlImage;
