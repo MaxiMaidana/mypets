@@ -14,12 +14,12 @@ workflows:
         # - discord_credentials
         - firebase_credentials
         - keystore_reference
-      android_signing:
-        - keystore: keystore_reference
-          keystore_environment_variable: THIS_KEYSTORE_PATH_ON_DISK_1
-          keystore_password_environment_variable: THIS_KEYSTORE_PASSWORD_1
-          key_alias_environment_variable: THIS_KEY_ALIAS_1
-          key_password_environment_variable: THIS_KEY_PASSWORD_1
+      # android_signing:
+      #   - keystore: keystore_reference
+      #     keystore_environment_variable: THIS_KEYSTORE_PATH_ON_DISK_1
+      #     keystore_password_environment_variable: THIS_KEYSTORE_PASSWORD_1
+      #     key_alias_environment_variable: THIS_KEY_ALIAS_1
+      #     key_password_environment_variable: THIS_KEY_PASSWORD_1
       
     scripts:
     - name: Set up keystore
