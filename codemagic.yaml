@@ -49,17 +49,8 @@ workflows:
     
     artifacts:
       - app/build/outputs/**/**/*.apk
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-prod-release.apk
       - flutter_drive.log
-
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: 'qa'
-          include: true
-          source: true
-      cancel_previous_builds: true
 
     publishing:
       firebase:
@@ -76,6 +67,15 @@ workflows:
         notify:
           success: true
           failure: true
+    
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'qa'
+          include: true
+          source: true
+      cancel_previous_builds: true
       # firebase:
       #   # firebase_token: $FIREBASE_TOKEN
 
