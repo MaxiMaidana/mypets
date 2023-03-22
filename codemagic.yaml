@@ -59,7 +59,6 @@ workflows:
           app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
           groups:
             - android_testers
-            - ...
           artifact_type: 'apk' # Replace with 'aab' to only publish the Android app bundle
       email:
         recipients:
