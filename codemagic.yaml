@@ -10,10 +10,10 @@ workflows:
       # android_signing:
       #   - keystore_reference
       groups:
-        # - keystore_credentials
+        - keystore_credentials
         # - discord_credentials
         - firebase_credentials
-        - keystore_reference
+        # - keystore_reference
       # android_signing:
       #   - keystore: keystore_reference
       #     keystore_environment_variable: THIS_KEYSTORE_PATH_ON_DISK_1
