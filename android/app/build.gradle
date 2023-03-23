@@ -107,7 +107,7 @@ android {
             applicationIdSuffix ""
             versionNameSuffix ""
             versionCode 3
-            versionName "0.0.1"
+            versionName "0.0.1+3"
         }
     }
 }

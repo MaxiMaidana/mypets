@@ -89,19 +89,12 @@ workflows:
       - *create_changelog
 
     artifacts:
-      - app/build/outputs/**/**/*.apk 
-      - build/app/outputs/flutter-apk/app-release.apk
-      - app/build/outputs/**/*.aab
-      - build/app/outputs/bundle/release/app-release.aab
+      - app/build/outputs/**/**/*.apk
+      - build/app/outputs/flutter-apk/app-prod-release.apk
+      - flutter_drive.log
+      # - app/build/outputs/**/*.aab
+      # - build/app/outputs/bundle/release/app-release.aab
 
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: 'qa'
-          include: true
-          source: true
-      cancel_previous_builds: true
 
     publishing:
       firebase:
@@ -113,7 +106,7 @@ workflows:
           artifact_type: 'apk'
       email:
         recipients:
-          - name@example.com
+          - maidana1454@gmail.com
         notify:
           success: true
           failure: true
@@ -122,6 +115,14 @@ workflows:
       scripts:
         - *discord_notification_build_android
 
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'qa'
+          include: true
+          source: true
+      cancel_previous_builds: true
   # android-workflow:
   #   name: MyPets Android
   #   environment:
@@ -213,54 +214,3 @@ workflows:
 # artifacts:
 #     - app/build/outputs/**/**/*.apk
 #     - build/app/outputs/flutter-apk/app-release.apk
-
-
-# %YAML 1.1
-# ---
-# definitions:
-
-#   env_versions: &env_versions
-#     flutter: stable
-#     xcode: latest
-#     cocoapods: default
-
-#   script:
-#   ########### Flutter Scripts ################
-#     - &flutter_packages
-#       name: Get Flutter packages
-#       script: |
-#         flutter packages pub Get
-#     - &flutter_analyze
-#       name: Flutter analyze
-#       script: |
-#         flutter analyze
-
-#   ########### Android Scripts ################
-  
-#     - &android_set_key
-#       name: set up key.properties
-#       script: |
-#         echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.keystore
-#         cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
-#         storePassword=$STORE_PASSWORD
-#         keyPassword=$KEY_PASSWORD
-#         keyAlias=$KEY_ALIAS
-#         storeFile=/tmp/keystore.keystore
-#         EOF
-#     - &android_build_apk
-#       name: Build Android apk
-#       script: flutter build apk --release
-#     - &android_set_up_local_properties
-#       name: Set up local.properties
-#       script: |
-#         echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
-
-#   ########### Android Scripts ################
-
-#   email_release: &email_release
-#     email:
-#       recipients:
-#         - gmaidana@lasegunda.com.ar
-#       notify:
-#         success: true
-#         failure: true
