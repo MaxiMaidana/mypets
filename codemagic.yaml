@@ -20,15 +20,15 @@ definitions:
       script: | 
         flutter build apk --flavor prod --release
 
-    - &create_changelog
-      name: Create a changelog
-      script: | 
-        if [[ -z ${CM_PREVIOUS_COMMIT} ]]
-          then
-            echo "No finished builds found to generate changelog" | tee release_notes.txt
-          else
-            echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
-        fi
+    # - &create_changelog
+    #   name: Create a changelog
+    #   script: | 
+    #     if [[ -z ${CM_PREVIOUS_COMMIT} ]]
+    #       then
+    #         echo "No finished builds found to generate changelog" | tee release_notes.txt
+    #       else
+    #         echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
+    #     fi
 
     email_release: &email_release
       email:
