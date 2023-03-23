@@ -106,8 +106,8 @@ android {
             dimension "version"
             applicationIdSuffix ""
             versionNameSuffix ""
-            versionCode 1
-            versionName "0.0.1+2"
+            versionCode 3
+            versionName "0.0.1"
         }
     }
 }
