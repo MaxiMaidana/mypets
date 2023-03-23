@@ -20,53 +20,53 @@ definitions:
       script: | 
         flutter build apk --flavor prod --release
 
-    # - &create_changelog
-    #   name: Create a changelog
-    #   script: | 
-    #     if [[ -z ${CM_PREVIOUS_COMMIT} ]]
-    #       then
-    #         echo "No finished builds found to generate changelog" | tee release_notes.txt
-    #       else
-    #         echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
-    #     fi
+    - &create_changelog
+      name: Create a changelog
+      script: | 
+        if [[ -z ${CM_PREVIOUS_COMMIT} ]]
+          then
+            echo "No finished builds found to generate changelog" | tee release_notes.txt
+          else
+            echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
+        fi
 
-    email_release: &email_release
-      email:
-        recipients:
-          - maidana1454@gmail.com
-        notify:
-          success: true
-          failure: true
-
-    publish_firebase_android: &publish_firebase_android
-      firebase:
-        firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
-        android:
-          app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
-          groups:
-            - android_testers
-          artifact_type: 'apk'
-    
     - &discord_notification_build_android_qa
       name: Discord notification
-        script: | 
-          set -ex
-          APP_LINK=$(echo $CM_ARTIFACT_LINKS | jq -r '.[] | select(.name=="app-release.apk") | .url')
-        
-          # Get first 7 digits of commit number
-          COMMIT=$(echo "${CM_COMMIT}" | sed 's/^\(........\).*/\1/;q')
+      script: | 
+        set -ex
+        APP_LINK=$(echo $CM_ARTIFACT_LINKS | jq -r '.[] | select(.name=="app-release.apk") | .url')
+      
+        # Get first 7 digits of commit number
+        COMMIT=$(echo "${CM_COMMIT}" | sed 's/^\(........\).*/\1/;q')
 
-          # Get commit message
-          COMMIT_MESSAGE=$(git log --format=%B -n 1 $CM_COMMIT)
+        # Get commit message
+        COMMIT_MESSAGE=$(git log --format=%B -n 1 $CM_COMMIT)
           
-          # Get commit author
-          AUTHOR=$(git show -s --format='%ae' $CM_COMMIT)
+        # Get commit author
+        AUTHOR=$(git show -s --format='%ae' $CM_COMMIT)
           
-          # Publish the notification
-          curl -H "Content-Type: multipart/form-data" \
-          -F 'payload_json={"username" : "Aki-Android", "content": "**Commit:** `'"$COMMIT"'`\n\n**Commit message:** '"$COMMIT_MESSAGE"'\n\n**Branch:** '"$CM_BRANCH"'\n\n**Author:** '"$AUTHOR"'\n\n**Artifacts: **\n\n'"$APP_LINK"'\n\n"}' \
-          -F "file1=@release_notes.txt" \
-          $WEBHOOK_URL
+        # Publish the notification
+        curl -H "Content-Type: multipart/form-data" \
+        -F 'payload_json={"username" : "Aki-Android", "content": "**Commit:** `'"$COMMIT"'`\n\n**Commit message:** '"$COMMIT_MESSAGE"'\n\n**Branch:** '"$CM_BRANCH"'\n\n**Author:** '"$AUTHOR"'\n\n**Artifacts: **\n\n'"$APP_LINK"'\n\n"}' \
+        -F "file1=@release_notes.txt" \
+        $WEBHOOK_URL
+
+  email_release: &email_release
+    email:
+      recipients:
+        - maidana1454@gmail.com
+      notify:
+        success: true
+        failure: true
+
+  publish_firebase_android: &publish_firebase_android
+    firebase:
+      firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
+      android:
+        app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
+        groups:
+          - android_testers
+        artifact_type: 'apk'
 
 workflows:
   firebase_android_qa:
