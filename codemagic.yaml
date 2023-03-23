@@ -90,7 +90,7 @@ workflows:
 
     artifacts:
       - app/build/outputs/**/**/*.apk
-      - build/app/outputs/flutter-apk/app-prod.apk
+      - build/app/outputs/flutter-apk/app-prod-release.apk
       - flutter_drive.log
       # - app/build/outputs/**/*.aab
       # - build/app/outputs/bundle/release/app-release.aab
