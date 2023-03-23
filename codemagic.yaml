@@ -30,7 +30,7 @@ definitions:
             echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
         fi
 
-    - &discord_notification_build_android_qa
+    - &discord_notification_build_android
       name: Discord notification
       script: | 
         set -ex
@@ -104,11 +104,23 @@ workflows:
       cancel_previous_builds: true
 
     publishing:
-      <<: *email_release
-      <<: *publish_firebase_android
-      <<: *publish_firebase_android
+      firebase:
+        firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
+        android:
+          app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
+          groups:
+            - android_testers
+          artifact_type: 'apk'
+      email:
+        recipients:
+          - name@example.com
+        notify:
+          success: true
+          failure: true
+      # <<: *email_release
+      # <<: *publish_firebase_android
       scripts:
-        - *discord_notification_build_android_qa
+        - *discord_notification_build_android
 
   # android-workflow:
   #   name: MyPets Android
