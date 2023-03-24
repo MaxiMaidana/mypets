@@ -7,8 +7,6 @@ import 'core/app/app.dart';
 import 'core/service/locator.dart';
 import 'firebase_options.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:googleapis_auth/auth_io.dart';
-import 'package:googleapis/calendar/v3.dart' as cal;
 import 'package:url_launcher/url_launcher.dart';
 // import 'firebase_options.dart';
 // import 'package:flutter_web_plugins/src/navigation_non_web/url_strategy.dart';

@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "212788224879-forcdj8c7deej0btpge4ubh1bqkgcrfm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ar.com.mypets",
-            "certificate_hash": "ed2b1e6a9699c820c6b72dde65646b5a0085f92b"
-          }
-        },
-        {
           "client_id": "212788224879-dqngnbvam564pufoibi53gs7jpc0k916.apps.googleusercontent.com",
           "client_type": 3
         }
