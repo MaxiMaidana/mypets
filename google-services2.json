@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "212788224879-93811ua5e4ol8m47a6qf0grggvvll1fb.apps.googleusercontent.com",
+          "client_id": "212788224879-sgput69rkan3csfnlb4jpbl4cr1ok7j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.mypets",
+            "certificate_hash": "ed2b1e6a9699c820c6b72dde65646b5a0085f92b"
+          }
+        },
+        {
+          "client_id": "212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ar.com.mypets",

@@ -172,6 +172,7 @@ class RegisterController extends GetxController {
   }) async {
     try {
       UserModel userModel = UserModel(
+        id: _firebaseController.firebaseAuth.currentUser!.uid,
         name: name ?? nameController.text,
         lastName: lastName ?? lastNameController.text,
         email: email ?? emailController.text,
@@ -201,6 +202,7 @@ class RegisterController extends GetxController {
       {bool? emailVerified, bool isLastStep = false}) async {
     try {
       UserModel userModel = UserModel(
+        id: _firebaseController.firebaseAuth.currentUser!.uid,
         name: nameController.text,
         lastName: lastNameController.text,
         email: _firebaseController.firebaseAuth.currentUser!.email!,

@@ -15,10 +15,15 @@ class FirebaseController extends GetxController {
 
   // late CollectionReference _collectionReferenceUser;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
-    'email',
-    // GoogleAPI.CalendarApi.calendarScope
-  ]);
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    // clientId: 'OAuth Client ID',
+    scopes: [
+      'email',
+      // 'https://www.googleapis.com/auth/calendar'
+      // googleAPI.CalendarApi.CalendarScope,
+      // GoogleAPI.CalendarApi.calendarScope
+    ],
+  );
 
   GoogleSignInAccount? _googleSignInAccount;
 

@@ -46,14 +46,21 @@ class ButtonsStepsCreateUser extends GetWidget<RegisterController> {
                         controller.statusRegister.value = StatusRegister.init;
                         controller.completedDataStatus.value =
                             CompletedDataStatus.firstStep;
-                        context.go(Routes.registerComplete);
+                        if (context.mounted) {
+                          context.go(Routes.registerComplete);
+                        }
                       } else {
-                        DialogCustom.infoDialog(
-                          context,
-                          title: controller.errorModel!.code,
-                          message: controller.errorModel!.message,
-                          aceptar: () => context.go(Routes.auth),
-                        );
+                        if (context.mounted) {
+                          DialogCustom.infoDialog(
+                            context,
+                            title: controller.errorModel!.code,
+                            message: controller.errorModel!.message,
+                            aceptar: () {
+                              context.go(Routes.auth);
+                              Get.delete<RegisterController>(force: true);
+                            },
+                          );
+                        }
                       }
                     }
                   : () => switchNext(),

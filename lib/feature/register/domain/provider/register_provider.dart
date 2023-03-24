@@ -1,12 +1,16 @@
 import 'package:mypets/data/datasource/firebase_datasource.dart';
 
+import '../../../../data/models/response_model.dart';
 import '../../../../data/models/user/user_model.dart';
 
 class RegisterProvider {
-  Future<void> addUSer(String uid, UserModel userModel) async {
+  Future<UserModel> addUSer(String uid, UserModel userModel) async {
     try {
-      await FirebaseDatasource(collection: 'users')
-          .postData(uid: uid, data: userModel.toJson());
+      ResponseModel responseModel =
+          await FirebaseDatasource(collection: 'users')
+              .postData(uid: uid, data: userModel.toJson());
+      Map<String, dynamic> res = responseModel.data as Map<String, dynamic>;
+      return UserModel.fromJson(res);
     } catch (e) {
       rethrow;
     }

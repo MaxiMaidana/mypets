@@ -6,7 +6,7 @@ class NewPetProvider {
   Future<void> addNewPet(String uid, PetModel petModel) async {
     try {
       await FirebaseDatasource(collection: 'pets')
-          .postData(uid: uid, data: petModel.toJson());
+          .postData(data: petModel.toJson());
     } catch (e) {
       rethrow;
     }

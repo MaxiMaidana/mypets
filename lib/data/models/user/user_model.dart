@@ -1,6 +1,7 @@
 import '../pet/pet_model.dart';
 
 class UserModel {
+  String? id;
   String name;
   String lastName;
   String email;
@@ -11,6 +12,7 @@ class UserModel {
   List<PetModel> pets;
 
   UserModel({
+    required this.id,
     required this.name,
     required this.lastName,
     required this.email,
@@ -22,6 +24,7 @@ class UserModel {
   });
 
   static UserModel initEmpty() => UserModel(
+        id: '',
         name: '',
         lastName: '',
         email: '',
@@ -33,6 +36,7 @@ class UserModel {
       );
 
   static UserModel fromJson(Map<String, dynamic> json) => UserModel(
+        id: json['id'],
         name: json['name'],
         lastName: json['lastName'],
         email: json['email'],
@@ -45,6 +49,7 @@ class UserModel {
       );
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'name': name,
         'lastName': lastName,
         'email': email,
