@@ -9,7 +9,7 @@ class UserModel {
   String urlPhoto;
   String dni;
   String phone;
-  List<PetModel> pets;
+  List<String> pets;
 
   UserModel({
     required this.id,
@@ -44,8 +44,7 @@ class UserModel {
         phone: json['phone'],
         urlPhoto: json['urlPhoto'],
         emailVerified: json['emailVerified'],
-        pets:
-            List<PetModel>.from(json['pets'].map((x) => PetModel.fromJson(x))),
+        pets: List<String>.from(json['pets'].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
