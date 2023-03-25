@@ -55,15 +55,16 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
     try {
       if (uid != null) {
         await _collectionReference.doc(uid).set(data);
+        return ResponseModel(
+            code: 200, data: 'Se creo el registro de manera correcta');
       } else {
         DocumentReference documentReference =
             await _collectionReference.add(data);
         Map<String, dynamic> newData = data;
         newData['id'] = documentReference.id;
         await putData(uid: documentReference.id, data: data);
+        return ResponseModel(code: 200, data: newData);
       }
-      return ResponseModel(
-          code: 200, data: 'Se creo el registro de manera correcta');
     } catch (e) {
       log('No se pudo agregar el registro');
       rethrow;
