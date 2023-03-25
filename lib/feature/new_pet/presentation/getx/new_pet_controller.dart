@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
+import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
@@ -36,6 +37,7 @@ class NewPetController extends GetxController {
   final _petController = Get.find<PetsController>();
   final _homeController = Get.find<HomeController>();
   final _petInfoSupportController = Get.find<PetInfoSupportController>();
+  final _appController = Get.find<AppController>();
 
   Rx<PetStep> petStepToCreate = PetStep.selectSpecie.obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -78,8 +80,12 @@ class NewPetController extends GetxController {
     try {
       petModel.value.owners
           .add(_firebaseController.firebaseAuth.currentUser!.uid);
-      await _newPetProvider.addNewPet(
+      PetModel petModelRes = await _newPetProvider.addNewPet(
           _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
+      _appController.userModel!.pets.add(petModelRes.id!);
+      await _newPetProvider.updateUserData(
+          _firebaseController.firebaseAuth.currentUser!.uid,
+          _appController.userModel!);
       await Future.delayed(const Duration(seconds: 2));
       textWaithing.value = '';
       textMoreWaithing.value = 'Un momento mas, retoques finales :P';
