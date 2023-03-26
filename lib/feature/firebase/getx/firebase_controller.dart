@@ -4,24 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:mypets/feature/reminders/presentation/getx/reminder_controller.dart';
 // import 'package:mypets/data/models/user/user_model.dart';
 
 // import '../../app/controller/app_controller.dart';
 
 class FirebaseController extends GetxController {
+  final reminderController = Get.find<ReminderController>();
   late FirebaseAuth _firebaseAuth;
 
   late FirebaseFirestore _firebaseFirestore;
 
-  // late CollectionReference _collectionReferenceUser;
-
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    // clientId: 'OAuth Client ID',
     scopes: [
       'email',
-      // 'https://www.googleapis.com/auth/calendar'
-      // googleAPI.CalendarApi.CalendarScope,
-      // GoogleAPI.CalendarApi.calendarScope
+      CalendarApi.calendarScope,
     ],
   );
 
@@ -31,15 +30,15 @@ class FirebaseController extends GetxController {
 
   bool logued = false;
 
-  // final AppController _appController = Get.find();
-
-  // late UserModel userModel;
-
   Future<bool> loginWithGoogle() async {
     bool res = false;
     try {
       _googleSignInAccount = await _googleSignIn.signIn();
       if (_googleSignInAccount != null) {
+        var httpClient = (await _googleSignIn.authenticatedClient())!;
+        CalendarApi calendarApi = CalendarApi(httpClient);
+        reminderController.calendarApi = calendarApi;
+        log('desde firebase controller ${calendarApi!.events.toString()}');
         GoogleSignInAuthentication googleAuth =
             await _googleSignInAccount!.authentication;
         final credential = GoogleAuthProvider.credential(
@@ -47,7 +46,6 @@ class FirebaseController extends GetxController {
           accessToken: googleAuth.accessToken,
         );
         await firebaseAuth.signInWithCredential(credential);
-        // await getUserData();
         res = true;
       }
       return res;
@@ -177,45 +175,6 @@ class FirebaseController extends GetxController {
     }
   }
 
-  // Future<void> getUserData() async {
-  //   try {
-  //     DocumentSnapshot res = await _collectionReferenceUser
-  //         .doc(firebaseAuth.currentUser!.uid)
-  //         .get();
-  //     if (res.exists) {
-  //       userModel = UserModel.fromJson(res.data() as Map<String, dynamic>);
-  //     } else {
-  //       print('Document does not exist on the database');
-  //     }
-  //   } catch (e) {
-  //     log('rompio al traer el usuario de la base');
-  //   }
-  // }
-
-  // Future<void> addUSer(UserModel userModel) async {
-  //   try {
-  //     await _collectionReferenceUser
-  //         .doc(_firebaseAuth.currentUser!.uid)
-  //         .set(userModel.toJson());
-  //     log('se creo el usuario');
-  //   } catch (e) {
-  //     log('no se creo el usuario');
-  //     rethrow;
-  //   }
-  // }
-
-  // Future<void> updateUSer(UserModel userModel) async {
-  //   try {
-  //     _collectionReferenceUser
-  //         .doc(_firebaseAuth.currentUser!.uid)
-  //         .update(userModel.toJson());
-  //     log('se actualizo el usuario');
-  //   } catch (e) {
-  //     log('no se actualizo el usuario');
-  //     rethrow;
-  //   }
-  // }
-
   CollectionReference connectWithFirebaseCollection(String collection) =>
       _firebaseFirestore.collection(collection);
 
@@ -223,13 +182,8 @@ class FirebaseController extends GetxController {
   void onInit() {
     _firebaseAuth = FirebaseAuth.instance;
     _firebaseFirestore = FirebaseFirestore.instance;
-    // connectWithFirebaseCollection('users');
-    // _collectionReferenceUser = _firebaseFirestore.collection('users');
     if (_firebaseAuth.currentUser != null) {
-      // getUserData();
       logued = true;
-    } else {
-      // getUserData('aa');
     }
     super.onInit();
   }

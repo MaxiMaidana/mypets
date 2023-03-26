@@ -99,7 +99,8 @@ GoRouter goRouter = GoRouter(
         Get.put(ProfileController());
         Get.put(PetsController());
         Get.put(AdsController());
-        Get.put(ReminderController());
+        final reminderController = Get.find<ReminderController>();
+        reminderController.initCalendarApi();
         // Get.delete<RegisterController>(force: true);
         // Get.delete<AuthController>(force: true);
         return const HomePage();

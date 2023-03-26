@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mypets/core/responsive/widget_tree.dart';
+import 'package:mypets/core/widgets/button_custom.dart';
 
 import '../getx/reminder_controller.dart';
 
@@ -9,14 +10,21 @@ class ReminderPage extends GetWidget<ReminderController> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
         body: WidgetTree(
-          tiny: Text('tiny reminder'),
-          largeTablet: Text('large tablet reminder'),
-          tablet: Text('tablet reminder'),
-          phone: Text('phone reminder'),
-          computer: Text('computer reminder'),
+          tiny: const Text('tiny reminder'),
+          largeTablet: const Text('large tablet reminder'),
+          tablet: const Text('tablet reminder'),
+          phone: Column(
+            children: [
+              Center(
+                child: ButtonCustom.principal(
+                    text: 'Add Event', onPress: () => controller.insert()),
+              )
+            ],
+          ),
+          computer: const Text('computer reminder'),
         ),
       ),
     );
