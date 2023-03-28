@@ -12,9 +12,11 @@ class RowPetInfoPV extends GetWidget<PetInfoController> {
   Widget build(BuildContext context) {
     List<Widget> lsWidgets = [
       SizedBox(width: 5.w),
-      const PetInfoItem(
-        title: 'Años',
-        info: '14',
+      Obx(
+        () => PetInfoItem(
+          title: 'Años',
+          info: controller.petYears.value.toString(),
+        ),
       ),
       if (controller.selectPet.breed != '')
         PetInfoItem(
@@ -28,7 +30,7 @@ class RowPetInfoPV extends GetWidget<PetInfoController> {
         ),
       if (controller.selectPet.size != '')
         PetInfoItem(
-          title: 'Peso',
+          title: 'Tamaño',
           info: controller.selectPet.size!,
         ),
       if (controller.selectPet.weigth != '')

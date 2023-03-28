@@ -8,15 +8,13 @@ class RegisterCompletePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-        body: WidgetTree(
-          computer: Text('computer register complete'),
-          largeTablet: Text('largeTablet register complete'),
-          tablet: Text('tablet register complete'),
-          tiny: Text('tiny register complete'),
-          phone: RegisterCompletePV(),
-        ),
+    return const Scaffold(
+      body: WidgetTree(
+        computer: Text('computer register complete'),
+        largeTablet: Text('largeTablet register complete'),
+        tablet: Text('tablet register complete'),
+        tiny: Text('tiny register complete'),
+        phone: RegisterCompletePV(),
       ),
     );
   }

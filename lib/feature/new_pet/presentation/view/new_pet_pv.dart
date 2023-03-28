@@ -16,13 +16,16 @@ class NewPetsPV extends GetWidget<NewPetController> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        height: 96.5.h,
+        height: 100.h,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            const SizedBox(height: 25),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Align(
-                alignment: Alignment.centerRight,
+              child: SizedBox(
+                height: 40,
+                width: 40,
                 child: GestureDetector(
                   onTap: () {
                     DialogCustom.infoDialogWhitOptionsCustom(
@@ -54,34 +57,29 @@ class NewPetsPV extends GetWidget<NewPetController> {
                       ],
                     );
                   },
-                  child: const SizedBox(
-                    height: 40,
-                    width: 40,
+                  child: const Center(
                     child: Icon(Icons.close),
                   ),
                 ),
               ),
             ),
             Obx(
-              () => AnimatedContainer(
-                duration: const Duration(milliseconds: 600),
-                height: controller.petStepToCreate.value == PetStep.check
-                    ? 20.h
-                    : 30.h,
-                child: Icon(Icons.graphic_eq_outlined,
-                    size: controller.petStepToCreate.value == PetStep.check
-                        ? 20.h
-                        : 25.h),
+              () => Center(
+                child: AnimatedOpacity(
+                  opacity:
+                      controller.petStepToCreate.value == PetStep.check ? 0 : 1,
+                  duration: const Duration(milliseconds: 1000),
+                  child: Icon(Icons.graphic_eq_outlined,
+                      size: controller.sizeIcon.value),
+                ),
               ),
             ),
             const Spacer(),
             Obx(
               () => AnimatedContainer(
-                duration: const Duration(milliseconds: 600),
+                duration: const Duration(milliseconds: 1000),
                 width: double.infinity,
-                height: controller.petStepToCreate.value == PetStep.check
-                    ? 70.h
-                    : 55.h,
+                height: controller.sizeInputData.value,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.2),
                   borderRadius: const BorderRadius.only(
@@ -107,21 +105,27 @@ class NewPetsPV extends GetWidget<NewPetController> {
   Widget _step(BuildContext context, PetStep petStep) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Obx(
-          () => Column(
-            children: [
-              SizedBox(height: 2.h),
-              Text(
-                titleToCompleteData(controller.petStepToCreate.value),
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
-                ),
+          () => SingleChildScrollView(
+            child: SizedBox(
+              height: controller.sizeInputData.value,
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    titleToCompleteData(controller.petStepToCreate.value),
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.titleLarge!.fontSize,
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  const StepToCreate(),
+                  const Spacer(),
+                  const ButtonsStepsCreatePets(),
+                  const SizedBox(height: 10),
+                ],
               ),
-              SizedBox(height: 2.h),
-              const StepToCreate(),
-              const Spacer(),
-              const ButtonsStepsCreatePets(),
-              SizedBox(height: 2.h),
-            ],
+            ),
           ),
         ),
       );

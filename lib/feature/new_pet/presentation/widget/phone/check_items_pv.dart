@@ -11,61 +11,59 @@ class CheckItemsPV extends GetWidget<NewPetController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 52.h,
-      child: SingleChildScrollView(
-        child: Column(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '${controller.nameController.text} es',
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+          ),
+        ),
+        SizedBox(height: 2.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '${controller.nameController.text} es',
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+            SizedBox(
+              height: 50,
+              width: 50,
+              child: ItemPetType(
+                icon: FaIcon(
+                  controller.petModel.value.species == 'Dog'
+                      ? FontAwesomeIcons.dog
+                      : FontAwesomeIcons.cat,
+                  size: 30,
+                ),
+                onTap: () {},
+                type: '',
+                typeSelect: 'Specie',
               ),
             ),
-            SizedBox(height: 2.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: ItemPetType(
-                    icon: FaIcon(
-                     controller.petModel.value.species == 'Dog' ? FontAwesomeIcons.dog : FontAwesomeIcons.cat,
-                      size: 30,
-                    ),
-                    onTap: () {},
-                    type: '',
-                    typeSelect: 'Specie',
-                  ),
+            SizedBox(width: 10.w),
+            SizedBox(
+              height: 50,
+              width: 50,
+              child: ItemPetType(
+                icon: Icon(
+                  controller.petModel.value.sex == 'Male'
+                      ? Icons.male
+                      : Icons.female,
+                  size: 30,
                 ),
-                SizedBox(width: 10.w),
-                SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: ItemPetType(
-                    icon: Icon(
-                      controller.petModel.value.sex == 'Male' ? Icons.male : Icons.female,
-                      size: 30,
-                    ),
-                    onTap: () {},
-                    type: '',
-                    typeSelect: 'Sex',
-                  ),
-                ),
-              ],
+                onTap: () {},
+                type: '',
+                typeSelect: 'Sex',
+              ),
             ),
-            SizedBox(height: 2.h),
-            _rowItem(context, 'Nacio el:', controller.nameController.text),
-            _rowItem(context, 'Cumple el:',
-                controller.dateTimeToBirthDate.value.toString()),
-            _rowItem(context, 'Raza:', controller.breedController.text),
-            _rowItem(context, 'Tamaño:', controller.sizeController.text),
-            _rowItem(context, 'Pelaje:', controller.furController.text),
-            _rowItem(context, 'Peso:', controller.weigthController.text),
           ],
         ),
-      ),
+        const SizedBox(height: 25),
+        _rowItem(context, 'Nacio el:', controller.petModel.value.birthDate),
+        _rowItem(context, 'Raza:', controller.breedController.text),
+        _rowItem(context, 'Tamaño:', controller.sizeController.text),
+        _rowItem(context, 'Pelaje:', controller.furController.text),
+        _rowItem(context, 'Peso:', controller.weigthController.text),
+      ],
     );
   }
 

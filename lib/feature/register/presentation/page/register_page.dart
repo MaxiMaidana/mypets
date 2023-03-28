@@ -13,28 +13,26 @@ class RegisterPage extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: WidgetTree(
-          tiny: const Text('tiny'),
-          phone: Obx(
-            () => controller.statusRegister.value == StatusRegister.init
-                ? const RegisterPV()
-                : controller.statusRegister.value == StatusRegister.emailSended
-                    ? const WaithingValidationPV()
-                    : controller.statusRegister.value ==
-                            StatusRegister.emailVerified
-                        ? const EmailVerifiedPV()
-                        : controller.statusRegister.value ==
-                                StatusRegister.needCompleteData
-                            ? const StepsToCompleteDataPV()
-                            : Container(),
-          ),
-          tablet: const Text('tablet'),
-          largeTablet: const Text('tablet large'),
-          computer: const Text('computer'),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: WidgetTree(
+        tiny: const Text('tiny'),
+        phone: Obx(
+          () => controller.statusRegister.value == StatusRegister.init
+              ? const RegisterPV()
+              : controller.statusRegister.value == StatusRegister.emailSended
+                  ? const WaithingValidationPV()
+                  : controller.statusRegister.value ==
+                          StatusRegister.emailVerified
+                      ? const EmailVerifiedPV()
+                      : controller.statusRegister.value ==
+                              StatusRegister.needCompleteData
+                          ? const StepsToCompleteDataPV()
+                          : Container(),
         ),
+        tablet: const Text('tablet'),
+        largeTablet: const Text('tablet large'),
+        computer: const Text('computer'),
       ),
     );
   }

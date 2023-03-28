@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:get/get.dart';
@@ -21,7 +22,9 @@ class PetInfoController extends GetxController {
   Rx<XFile> petImage = XFile('').obs;
   final picker = ImagePicker();
   RxBool isSearchPhoto = false.obs;
+  RxBool isChargingPhoto = false.obs;
   RxString urlImagePet = ''.obs;
+  RxInt petYears = 0.obs;
 
   void setPetId(String id) => petId = id;
 
@@ -39,6 +42,7 @@ class PetInfoController extends GetxController {
 
   Future<void> saveImage() async {
     try {
+      isChargingPhoto.value = true;
       String newName =
           '${appController.userModel!.dni}${_petModel.id}${_petModel.name}'
               .replaceAll(' ', '');
@@ -55,7 +59,9 @@ class PetInfoController extends GetxController {
       _petModel.photoUrl = petUrlImage;
       await _infoPetProvider.updatePetData(selectPet.id, _petModel);
       await getUrlImage();
+      isChargingPhoto.value = false;
     } catch (e) {
+      isChargingPhoto.value = false;
       rethrow;
     }
   }
@@ -78,9 +84,22 @@ class PetInfoController extends GetxController {
     }
   }
 
+  int calculateYars() {
+    String year = selectPet.birthDate.split('/').last;
+    String month = selectPet.birthDate.split('/')[1];
+    String day = selectPet.birthDate.split('/').first;
+
+    int difDays =
+        DateTime.now().difference(DateTime.parse('$year-$month-$day')).inDays;
+
+    double difYears = difDays / 365;
+    return difYears.round();
+  }
+
   @override
   void onReady() {
     getUrlImage();
+    petYears.value = calculateYars();
     super.onReady();
   }
 }

@@ -19,6 +19,7 @@ class StepToCreate extends GetWidget<NewPetController> {
       () => controller.petStepToCreate.value == PetStep.selectSpecie
           ? Column(
               children: [
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -48,21 +49,21 @@ class StepToCreate extends GetWidget<NewPetController> {
                     )
                   ],
                 ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.h),
-                    color:
-                        Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.more_horiz,
-                      size: 30,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   height: 100,
+                //   width: 100,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(25.h),
+                //     color:
+                //         Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                //   ),
+                //   child: const Center(
+                //     child: Icon(
+                //       Icons.more_horiz,
+                //       size: 30,
+                //     ),
+                //   ),
+                // ),
               ],
             )
           : controller.petStepToCreate.value == PetStep.name
@@ -71,32 +72,37 @@ class StepToCreate extends GetWidget<NewPetController> {
                   hint: 'Nombre*',
                 )
               : controller.petStepToCreate.value == PetStep.sex
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  ? Column(
                       children: [
-                        ItemPetType(
-                          icon: const Icon(
-                            Icons.male,
-                            size: 80,
-                          ),
-                          onTap: () {
-                            controller.petModel.value.sex = 'Male';
-                            controller.petModel.refresh();
-                          },
-                          type: 'Male',
-                          typeSelect: 'Sex',
-                        ),
-                        ItemPetType(
-                          icon: const Icon(
-                            Icons.female,
-                            size: 80,
-                          ),
-                          onTap: () {
-                            controller.petModel.value.sex = 'Female';
-                            controller.petModel.refresh();
-                          },
-                          type: 'Female',
-                          typeSelect: 'Sex',
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ItemPetType(
+                              icon: const Icon(
+                                Icons.male,
+                                size: 80,
+                              ),
+                              onTap: () {
+                                controller.petModel.value.sex = 'Male';
+                                controller.petModel.refresh();
+                              },
+                              type: 'Male',
+                              typeSelect: 'Sex',
+                            ),
+                            ItemPetType(
+                              icon: const Icon(
+                                Icons.female,
+                                size: 80,
+                              ),
+                              onTap: () {
+                                controller.petModel.value.sex = 'Female';
+                                controller.petModel.refresh();
+                              },
+                              type: 'Female',
+                              typeSelect: 'Sex',
+                            ),
+                          ],
                         ),
                       ],
                     )
@@ -126,7 +132,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 2.h),
+                            const SizedBox(height: 20),
                             Text(
                               controller.dateTimeToBirthDate.value ==
                                       DateTime(2000)
@@ -182,10 +188,6 @@ class StepToCreate extends GetWidget<NewPetController> {
                                       function: (v) =>
                                           controller.sizeController.text = v,
                                     ),
-                                    // InputCustom.base(
-                                    //   controller: controller.sizeController,
-                                    //   hint: 'Tamaño',
-                                    // ),
                                     SizedBox(height: 1.h),
                                     InputCustom.base(
                                       controller: controller.weigthController,

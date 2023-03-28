@@ -38,7 +38,6 @@ class FirebaseController extends GetxController {
         var httpClient = (await _googleSignIn.authenticatedClient())!;
         CalendarApi calendarApi = CalendarApi(httpClient);
         reminderController.calendarApi = calendarApi;
-        log('desde firebase controller ${calendarApi!.events.toString()}');
         GoogleSignInAuthentication googleAuth =
             await _googleSignInAccount!.authentication;
         final credential = GoogleAuthProvider.credential(

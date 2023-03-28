@@ -10,15 +10,14 @@ class NewPetPage extends GetWidget<NewPetController> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-        body: WidgetTree(
-          tiny: Text('tiny'),
-          phone: NewPetsPV(),
-          tablet: Text('tablet'),
-          largeTablet: Text('largeTablet'),
-          computer: Text('computer'),
-        ),
+    return const Scaffold(
+      // resizeToAvoidBottomInset: false,
+      body: WidgetTree(
+        tiny: Text('tiny'),
+        phone: NewPetsPV(),
+        tablet: Text('tablet'),
+        largeTablet: Text('largeTablet'),
+        computer: Text('computer'),
       ),
     );
   }

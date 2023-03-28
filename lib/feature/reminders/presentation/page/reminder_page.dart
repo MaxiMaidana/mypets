@@ -10,22 +10,20 @@ class ReminderPage extends GetWidget<ReminderController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: WidgetTree(
-          tiny: const Text('tiny reminder'),
-          largeTablet: const Text('large tablet reminder'),
-          tablet: const Text('tablet reminder'),
-          phone: Column(
-            children: [
-              Center(
-                child: ButtonCustom.principal(
-                    text: 'Add Event', onPress: () => controller.insert()),
-              )
-            ],
-          ),
-          computer: const Text('computer reminder'),
+    return Scaffold(
+      body: WidgetTree(
+        tiny: const Text('tiny reminder'),
+        largeTablet: const Text('large tablet reminder'),
+        tablet: const Text('tablet reminder'),
+        phone: Column(
+          children: [
+            Center(
+              child: ButtonCustom.principal(
+                  text: 'Add Event', onPress: () => controller.insert()),
+            )
+          ],
         ),
+        computer: const Text('computer reminder'),
       ),
     );
   }

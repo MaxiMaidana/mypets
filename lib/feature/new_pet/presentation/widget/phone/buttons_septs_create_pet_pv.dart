@@ -20,7 +20,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
             child: SizedBox(
               width: 20.w,
               child: IconButton(
-                onPressed: () => switchBack(),
+                onPressed: () async => await switchBack(),
                 icon: const Icon(Icons.arrow_back),
               ),
             ),
@@ -42,7 +42,7 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
     );
   }
 
-  void switchBack() {
+  Future<void> switchBack() async {
     switch (controller.petStepToCreate.value) {
       case PetStep.selectSpecie:
         controller.petStepToCreate.value = PetStep.selectSpecie;
@@ -64,6 +64,9 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         break;
       case PetStep.check:
         controller.petStepToCreate.value = PetStep.last;
+        controller.sizeInputData.value = 55.h;
+        await Future.delayed(const Duration(milliseconds: 1000));
+        controller.sizeIcon.value = 25.h;
         break;
       default:
     }
@@ -107,7 +110,10 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
       case PetStep.last:
         controller.petModel.value.size = controller.sizeController.text;
         controller.petModel.value.weigth = controller.weigthController.text;
+        controller.sizeIcon.value = 0;
         controller.petStepToCreate.value = PetStep.check;
+        controller.sizeInputData.value = 90.h;
+        await Future.delayed(const Duration(milliseconds: 1000));
         break;
       case PetStep.check:
         context.go(Routes.newPetCompleted);

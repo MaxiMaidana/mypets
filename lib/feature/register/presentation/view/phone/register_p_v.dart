@@ -69,22 +69,24 @@ class RegisterPV extends GetWidget<RegisterController> {
               ),
               const Spacer(),
               ButtonCustom.principal(
-                  text: 'Registrarme',
-                  onPress: () async {
-                    bool res = false;
-                    if (controller.validateInputs()) {
-                      context.loaderOverlay.show();
-                      res = await controller.registerWithEmail();
-                      context.loaderOverlay.hide();
-                    }
-                    if (!res) {
-                      DialogCustom.infoDialog(
-                        context,
-                        title: controller.errorModel!.code,
-                        message: controller.errorModel!.message,
-                      );
-                    }
-                  }),
+                text: 'Registrarme',
+                onPress: () async {
+                  bool res = false;
+                  if (controller.validateInputs()) {
+                    context.loaderOverlay.show();
+                    res = await controller.registerWithEmail();
+                    context.loaderOverlay.hide();
+                  }
+                  if (!res) {
+                    DialogCustom.infoDialog(
+                      context,
+                      title: controller.errorModel!.code,
+                      message: controller.errorModel!.message,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 10),
               ButtonCustom.loginGoogle(
                 text: 'Registrarme con Google',
                 onPress: () async {
@@ -106,6 +108,7 @@ class RegisterPV extends GetWidget<RegisterController> {
                   }
                 },
               ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -119,7 +122,7 @@ class RegisterPV extends GetWidget<RegisterController> {
                   ),
                 ],
               ),
-              SizedBox(height: 2.h),
+              const SizedBox(height: 10),
             ],
           ),
         ),

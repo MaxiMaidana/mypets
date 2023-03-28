@@ -17,53 +17,54 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        height: 96.5.h,
+        height: 100.h,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            const SizedBox(height: 25),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: SizedBox(
-                height: 10.h,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () {
-                      DialogCustom.infoDialogWhitOptionsCustom(
-                        context,
-                        title: 'Importante!',
-                        actions: [
-                          ButtonCustom.text(
-                            text: 'Seguir Despues',
-                            onPress: () async => goToMain(context),
+                height: 40,
+                width: 40,
+                child: GestureDetector(
+                  onTap: () {
+                    DialogCustom.infoDialogWhitOptionsCustom(
+                      context,
+                      title: 'Cancelar?',
+                      actions: [
+                        SizedBox(
+                          width: 26.w,
+                          child: ButtonCustom.text(
+                            text: 'Cancelar',
+                            onPress: () async => _goToMain(context),
                           ),
-                          ButtonCustom.principalShort(
-                            text: 'Continuar',
-                            onPress: () => context.pop(),
+                        ),
+                        ButtonCustom.principalShort(
+                          text: 'Continuar',
+                          onPress: () => context.pop(),
+                        ),
+                      ],
+                      content: [
+                        Text(
+                          'Si cancelas perderas todo tu progreso y deberas volver a arrancar desde el pricipio la proxima vez.',
+                          style: TextStyle(
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .fontSize,
                           ),
-                        ],
-                        content: [
-                          Text(
-                            'Si no completas este formulario no vas a poder entrar al app',
-                            style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .fontSize,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                    child: const SizedBox(
-                      height: 40,
-                      width: 40,
-                      child: Icon(Icons.close),
-                    ),
+                        ),
+                      ],
+                    );
+                  },
+                  child: const Center(
+                    child: Icon(Icons.close),
                   ),
                 ),
               ),
             ),
-            Icon(Icons.graphic_eq_outlined, size: 30.h),
+            const Icon(Icons.graphic_eq_outlined, size: 220),
             const Spacer(),
             Container(
               width: double.infinity,
@@ -84,7 +85,7 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
     );
   }
 
-  Future<void> goToMain(BuildContext context) async {
+  Future<void> _goToMain(BuildContext context) async {
     context.go(Routes.main);
     Get.delete<RegisterController>(force: true);
   }
@@ -112,11 +113,11 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
 
   String titleToCompleteData(CompletedDataStatus completedDataStatus) =>
       completedDataStatus == CompletedDataStatus.firstStep
-          ? 'Primero'
+          ? 'Nombre y  Apellido'
           : completedDataStatus == CompletedDataStatus.secondStep
-              ? 'Segundo'
+              ? 'DNI'
               : completedDataStatus == CompletedDataStatus.thirtStep
-                  ? 'Tercero'
+                  ? 'Telefono'
                   : completedDataStatus == CompletedDataStatus.checkData
                       ? 'Repasemos'
                       : '';

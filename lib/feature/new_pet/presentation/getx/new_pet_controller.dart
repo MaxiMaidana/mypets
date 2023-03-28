@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:mypets/data/models/error_model.dart';
 import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -49,6 +50,8 @@ class NewPetController extends GetxController {
   RxString textMoreWaithing = ''.obs;
   RxString textCompleteGood = ''.obs;
   RxString textError = ''.obs;
+  RxDouble sizeIcon = 25.h.obs;
+  RxDouble sizeInputData = 55.h.obs;
 
   List<String> _lsBreeds = [];
   List<String> _lsFurs = [];
