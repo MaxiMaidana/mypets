@@ -7,7 +7,7 @@ class MessageWithoutPets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 65.h,
+      height: 60.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -15,9 +15,9 @@ class MessageWithoutPets extends StatelessWidget {
             Icons.donut_large_rounded,
             size: 180,
           ),
-          SizedBox(height: 1.h),
+          const SizedBox(height: 30),
           Text(
-            ' Aca vas a poder ver a todas las mascotas que tengas.',
+            'Aca vas a poder ver a todas las mascotas que tengas.',
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           )

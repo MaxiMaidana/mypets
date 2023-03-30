@@ -71,7 +71,8 @@ class AuthController extends GetxController {
   Future<void> _loginWithGoogle() async {
     try {
       await _firebaseController.loginWithGoogle();
-      await validateDataUser();
+      // await validateDataUser();
+      await newValidateUser();
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       String title = '';
@@ -139,6 +140,29 @@ class AuthController extends GetxController {
       errorModel = ErrorModel(code: title, message: message);
       userStatus.value = UserStatus.error;
     } catch (e) {}
+  }
+
+  Future<void> newValidateUser() async {
+    User? user = _firebaseController.firebaseAuth.currentUser!;
+    await _appController.getUserData(user.uid);
+    if (_appController.userModel == null) {
+      final registerController = Get.put(RegisterController());
+      registerController.registerWithGoogle();
+      registerController.statusRegister.value = StatusRegister.emailVerified;
+      registerController.completedDataStatus.value =
+          CompletedDataStatus.secondStep;
+      userStatus.value = UserStatus.needCompleteData;
+      // registerController.nameController.text =
+      //     user.displayName!.split(' ').first;
+      // registerController.lastNameController.text =
+      //     user.displayName!.split(' ').last;
+      return;
+    } else {
+      log('all okey');
+      LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
+      userStatus.value = UserStatus.dataCompleted;
+      return;
+    }
   }
 
   Future<void> validateDataUser() async {

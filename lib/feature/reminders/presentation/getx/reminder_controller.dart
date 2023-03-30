@@ -17,9 +17,8 @@ class ReminderController extends GetxController {
   );
 
   Future<void> initCalendarApi() async {
-    bool isSigned = await _googleSignIn.isSignedIn();
+    // bool isSigned = await _googleSignIn.isSignedIn();
     if (calendarApi == null) {
-      log('logueado con google ? $isSigned');
       await _googleSignIn.signInSilently();
       var httpClient = (await _googleSignIn.authenticatedClient())!;
       calendarApi = CalendarApi(httpClient);

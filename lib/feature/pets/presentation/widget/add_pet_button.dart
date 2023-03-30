@@ -12,7 +12,7 @@ class AddPetButton extends GetWidget<PetsController> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         if (controller.petInfoSupportController.lsSpecies.isNotEmpty &&
             controller.petInfoSupportController.lsFurs.isNotEmpty) {
@@ -25,16 +25,17 @@ class AddPetButton extends GetWidget<PetsController> {
         }
       },
       child: Container(
-        height: 15.h,
+        height: 100,
         width: 100.w,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-                offset: const Offset(0, 4),
-                blurRadius: 4,
-                color: Colors.black.withOpacity(0.3))
+              offset: const Offset(0, 4),
+              blurRadius: 4,
+              color: Colors.black.withOpacity(0.3),
+            )
           ],
         ),
         child: Column(

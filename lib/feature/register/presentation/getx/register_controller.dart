@@ -92,14 +92,14 @@ class RegisterController extends GetxController {
 
   Future<bool> registerWithGoogle() async {
     try {
-      await _firebaseController.loginWithGoogle();
+      // await _firebaseController.loginWithGoogle();
       User? user = _firebaseController.firebaseAuth.currentUser!;
-      await _appController.getUserData(user.uid);
-      if (_appController.userModel != null &&
-          _appController.userModel!.dni != '') {
-        completedDataStatus.value = CompletedDataStatus.completed;
-        return true;
-      }
+      // await _appController.getUserData(user.uid);
+      // if (_appController.userModel != null &&
+      //     _appController.userModel!.dni != '') {
+      //   completedDataStatus.value = CompletedDataStatus.completed;
+      //   return true;
+      // }
       await createUser(
         emailVarified: true,
         email: user.email,

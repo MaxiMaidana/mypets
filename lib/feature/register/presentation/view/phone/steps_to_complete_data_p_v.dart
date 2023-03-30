@@ -64,7 +64,7 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
                 ),
               ),
             ),
-            const Icon(Icons.graphic_eq_outlined, size: 220),
+            const Center(child: Icon(Icons.graphic_eq_outlined, size: 220)),
             const Spacer(),
             Container(
               width: double.infinity,

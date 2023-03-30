@@ -15,7 +15,8 @@ class EmailVerifiedPV extends GetWidget<RegisterController> {
   Widget build(BuildContext context) {
     return PageWithWitgetAtEnd(
       textWidget: const Text(
-          'Genial ! Ya tenes tu cuenta validada, ahora vamos a pedirte unos datos para poder completar tu perfil =D'),
+          // 'Genial ! Ya tenes tu cuenta validada, ahora vamos a pedirte unos datos para poder completar tu perfil =D'),
+          'Bienvenido ! Ya validamos tu cuenta por vos, ahora vamos a pedirte unos datos para poder completar tu perfil =D'),
       widgetEnd: Column(
         children: [
           ButtonCustom.principal(
@@ -24,10 +25,10 @@ class EmailVerifiedPV extends GetWidget<RegisterController> {
                 StatusRegister.needCompleteData,
           ),
           SizedBox(height: 1.h),
-          ButtonCustom.principal(
-            text: 'Despues :/',
-            onPress: () async => goToMain(context),
-          ),
+          // ButtonCustom.principal(
+          //   text: 'Despues :/',
+          //   onPress: () async => goToMain(context),
+          // ),
         ],
       ),
     );

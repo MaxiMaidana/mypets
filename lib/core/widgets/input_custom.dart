@@ -5,6 +5,7 @@ class InputCustom extends StatefulWidget {
   final String? hint;
   final Function(String)? onChange;
   final bool isPassword;
+  final String? Function(String?)? validate;
   final TextInputType? textInputType;
   final bool isEnable;
   final Widget? icon;
@@ -16,6 +17,7 @@ class InputCustom extends StatefulWidget {
     this.isEnable = true,
     this.onChange,
     this.textInputType,
+    this.validate,
     this.icon,
   }) : super(key: key);
 
@@ -25,10 +27,12 @@ class InputCustom extends StatefulWidget {
     bool isEnable = true,
     String? hint,
     Function(String)? onChange,
+    String? Function(String?)? validate,
     TextInputType? textInputType,
     Widget? icon,
   }) =>
       InputCustom(
+        validate: validate,
         controller: controller,
         isPassword: isPassword,
         hint: hint,
@@ -48,18 +52,21 @@ class _InputCustomState extends State<InputCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: const Color(0xFF6750A4).withOpacity(0.3),
-          borderRadius: BorderRadius.circular(20)),
+    return Form(
+      autovalidateMode: widget.validate != null
+          ? AutovalidateMode.always
+          : AutovalidateMode.disabled,
       child: TextFormField(
         controller: widget.controller,
         obscureText: widget.isPassword && !eyeOpen ? true : false,
         autofocus: false,
         onChanged: widget.onChange,
         keyboardType: widget.textInputType,
+        validator: widget.validate,
         enabled: widget.isEnable,
         decoration: InputDecoration(
+          fillColor: const Color(0xFF6750A4).withOpacity(0.3),
+          filled: true,
           hintStyle:
               const TextStyle().copyWith(color: Colors.black.withOpacity(0.3)),
           suffixIcon: widget.isPassword
@@ -77,8 +84,11 @@ class _InputCustomState extends State<InputCustom> {
               : widget.icon,
           hintText: widget.hint,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(
+              color: Color(0xFF6750A4),
+              width: 5.0,
+            ),
           ),
         ),
       ),

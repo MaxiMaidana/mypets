@@ -10,6 +10,7 @@ import 'package:mypets/core/theme/themes.dart';
 import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import '../getx/profile_controller.dart';
 
@@ -25,13 +26,47 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
         child: Column(
           children: [
             SizedBox(height: 5.h),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(25.h),
-              child: CachedNetworkImage(
-                imageUrl: controller.userModel.value.urlPhoto,
-                errorWidget: (context, url, error) => const Icon(Icons.percent),
-                height: 20.h,
-                fit: BoxFit.contain,
+            CachedNetworkImage(
+              imageUrl: controller.userModel.value.urlPhoto,
+              placeholder: (context, url) => SizedBox(
+                width: 150,
+                height: 150,
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey,
+                  highlightColor: Colors.white,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25.h),
+                    ),
+                  ),
+                ),
+              ),
+              imageBuilder: (context, imageProvider) => Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.h),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 4.0,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) => SizedBox(
+                width: 150,
+                height: 150,
+                child: Image.asset(
+                  'assets/problemas_tecnicos.jpg',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             SizedBox(height: 2.h),

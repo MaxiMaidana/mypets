@@ -42,46 +42,50 @@ class PetImagePV extends GetWidget<PetInfoController> {
                               text: 'Subir foto',
                               onPress: () async {
                                 await controller.uploadImage();
-                                if (context.mounted) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => Obx(
-                                      () => AlertDialog(
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            controller.croppedFile.value.path !=
-                                                    ''
-                                                ? Image.file(File(controller
-                                                    .croppedFile.value.path))
-                                                : controller.petImage.value
-                                                            .path !=
-                                                        ''
-                                                    ? Image.file(File(controller
-                                                        .petImage.value.path))
-                                                    : Container(),
-                                            const SizedBox(height: 20),
-                                            ButtonCustom.principalShort(
-                                              text: 'Guardar',
-                                              onPress: () async {
-                                                controller.saveImage();
-                                                controller.petImage.value =
-                                                    XFile('');
-                                                controller.croppedFile.value =
-                                                    CroppedFile('');
-                                                context.pop();
-                                              },
-                                            ),
-                                            const SizedBox(height: 5),
-                                            ButtonCustom.principalShort(
-                                              text: 'Editar',
-                                              onPress: () => _cropImage(),
-                                            ),
-                                          ],
+                                if (controller.petImage.value.path != '') {
+                                  if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => Obx(
+                                        () => AlertDialog(
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              controller.croppedFile.value
+                                                          .path !=
+                                                      ''
+                                                  ? Image.file(File(controller
+                                                      .croppedFile.value.path))
+                                                  : controller.petImage.value
+                                                              .path !=
+                                                          ''
+                                                      ? Image.file(File(
+                                                          controller.petImage
+                                                              .value.path))
+                                                      : Container(),
+                                              const SizedBox(height: 20),
+                                              ButtonCustom.principalShort(
+                                                text: 'Guardar',
+                                                onPress: () async {
+                                                  controller.saveImage();
+                                                  controller.petImage.value =
+                                                      XFile('');
+                                                  controller.croppedFile.value =
+                                                      CroppedFile('');
+                                                  context.pop();
+                                                },
+                                              ),
+                                              const SizedBox(height: 5),
+                                              ButtonCustom.principalShort(
+                                                text: 'Editar',
+                                                onPress: () => _cropImage(),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 }
                               },
                             )
@@ -98,7 +102,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
       compressFormat: ImageCompressFormat.jpg,
       compressQuality: 100,
       cropStyle: CropStyle.rectangle,
-      // aspectRatio: const CropAspectRatio(ratioX: 16, ratioY: 9),
+      aspectRatio: const CropAspectRatio(ratioX: 4, ratioY: 3),
     );
     if (croppedFile != null) {
       controller.croppedFile.value = croppedFile;
