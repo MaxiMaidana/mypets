@@ -9,12 +9,14 @@ import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../core/utils/image_compress.dart';
+import '../../../reminders/presentation/getx/reminder_controller.dart';
 import '../../domain/provider/info_pet_provider.dart';
 
 class PetInfoController extends GetxController {
   late String petId;
   final PetsController petsController = Get.find();
   final AppController appController = Get.find();
+  final ReminderController reminderController = Get.find();
   final InfoPetProvider _infoPetProvider = InfoPetProvider();
 
   late PetModel _petModel;

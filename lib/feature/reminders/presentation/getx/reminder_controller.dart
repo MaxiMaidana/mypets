@@ -11,6 +11,8 @@ class ReminderController extends GetxController {
 // For storing the CalendarApi object, this can be used
   // for performing all the operations
   // static var calendar;
+  RxDouble heightTotal = 0.0.obs;
+
   CalendarApi? calendarApi;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', CalendarApi.calendarScope],

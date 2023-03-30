@@ -12,7 +12,7 @@ class ReminderItem extends GetWidget<PetInfoController> {
   Widget build(BuildContext context) {
     return Container(
       width: 70.w,
-      height: 20.h,
+      height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Theme.of(context).primaryColor,

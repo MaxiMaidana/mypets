@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../reminders/presentation/widget/add_remined_button.dart';
 import '../../getx/info_pet_controller.dart';
-import '../reminter_item.dart';
 
 class RowRemindersPV extends GetWidget<PetInfoController> {
   const RowRemindersPV({super.key});
@@ -26,12 +26,14 @@ class RowRemindersPV extends GetWidget<PetInfoController> {
           child: Row(
             children: [
               SizedBox(width: 5.w),
-              const ReminderItem(),
+              const AddReminderButton(),
               const SizedBox(width: 10),
-              const ReminderItem(),
-              const SizedBox(width: 10),
-              const ReminderItem(),
-              const SizedBox(width: 10),
+              // const ReminderItem(),
+              // const SizedBox(width: 10),
+              // const ReminderItem(),
+              // const SizedBox(width: 10),
+              // const ReminderItem(),
+              // const SizedBox(width: 10),
             ],
           ),
         ),
