@@ -120,6 +120,7 @@ class ReminderController extends GetxController {
           ),
         ),
         calendarId,
+        sendUpdates: 'all',
       );
       cleanAllData();
       log('se agrego el evento ? ${eventRes.status}');
