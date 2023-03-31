@@ -19,7 +19,8 @@ class ReminderPage extends GetWidget<ReminderController> {
           children: [
             Center(
               child: ButtonCustom.principal(
-                  text: 'Add Event', onPress: () => controller.insert()),
+                  text: 'Add Event',
+                  onPress: () => controller.insert(petName: 'asdasdasd')),
             )
           ],
         ),

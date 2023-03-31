@@ -19,7 +19,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
     return WillPopScope(
       onWillPop: () async {
         if (controller.reminderController.heightTotal.value > 0.0) {
-          controller.reminderController.heightTotal.value = 0.0;
+          controller.reminderController.cleanAllData();
         } else {
           context.pop();
           Get.delete<PetInfoController>();
@@ -27,7 +27,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
         return false;
       },
       child: GestureDetector(
-        onTap: () => controller.reminderController.heightTotal.value = 0.0,
+        onTap: () => controller.reminderController.cleanAllData(),
         child: Stack(
           children: [
             SingleChildScrollView(
@@ -123,9 +123,9 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                 ),
               ),
             ),
-            const Positioned(
+            Positioned(
               bottom: 0.0,
-              child: ReminderButtonSheetPV(),
+              child: ReminderButtonSheetPV(petName: controller.selectPet.name),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../routes/go_routes.dart';
 
@@ -29,6 +30,14 @@ class MyPetsApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 routerConfig: goRouter,
                 theme: theme.getTheme(),
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  // GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('es', 'ES'),
+                ],
               ),
             ),
           );

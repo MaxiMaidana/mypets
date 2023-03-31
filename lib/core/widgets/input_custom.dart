@@ -8,6 +8,7 @@ class InputCustom extends StatefulWidget {
   final String? Function(String?)? validate;
   final TextInputType? textInputType;
   final bool isEnable;
+  final int? cantLines;
   final Widget? icon;
   const InputCustom({
     Key? key,
@@ -19,6 +20,7 @@ class InputCustom extends StatefulWidget {
     this.textInputType,
     this.validate,
     this.icon,
+    this.cantLines,
   }) : super(key: key);
 
   factory InputCustom.base({
@@ -30,6 +32,7 @@ class InputCustom extends StatefulWidget {
     String? Function(String?)? validate,
     TextInputType? textInputType,
     Widget? icon,
+    int? cantLines,
   }) =>
       InputCustom(
         validate: validate,
@@ -40,6 +43,7 @@ class InputCustom extends StatefulWidget {
         textInputType: textInputType,
         isEnable: isEnable,
         icon: icon,
+        cantLines: cantLines,
       );
 
   @override
@@ -64,6 +68,7 @@ class _InputCustomState extends State<InputCustom> {
         keyboardType: widget.textInputType,
         validator: widget.validate,
         enabled: widget.isEnable,
+        maxLines: widget.cantLines ?? 1,
         decoration: InputDecoration(
           fillColor: const Color(0xFF6750A4).withOpacity(0.3),
           filled: true,

@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-import '../getx/info_pet_controller.dart';
+import '../../../info_pet/presentation/getx/info_pet_controller.dart';
 
 class ReminderItem extends GetWidget<PetInfoController> {
   const ReminderItem({super.key});
