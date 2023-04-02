@@ -85,7 +85,10 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                           await showTimePicker(
                         context: context,
                         initialTime: controller.timeInitController.text == ''
-                            ? const TimeOfDay(hour: 0, minute: 0)
+                            ? TimeOfDay(
+                                hour: DateTime.now().hour,
+                                minute: DateTime.now().minute,
+                              )
                             : controller.timeInitToReminder.value!,
                       );
                       controller.timeInitController.text =
@@ -119,7 +122,8 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                     text: 'Confirmar',
                     onPress: () async {
                       context.loaderOverlay.show();
-                      bool res = await controller.insert(petName: petName);
+                      bool res =
+                          await controller.insertReminder(petName: petName);
                       if (context.mounted) {
                         context.loaderOverlay.hide();
                         if (res) {

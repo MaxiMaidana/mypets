@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
 
 // import 'package:googleapis/calendar/v3.dart';
 enum TypeTime { init, finish }
@@ -14,8 +13,8 @@ class ReminderController extends GetxController {
 // For storing the CalendarApi object, this can be used
   // for performing all the operations
   // static var calendar;
-  // final PetInfoController _petInfoController = Get.find();
   RxDouble heightTotal = 0.0.obs;
+  RxString idReminderCreated = ''.obs;
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeInitController = TextEditingController();
@@ -89,7 +88,7 @@ class ReminderController extends GetxController {
   }
 
   // For creating a new calendar event
-  Future<bool> insert({required String petName}) async {
+  Future<bool> insertReminder({required String petName}) async {
     try {
       String calendarId = "primary";
       var httpClient = (await _googleSignIn.authenticatedClient())!;
@@ -122,16 +121,31 @@ class ReminderController extends GetxController {
         calendarId,
         sendUpdates: 'all',
       );
-      cleanAllData();
-      log('se agrego el evento ? ${eventRes.status}');
+      if (eventRes.status == 'confirmed') {
+        idReminderCreated.value = eventRes.id!;
+        cleanAllData();
+      }
       return true;
     } catch (e) {
       return false;
     }
   }
 
+  Future<Event> getReminderData(String id) async {
+    try {
+      String calendarId = "primary";
+      var httpClient = (await _googleSignIn.authenticatedClient())!;
+      calendarApi = CalendarApi(httpClient);
+      Event eventRes = await calendarApi!.events.get(calendarId, id);
+      return eventRes;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
   // For patching an already-created calendar event
-  Future<Map<String, String>> modify({
+  Future<Map<String, String>> modifyReminder({
     required String id,
     required String title,
     required String description,

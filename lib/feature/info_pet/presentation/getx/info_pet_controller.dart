@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:googleapis/calendar/v3.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
@@ -19,6 +20,7 @@ class PetInfoController extends GetxController {
   final ReminderController reminderController = Get.find();
   final InfoPetProvider _infoPetProvider = InfoPetProvider();
 
+  RxList<Event> lsEvents = RxList<Event>();
   late PetModel _petModel;
   Rx<CroppedFile> croppedFile = CroppedFile('').obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -86,6 +88,17 @@ class PetInfoController extends GetxController {
     }
   }
 
+  Future<void> addReminterInPet(String idReminder) async {
+    try {
+      PetModel newPetModel = selectPet;
+      newPetModel.reminders.add(idReminder);
+      _infoPetProvider.updatePetData(selectPet.id, newPetModel);
+    } catch (e) {
+      log('Rompio agregar reminder $e');
+      return;
+    }
+  }
+
   int calculateYars() {
     String year = selectPet.birthDate.split('/').last;
     String month = selectPet.birthDate.split('/')[1];
@@ -98,10 +111,31 @@ class PetInfoController extends GetxController {
     return difYears.round();
   }
 
+  Future<void> getAlEvents() async {
+    try {
+      if (selectPet.reminders.isNotEmpty) {
+        for (String reminderId in selectPet.reminders) {
+          Event eventRes = await reminderController.getReminderData(reminderId);
+          lsEvents.add(eventRes);
+        }
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
   @override
   void onReady() {
     getUrlImage();
+    getAlEvents();
     petYears.value = calculateYars();
+    reminderController.idReminderCreated.listen((p0) async {
+      await addReminterInPet(p0);
+      if (p0 != '') {
+        Event eventRes = await reminderController.getReminderData(p0);
+        lsEvents.add(eventRes);
+      }
+    });
     super.onReady();
   }
 }
