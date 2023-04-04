@@ -18,7 +18,6 @@ class PetsController extends GetxController {
   Future<void> getPets() async {
     try {
       petsLs.clear();
-      // change(null, status: RxStatus.loading());
       if (_appController.userModel == null) {
         await _appController
             .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
@@ -27,8 +26,6 @@ class PetsController extends GetxController {
       petsLs.addAll(await _petsProvider.getPets(
           lsPetsId: _appController.userModel!.pets));
       isChargingPets.value = false;
-      // change(petsLs, status: RxStatus.success());
-      // change([], status: RxStatus.empty());
     } catch (e) {
       isChargingPets.value = false;
       rethrow;

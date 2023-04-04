@@ -26,16 +26,26 @@ class RowRemindersPV extends GetWidget<PetInfoController> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Obx(
-            () => controller.lsEvents.isNotEmpty
-                ? Row(
-                    children: [
-                      SizedBox(width: 5.w),
-                      ...List.generate(controller.lsEvents.length,
-                          (i) => ReminderItem(event: controller.lsEvents[i])),
-                      const AddReminderButton(),
-                      const SizedBox(width: 10),
-                    ],
-                  )
+            () => !controller.isSearchingReminder.value
+                ? controller.lsEvents.isNotEmpty
+                    ? Row(
+                        children: [
+                          SizedBox(width: 5.w),
+                          ...List.generate(
+                              controller.lsEvents.length,
+                              (i) =>
+                                  ReminderItem(event: controller.lsEvents[i])),
+                          const AddReminderButton(),
+                          const SizedBox(width: 10),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          SizedBox(width: 5.w),
+                          const AddReminderButton(),
+                          const SizedBox(width: 10),
+                        ],
+                      )
                 : _shimmer(),
           ),
         ),

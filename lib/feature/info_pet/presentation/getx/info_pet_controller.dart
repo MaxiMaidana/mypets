@@ -21,6 +21,7 @@ class PetInfoController extends GetxController {
   final InfoPetProvider _infoPetProvider = InfoPetProvider();
 
   RxList<Event> lsEvents = RxList<Event>();
+  RxBool isSearchingReminder = false.obs;
   late PetModel _petModel;
   Rx<CroppedFile> croppedFile = CroppedFile('').obs;
   Rx<XFile> petImage = XFile('').obs;
@@ -100,28 +101,53 @@ class PetInfoController extends GetxController {
   }
 
   int calculateYars() {
-    String year = selectPet.birthDate.split('/').last;
+    String year = selectPet.birthDate.split('/')[2];
     String month = selectPet.birthDate.split('/')[1];
-    String day = selectPet.birthDate.split('/').first;
+    String day = selectPet.birthDate.split('/')[0];
 
     int difDays =
         DateTime.now().difference(DateTime.parse('$year-$month-$day')).inDays;
 
     double difYears = difDays / 365;
+    log(difYears.toString());
     return difYears.round();
   }
 
   Future<void> getAlEvents() async {
     try {
+      List<String> remindersToDelete = [];
       if (selectPet.reminders.isNotEmpty) {
+        isSearchingReminder.value = true;
         for (String reminderId in selectPet.reminders) {
           Event eventRes = await reminderController.getReminderData(reminderId);
-          lsEvents.add(eventRes);
+          if (checkIfISValidDateTime(eventRes.end!.dateTime!)) {
+            lsEvents.add(eventRes);
+          } else {
+            remindersToDelete.add(reminderId);
+          }
         }
+        if (remindersToDelete.isNotEmpty) {
+          for (var reminderId in remindersToDelete) {
+            selectPet.reminders.removeWhere((element) => element == reminderId);
+          }
+          await _infoPetProvider.updatePetData(selectPet.id, selectPet);
+        }
+        isSearchingReminder.value = false;
       }
     } catch (e) {
       return;
     }
+  }
+
+  bool checkIfISValidDateTime(DateTime toEvaluate) {
+    DateTime now = DateTime.now();
+    if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
+      return false;
+    }
+    if (toEvaluate.day < now.day && toEvaluate.month >= now.month) {
+      return false;
+    }
+    return true;
   }
 
   @override
