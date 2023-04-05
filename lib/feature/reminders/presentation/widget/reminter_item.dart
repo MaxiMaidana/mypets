@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:googleapis/calendar/v3.dart' as calendarEvent;
 import 'package:sizer/sizer.dart';
 
-import '../../../info_pet/presentation/getx/info_pet_controller.dart';
+import '../getx/reminder_controller.dart';
 
-class ReminderItem extends GetWidget<PetInfoController> {
+class ReminderItem extends GetWidget<ReminderController> {
   final calendarEvent.Event event;
   const ReminderItem({super.key, required this.event});
 
@@ -67,10 +67,19 @@ class ReminderItem extends GetWidget<PetInfoController> {
                           title,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
+                        const Spacer(),
+                        Container(
+                          height: 30,
+                          width: 50,
+                          alignment: Alignment.centerRight,
+                          child: const Icon(Icons.edit),
+                        ),
+                        SizedBox(width: 2.5.w),
                       ],
                     ),
                     Text(
-                      'Todos los días',
+                      controller.transformDateTime(
+                          event.end!.dateTime!.toLocal().toString()),
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -81,7 +90,7 @@ class ReminderItem extends GetWidget<PetInfoController> {
                         const FaIcon(FontAwesomeIcons.clock),
                         SizedBox(width: 2.5.w),
                         Text(
-                          '$initTime: - $finishTime',
+                          '$initTime - $finishTime',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!

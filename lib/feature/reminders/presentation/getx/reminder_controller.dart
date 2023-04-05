@@ -58,6 +58,58 @@ class ReminderController extends GetxController {
     return '$day/$month/$year';
   }
 
+  String transformDateTime(String dateToTransform) {
+    String date = dateToTransform.split(' ').first;
+    String month = date.split('-')[1];
+    String day = date.split('-')[2];
+    String year = date.split('-')[0];
+    if (int.parse(day) == DateTime.now().day) {
+      return 'Hoy';
+    }
+    if (isTomorrow(DateTime.parse(date))) {
+      return 'Manaña';
+    }
+    if (int.parse(year) > DateTime.now().year) {
+      return '$day de ${transformToMonth(month)} del $year';
+    }
+    return '$day de ${transformToMonth(month)}';
+  }
+
+  bool isTomorrow(DateTime date) {
+    Duration dif = DateTime.now().difference(date);
+    return dif.inDays == 1;
+  }
+
+  String transformToMonth(String monthNumber) {
+    switch (int.parse(monthNumber)) {
+      case 1:
+        return 'Enero';
+      case 2:
+        return 'Febrero';
+      case 3:
+        return 'Marzo';
+      case 4:
+        return 'Abril';
+      case 5:
+        return 'Mayo';
+      case 6:
+        return 'Junio';
+      case 7:
+        return 'Julio';
+      case 8:
+        return 'Agosto';
+      case 9:
+        return 'Septiembre';
+      case 10:
+        return 'Octubre';
+      case 11:
+        return 'Noviembre';
+      case 12:
+        return 'Diciembre';
+    }
+    return '';
+  }
+
   String setTimeText(TypeTime typeTime) {
     String hour = '';
     String minute = '';
@@ -139,8 +191,22 @@ class ReminderController extends GetxController {
       Event eventRes = await calendarApi!.events.get(calendarId, id);
       return eventRes;
     } catch (e) {
+      log('fallo traer reminder con id $id');
       log(e.toString());
       rethrow;
+    }
+  }
+
+  Future<bool> deleteReminder(String id) async {
+    try {
+      String calendarId = "primary";
+      var httpClient = (await _googleSignIn.authenticatedClient())!;
+      calendarApi = CalendarApi(httpClient);
+      await calendarApi!.events.delete(calendarId, id);
+      return true;
+    } catch (e) {
+      log('fallo eliminar reminder');
+      return false;
     }
   }
 

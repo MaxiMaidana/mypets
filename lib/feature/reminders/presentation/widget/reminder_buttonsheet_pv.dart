@@ -67,7 +67,7 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                             ? DateTime.now()
                             : controller.dateToReminder.value!,
                         firstDate: DateTime.now(),
-                        lastDate: DateTime(DateTime.now().year + 1),
+                        lastDate: DateTime(DateTime.now().year + 1, 12, 31),
                       );
                       controller.dateController.text = controller.setDateText();
                     },

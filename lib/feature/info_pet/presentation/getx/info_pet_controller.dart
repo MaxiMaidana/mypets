@@ -141,13 +141,16 @@ class PetInfoController extends GetxController {
 
   bool checkIfISValidDateTime(DateTime toEvaluate) {
     DateTime now = DateTime.now();
+    if (toEvaluate.year > now.year) {
+      return true;
+    }
     if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
-      return false;
+      return true;
     }
     if (toEvaluate.day < now.day && toEvaluate.month >= now.month) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   @override
