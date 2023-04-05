@@ -15,6 +15,8 @@ class ReminderController extends GetxController {
   // static var calendar;
   RxDouble heightTotal = 0.0.obs;
   RxString idReminderCreated = ''.obs;
+  RxBool isEdit = false.obs;
+  String? eventId;
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeInitController = TextEditingController();
@@ -48,6 +50,8 @@ class ReminderController extends GetxController {
     timeFinishController.text = '';
     descController.text = '';
     typeController.text = '';
+    eventId = null;
+    isEdit.value = false;
   }
 
   String setDateText() {
@@ -78,6 +82,24 @@ class ReminderController extends GetxController {
   bool isTomorrow(DateTime date) {
     Duration dif = DateTime.now().difference(date);
     return dif.inDays == 1;
+  }
+
+  void chargeDataToEdit(Event event) {
+    isEdit.value = true;
+    eventId = event.id;
+    dateToReminder.value = event.start!.dateTime;
+    dateController.text = setDateText();
+
+    timeInitToReminder.value = TimeOfDay(
+        hour: event.start!.dateTime!.hour,
+        minute: event.start!.dateTime!.minute);
+    timeInitController.text = setTimeText(TypeTime.init);
+
+    timeFinishToReminder.value = TimeOfDay(
+        hour: event.end!.dateTime!.hour, minute: event.end!.dateTime!.minute);
+    timeFinishController.text = setTimeText(TypeTime.finish);
+
+    typeController.text = event.summary!.split(' ').first;
   }
 
   String transformToMonth(String monthNumber) {
@@ -131,7 +153,6 @@ class ReminderController extends GetxController {
   }
 
   Future<void> initCalendarApi() async {
-    // bool isSigned = await _googleSignIn.isSignedIn();
     if (calendarApi == null) {
       await _googleSignIn.signInSilently();
       var httpClient = (await _googleSignIn.authenticatedClient())!;
@@ -139,7 +160,6 @@ class ReminderController extends GetxController {
     }
   }
 
-  // For creating a new calendar event
   Future<bool> insertReminder({required String petName}) async {
     try {
       String calendarId = "primary";
@@ -197,12 +217,15 @@ class ReminderController extends GetxController {
     }
   }
 
-  Future<bool> deleteReminder(String id) async {
+  Future<bool> deleteReminder() async {
     try {
       String calendarId = "primary";
       var httpClient = (await _googleSignIn.authenticatedClient())!;
       calendarApi = CalendarApi(httpClient);
-      await calendarApi!.events.delete(calendarId, id);
+      await calendarApi!.events.delete(calendarId, eventId!);
+      idReminderCreated.value = eventId!;
+      // idReminderCreated.refresh();
+      cleanAllData();
       return true;
     } catch (e) {
       log('fallo eliminar reminder');
@@ -210,21 +233,48 @@ class ReminderController extends GetxController {
     }
   }
 
-  // For patching an already-created calendar event
-  Future<Map<String, String>> modifyReminder({
-    required String id,
-    required String title,
-    required String description,
-    required String location,
-    // required List<EventAttendee> attendeeEmailList,
-    required bool shouldNotifyAttendees,
-    required bool hasConferenceSupport,
-    required DateTime startTime,
-    required DateTime endTime,
-  }) async {
-    return {};
+  Future<bool> editReminder({required String petName}) async {
+    try {
+      String calendarId = "primary";
+      var httpClient = (await _googleSignIn.authenticatedClient())!;
+      calendarApi = CalendarApi(httpClient);
+      Event eventRes = await calendarApi!.events.update(
+        Event(
+          summary: '${typeController.text} - $petName',
+          description: descController.text,
+          start: EventDateTime(
+            dateTime: DateTime(
+              dateToReminder.value!.year,
+              dateToReminder.value!.month,
+              dateToReminder.value!.day,
+              timeInitToReminder.value!.hour,
+              timeInitToReminder.value!.minute,
+            ),
+            timeZone: "America/Argentina/Buenos_Aires",
+          ),
+          end: EventDateTime(
+            dateTime: DateTime(
+              dateToReminder.value!.year,
+              dateToReminder.value!.month,
+              dateToReminder.value!.day,
+              timeFinishToReminder.value!.hour,
+              timeFinishToReminder.value!.minute,
+            ),
+            timeZone: "America/Argentina/Buenos_Aires",
+          ),
+        ),
+        calendarId,
+        eventId!,
+      );
+      if (eventRes.status == 'confirmed') {
+        idReminderCreated.value = eventRes.id!;
+        idReminderCreated.refresh();
+        cleanAllData();
+      }
+      return true;
+    } catch (e) {
+      log('No se pudo editar el reminder');
+      return false;
+    }
   }
-
-  // For deleting a calendar event
-  Future<void> delete(String eventId, bool shouldNotify) async {}
 }

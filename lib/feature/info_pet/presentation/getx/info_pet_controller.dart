@@ -159,10 +159,22 @@ class PetInfoController extends GetxController {
     getAlEvents();
     petYears.value = calculateYars();
     reminderController.idReminderCreated.listen((p0) async {
-      await addReminterInPet(p0);
-      if (p0 != '') {
-        Event eventRes = await reminderController.getReminderData(p0);
-        lsEvents.add(eventRes);
+      if (!selectPet.reminders.contains(p0)) {
+        log('id nuevo, se creo un nuevo evento');
+        await addReminterInPet(p0);
+        if (p0 != '') {
+          Event eventRes = await reminderController.getReminderData(p0);
+          lsEvents.add(eventRes);
+        }
+      } else {
+        log('id existente, se edito el id $p0');
+        lsEvents.clear();
+        getAlEvents();
+        // lsEvents.removeWhere((event) => event.id! == p0);
+        // lsEvents.refresh();
+        // Event eventRes = await reminderController.getReminderData(p0);
+        // lsEvents.add(eventRes);
+        // lsEvents.refresh();
       }
     });
     super.onReady();

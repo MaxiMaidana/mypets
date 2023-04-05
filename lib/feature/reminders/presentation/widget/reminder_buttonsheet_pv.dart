@@ -42,7 +42,9 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                   SizedBox(
                     width: 100.w,
                     child: Text(
-                      'Agregar recordatorio',
+                      controller.isEdit.value
+                          ? 'Editar recordatorio'
+                          : 'Agregar recordatorio',
                       textAlign: TextAlign.center,
                       style: const TextStyle().copyWith(
                         color: Colors.black,
@@ -106,7 +108,9 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                   ),
                   const SizedBox(height: 10),
                   DropDownMenuCustom(
-                    initTitle: 'Tipo de recordatorio',
+                    initTitle: controller.typeController.text == ''
+                        ? 'Tipo de recordatorio'
+                        : controller.typeController.text,
                     valueCharged: controller.typeController.text,
                     items: controller.types,
                     function: (v) => controller.typeController.text = v,
@@ -118,27 +122,74 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                     cantLines: 4,
                   ),
                   const SizedBox(height: 30),
-                  ButtonCustom.principal(
-                    text: 'Confirmar',
-                    onPress: () async {
-                      context.loaderOverlay.show();
-                      bool res =
-                          await controller.insertReminder(petName: petName);
-                      if (context.mounted) {
-                        context.loaderOverlay.hide();
-                        if (res) {
-                          DialogCustom.infoDialog(
-                            context,
-                            title: 'Genial!',
-                            message:
-                                'Ya creaste tu recordatorio para $petName.',
-                            barrierDismissible: true,
-                            aceptar: () => context.pop(),
-                          );
-                        }
-                      }
-                    },
-                  ),
+                  controller.isEdit.value
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ButtonCustom.text(
+                              text: 'Eliminar',
+                              onPress: () async {
+                                context.loaderOverlay.show();
+                                bool res = await controller.deleteReminder();
+                                if (context.mounted) {
+                                  context.loaderOverlay.hide();
+                                  if (res) {
+                                    DialogCustom.infoDialog(
+                                      context,
+                                      title: 'Genial!',
+                                      message:
+                                          'Ya creaste tu recordatorio para $petName.',
+                                      barrierDismissible: true,
+                                      aceptar: () => context.pop(),
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                            ButtonCustom.principalShort(
+                              text: 'Guardar',
+                              onPress: () async {
+                                context.loaderOverlay.show();
+                                bool res = await controller.editReminder(
+                                    petName: petName);
+                                if (context.mounted) {
+                                  context.loaderOverlay.hide();
+                                  if (res) {
+                                    DialogCustom.infoDialog(
+                                      context,
+                                      title: 'Genial!',
+                                      message:
+                                          'Ya editaste tu recordatorio de $petName.',
+                                      barrierDismissible: true,
+                                      aceptar: () => context.pop(),
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      : ButtonCustom.principal(
+                          text: 'Confirmar',
+                          onPress: () async {
+                            context.loaderOverlay.show();
+                            bool res = await controller.insertReminder(
+                                petName: petName);
+                            if (context.mounted) {
+                              context.loaderOverlay.hide();
+                              if (res) {
+                                DialogCustom.infoDialog(
+                                  context,
+                                  title: 'Genial!',
+                                  message:
+                                      'Ya creaste tu recordatorio para $petName.',
+                                  barrierDismissible: true,
+                                  aceptar: () => context.pop(),
+                                );
+                              }
+                            }
+                          },
+                        ),
                   const SizedBox(height: 30),
                 ],
               ),

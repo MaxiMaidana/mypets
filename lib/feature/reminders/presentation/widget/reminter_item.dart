@@ -68,11 +68,21 @@ class ReminderItem extends GetWidget<ReminderController> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         const Spacer(),
-                        Container(
-                          height: 30,
-                          width: 50,
-                          alignment: Alignment.centerRight,
-                          child: const Icon(Icons.edit),
+                        GestureDetector(
+                          onTap: () {
+                            controller.chargeDataToEdit(event);
+                            controller.heightTotal.value = 75.h;
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            alignment: Alignment.centerRight,
+                            child: const Icon(Icons.edit),
+                          ),
                         ),
                         SizedBox(width: 2.5.w),
                       ],
