@@ -28,7 +28,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
                 ? GestureDetector(
                     onLongPress: () {
                       DialogCustom.infoDialogWhitOptionsCustom(context,
-                          title: 'Elige una opcion',
+                          title: '¿Que hacemos?',
                           actions: [],
                           content: [
                             ButtonCustom.principal(

@@ -26,19 +26,19 @@ class RowTitlePV extends GetWidget<PetInfoController> {
           controller.selectPet.sex == 'Male'
               ? const Icon(Icons.male)
               : const Icon(Icons.female),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.delete),
-            ),
-          ),
+          // const Spacer(),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Container(
+          //     height: 40,
+          //     width: 40,
+          //     decoration: BoxDecoration(
+          //       color: Colors.grey[300],
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //     child: const Icon(Icons.delete),
+          //   ),
+          // ),
         ],
       ),
     );
