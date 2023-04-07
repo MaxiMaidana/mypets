@@ -18,7 +18,7 @@ definitions:
     - &flutter_build_apk_prod
       name: Build APK with Flutter
       script: | 
-        flutter build apk --flavor prod
+        flutter build apk --flavor prod --build-name=1.0.$PROJECT_BUILD_NUMBER --build-number=$PROJECT_BUILD_NUMBER
 
     - &create_changelog
       name: Create a changelog
