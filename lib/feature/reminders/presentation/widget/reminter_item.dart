@@ -24,6 +24,15 @@ class ReminderItem extends GetWidget<ReminderController> {
                 : title == 'Veterinario'
                     ? Colors.blueAccent
                     : Colors.grey.withOpacity(0.8);
+    Widget icon = title == 'Peluqueria'
+        ? Icon(Icons.cut, color: cardColor)
+        : title == 'Remedio'
+            ? FaIcon(FontAwesomeIcons.pills, color: cardColor)
+            : title == 'Control'
+                ? Icon(Icons.check, color: cardColor)
+                : title == 'Veterinario'
+                    ? Icon(Icons.local_hospital, color: cardColor)
+                    : Icon(Icons.directions_walk_rounded, color: cardColor);
     String initTime =
         '${event.start!.dateTime!.hour}:${event.start!.dateTime!.minute.toString().length == 1 ? _time(event.start!.dateTime!.minute) : event.start!.dateTime!.minute}';
     String finishTime =
@@ -62,10 +71,7 @@ class ReminderItem extends GetWidget<ReminderController> {
                   children: [
                     Row(
                       children: [
-                        FaIcon(
-                          FontAwesomeIcons.pills,
-                          color: cardColor,
-                        ),
+                        icon,
                         SizedBox(width: 5.w),
                         Text(
                           title,

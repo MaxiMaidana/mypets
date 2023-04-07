@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mypets/core/routes/routes.dart';
+import 'package:mypets/feature/edit_info_pet.dart/presentation/page/edit_info_pet_page.dart';
 import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
@@ -11,6 +12,7 @@ import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
 import '../../feature/change_password/presentation/getx/change_password_controller.dart';
 import '../../feature/change_password/presentation/page/change_password_page.dart';
+import '../../feature/edit_info_pet.dart/presentation/getx/edit_info_pet_controller.dart';
 import '../../feature/home/presentation/getx/home_controller.dart';
 import '../../feature/home/presentation/page/home_page.dart';
 import '../../feature/map/presentation/getx/map_controller.dart';
@@ -129,6 +131,17 @@ GoRouter goRouter = GoRouter(
         infoPetController
             .setPetModel(petsController.searchPet(state.queryParams['id']!));
         return const InfoPetPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.editInfoPet,
+      builder: (context, state) {
+        final editInfoPetController = Get.put(EditInfoPetController());
+        final petsController = Get.find<PetsController>();
+
+        editInfoPetController
+            .setPetModel(petsController.searchPet(state.queryParams['id']!));
+        return const EditInfoPetPage();
       },
     ),
     GoRoute(

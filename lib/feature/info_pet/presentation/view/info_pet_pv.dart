@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:sizer/sizer.dart';
 
@@ -111,7 +112,11 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
                               child: ButtonCustom.principal(
                                 text: 'Editar Mascota',
-                                onPress: () {},
+                                onPress: () => context.push(Uri(
+                                    path: Routes.editInfoPet,
+                                    queryParameters: {
+                                      'id': controller.selectPet.id.toString()
+                                    }).toString()),
                               ),
                             ),
                             SizedBox(height: 2.h),

@@ -9,6 +9,7 @@ class Routes {
   static const String newPet = '/newPet';
   static const String newPetCompleted = '/newPetCompleted';
   static const String infoPet = '/infoPet';
+  static const String editInfoPet = '/editPet';
   static const String map = '/map';
   static const String errorPage = '/error';
 }
