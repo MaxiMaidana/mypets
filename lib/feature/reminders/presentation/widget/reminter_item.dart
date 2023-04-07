@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/calendar/v3.dart' as calendarEvent;
+import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../getx/reminder_controller.dart';
 
 class ReminderItem extends GetWidget<ReminderController> {
   final calendarEvent.Event event;
-  const ReminderItem({super.key, required this.event});
+  final PetModel petModel;
+  const ReminderItem({super.key, required this.event, required this.petModel});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class ReminderItem extends GetWidget<ReminderController> {
             ? const Color.fromARGB(255, 76, 180, 90).withOpacity(0.8)
             : title == 'Control'
                 ? Colors.deepOrange.withOpacity(0.8)
-                : Colors.grey.withOpacity(0.8);
+                : title == 'Veterinario'
+                    ? Colors.blueAccent
+                    : Colors.grey.withOpacity(0.8);
     String initTime =
         '${event.start!.dateTime!.hour}:${event.start!.dateTime!.minute.toString().length == 1 ? _time(event.start!.dateTime!.minute) : event.start!.dateTime!.minute}';
     String finishTime =
@@ -70,7 +74,7 @@ class ReminderItem extends GetWidget<ReminderController> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            controller.chargeDataToEdit(event);
+                            controller.chargeDataToEdit(event, petModel);
                             controller.heightTotal.value = 75.h;
                           },
                           child: Container(

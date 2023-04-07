@@ -86,6 +86,8 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                       controller.timeInitToReminder.value =
                           await showTimePicker(
                         context: context,
+                        initialEntryMode: TimePickerEntryMode.input,
+                        helpText: 'Hora de inicio',
                         initialTime: controller.timeInitController.text == ''
                             ? TimeOfDay(
                                 hour: DateTime.now().hour,
@@ -100,6 +102,8 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                       controller.timeFinishToReminder.value =
                           await showTimePicker(
                         context: context,
+                        initialEntryMode: TimePickerEntryMode.input,
+                        helpText: 'Hora de fin',
                         initialTime: controller.timeInitToReminder.value!,
                       );
                       controller.timeFinishController.text =
@@ -108,9 +112,7 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                   ),
                   const SizedBox(height: 10),
                   DropDownMenuCustom(
-                    initTitle: controller.typeController.text == ''
-                        ? 'Tipo de recordatorio'
-                        : controller.typeController.text,
+                    initTitle: controller.typeController.text,
                     valueCharged: controller.typeController.text,
                     items: controller.types,
                     function: (v) => controller.typeController.text = v,
@@ -138,7 +140,7 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                                       context,
                                       title: 'Genial!',
                                       message:
-                                          'Ya creaste tu recordatorio para $petName.',
+                                          'Ya eliminaste tu recordatorio para $petName.',
                                       barrierDismissible: true,
                                       aceptar: () => context.pop(),
                                     );

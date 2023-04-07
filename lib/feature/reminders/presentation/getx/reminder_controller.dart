@@ -6,15 +6,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 
+import '../../../../data/models/pet/pet_model.dart';
+import '../../domain/model/reminder_event.dart';
+
 // import 'package:googleapis/calendar/v3.dart';
 enum TypeTime { init, finish }
 
 class ReminderController extends GetxController {
-// For storing the CalendarApi object, this can be used
-  // for performing all the operations
-  // static var calendar;
   RxDouble heightTotal = 0.0.obs;
-  RxString idReminderCreated = ''.obs;
+  Rx<ReminderEvent> idReminderCreated = ReminderEvent.init().obs;
   RxBool isEdit = false.obs;
   String? eventId;
 
@@ -49,7 +49,7 @@ class ReminderController extends GetxController {
     timeInitController.text = '';
     timeFinishController.text = '';
     descController.text = '';
-    typeController.text = '';
+    typeController.text = 'Tipo de recordatorio';
     eventId = null;
     isEdit.value = false;
   }
@@ -84,7 +84,7 @@ class ReminderController extends GetxController {
     return dif.inDays == 1;
   }
 
-  void chargeDataToEdit(Event event) {
+  void chargeDataToEdit(Event event, PetModel pet) {
     isEdit.value = true;
     eventId = event.id;
     dateToReminder.value = event.start!.dateTime;
@@ -194,7 +194,11 @@ class ReminderController extends GetxController {
         sendUpdates: 'all',
       );
       if (eventRes.status == 'confirmed') {
-        idReminderCreated.value = eventRes.id!;
+        // idReminderCreated.value = eventRes.id!;
+        idReminderCreated.value = ReminderEvent(
+          type: ReminderType.create,
+          reminderId: eventRes.id!,
+        );
         cleanAllData();
       }
       return true;
@@ -223,8 +227,11 @@ class ReminderController extends GetxController {
       var httpClient = (await _googleSignIn.authenticatedClient())!;
       calendarApi = CalendarApi(httpClient);
       await calendarApi!.events.delete(calendarId, eventId!);
-      idReminderCreated.value = eventId!;
-      // idReminderCreated.refresh();
+      // idReminderCreated.value = eventId!;
+      idReminderCreated.value = ReminderEvent(
+        type: ReminderType.delete,
+        reminderId: eventId!,
+      );
       cleanAllData();
       return true;
     } catch (e) {
@@ -267,8 +274,10 @@ class ReminderController extends GetxController {
         eventId!,
       );
       if (eventRes.status == 'confirmed') {
-        idReminderCreated.value = eventRes.id!;
-        idReminderCreated.refresh();
+        idReminderCreated.value = ReminderEvent(
+          type: ReminderType.update,
+          reminderId: eventId!,
+        );
         cleanAllData();
       }
       return true;

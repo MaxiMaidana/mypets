@@ -33,8 +33,9 @@ class RowRemindersPV extends GetWidget<PetInfoController> {
                           SizedBox(width: 5.w),
                           ...List.generate(
                               controller.lsEvents.length,
-                              (i) =>
-                                  ReminderItem(event: controller.lsEvents[i])),
+                              (i) => ReminderItem(
+                                  event: controller.lsEvents[i],
+                                  petModel: controller.selectPet)),
                           const AddReminderButton(),
                           const SizedBox(width: 10),
                         ],

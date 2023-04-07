@@ -10,6 +10,7 @@ import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
 import '../../../../core/utils/image_compress.dart';
+import '../../../reminders/domain/model/reminder_event.dart';
 import '../../../reminders/presentation/getx/reminder_controller.dart';
 import '../../domain/provider/info_pet_provider.dart';
 
@@ -158,24 +159,38 @@ class PetInfoController extends GetxController {
     getUrlImage();
     getAlEvents();
     petYears.value = calculateYars();
-    reminderController.idReminderCreated.listen((p0) async {
-      if (!selectPet.reminders.contains(p0)) {
-        log('id nuevo, se creo un nuevo evento');
-        await addReminterInPet(p0);
-        if (p0 != '') {
-          Event eventRes = await reminderController.getReminderData(p0);
+    reminderController.idReminderCreated.listen((reminderEvent) async {
+      switch (reminderEvent.type) {
+        case ReminderType.create:
+          log('id nuevo, se creo un nuevo evento');
+          await addReminterInPet(reminderEvent.reminderId);
+          Event eventRes = await reminderController
+              .getReminderData(reminderEvent.reminderId);
           lsEvents.add(eventRes);
-        }
-      } else {
-        log('id existente, se edito el id $p0');
-        lsEvents.clear();
-        getAlEvents();
-        // lsEvents.removeWhere((event) => event.id! == p0);
-        // lsEvents.refresh();
-        // Event eventRes = await reminderController.getReminderData(p0);
-        // lsEvents.add(eventRes);
-        // lsEvents.refresh();
+          break;
+        case ReminderType.delete:
+          log('id existente, se elimino el id ${reminderEvent.reminderId}');
+          selectPet.reminders
+              .removeWhere((element) => element == reminderEvent.reminderId);
+          await _infoPetProvider.updatePetData(selectPet.id!, selectPet);
+          lsEvents.clear();
+          getAlEvents();
+          break;
+        case ReminderType.update:
+          log('id existente, se edito el id ${reminderEvent.reminderId}');
+          lsEvents.clear();
+          getAlEvents();
+          break;
+        default:
       }
+      // if (!selectPet.reminders.contains(reminderEvent)) {
+      // } else {
+      // lsEvents.removeWhere((event) => event.id! == p0);
+      // lsEvents.refresh();
+      // Event eventRes = await reminderController.getReminderData(p0);
+      // lsEvents.add(eventRes);
+      // lsEvents.refresh();
+      // }
     });
     super.onReady();
   }
