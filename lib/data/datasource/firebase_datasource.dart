@@ -137,4 +137,19 @@ class FirebaseDatasource implements FirebaseDatasourceRepository {
       );
     }
   }
+
+  @override
+  Future<ResponseModel> deleteImageFile({required String filePath}) async {
+    try {
+      final Reference storageRef =
+          FirebaseStorage.instance.ref().child(filePath);
+      await storageRef.delete();
+      return ResponseModel(code: 200, data: 'Foto eliminada correctamente');
+    } catch (e) {
+      throw ErrorModel(
+        code: 'Error',
+        message: 'No se pudo eliminar imagen: $filePath',
+      );
+    }
+  }
 }

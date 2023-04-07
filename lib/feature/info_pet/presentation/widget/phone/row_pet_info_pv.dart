@@ -14,7 +14,7 @@ class RowPetInfoPV extends GetWidget<PetInfoController> {
       SizedBox(width: 5.w),
       Obx(
         () => PetInfoItem(
-          title: 'Años',
+          title: 'Edad',
           info: controller.petYears.value.toString(),
         ),
       ),

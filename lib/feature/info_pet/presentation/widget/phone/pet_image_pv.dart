@@ -6,10 +6,9 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
-import 'package:sizer/sizer.dart';
 
+import '../../../../../core/widgets/dialog_custom.dart';
 import '../../getx/info_pet_controller.dart';
 
 class PetImagePV extends GetWidget<PetInfoController> {
@@ -18,7 +17,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.h,
+      // height: 40.h,
       width: double.infinity,
       child: Obx(
         () => controller.isSearchPhoto.value
@@ -26,68 +25,52 @@ class PetImagePV extends GetWidget<PetInfoController> {
                 width: double.infinity,
               )
             : controller.urlImagePet.value != ''
-                ? CachedNetworkImage(
-                    alignment: Alignment.topCenter,
-                    imageUrl: controller.urlImagePet.value,
-                    fit: BoxFit.cover,
+                ? GestureDetector(
+                    onLongPress: () {
+                      DialogCustom.infoDialogWhitOptionsCustom(context,
+                          title: 'Elige una opcion',
+                          actions: [],
+                          content: [
+                            ButtonCustom.principal(
+                              text: 'Eliminar Foto',
+                              onPress: () {
+                                controller.deleteImage();
+                                if (context.mounted) {
+                                  context.pop();
+                                }
+                              },
+                            ),
+                            ButtonCustom.principal(
+                              text: 'Cambiar Foto',
+                              onPress: () async {
+                                context.pop();
+                                _uploadFile(context);
+                              },
+                            )
+                          ]);
+                    },
+                    child: SizedBox(
+                      height: 300,
+                      child: CachedNetworkImage(
+                        alignment: Alignment.topCenter,
+                        imageUrl: controller.urlImagePet.value,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   )
                 : controller.isChargingPhoto.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : SizedBox(
+                    ? const SizedBox(
+                        height: 200,
                         width: double.infinity,
+                        child: Center(child: CircularProgressIndicator()))
+                    : SizedBox(
+                        height: 230,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ButtonCustom.principalShort(
                               text: 'Subir foto',
-                              onPress: () async {
-                                await controller.uploadImage();
-                                if (controller.petImage.value.path != '') {
-                                  if (context.mounted) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Obx(
-                                        () => AlertDialog(
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              controller.croppedFile.value
-                                                          .path !=
-                                                      ''
-                                                  ? Image.file(File(controller
-                                                      .croppedFile.value.path))
-                                                  : controller.petImage.value
-                                                              .path !=
-                                                          ''
-                                                      ? Image.file(File(
-                                                          controller.petImage
-                                                              .value.path))
-                                                      : Container(),
-                                              const SizedBox(height: 20),
-                                              ButtonCustom.principalShort(
-                                                text: 'Guardar',
-                                                onPress: () async {
-                                                  controller.saveImage();
-                                                  controller.petImage.value =
-                                                      XFile('');
-                                                  controller.croppedFile.value =
-                                                      CroppedFile('');
-                                                  context.pop();
-                                                },
-                                              ),
-                                              const SizedBox(height: 5),
-                                              ButtonCustom.principalShort(
-                                                text: 'Editar',
-                                                onPress: () => _cropImage(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
+                              onPress: () async => _uploadFile(context),
                             )
                           ],
                         ),
@@ -106,6 +89,46 @@ class PetImagePV extends GetWidget<PetInfoController> {
     );
     if (croppedFile != null) {
       controller.croppedFile.value = croppedFile;
+    }
+  }
+
+  Future<void> _uploadFile(BuildContext context) async {
+    await controller.uploadImage();
+    if (controller.petImage.value.path != '') {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => Obx(
+            () => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  controller.croppedFile.value.path != ''
+                      ? Image.file(File(controller.croppedFile.value.path))
+                      : controller.petImage.value.path != ''
+                          ? Image.file(File(controller.petImage.value.path))
+                          : Container(),
+                  const SizedBox(height: 20),
+                  ButtonCustom.principalShort(
+                    text: 'Guardar',
+                    onPress: () {
+                      controller.saveImage();
+                      controller.petImage.value = XFile('');
+                      controller.croppedFile.value = CroppedFile('');
+                      context.pop();
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  ButtonCustom.principalShort(
+                    text: 'Editar',
+                    onPress: () => _cropImage(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
     }
   }
 }

@@ -30,7 +30,7 @@ class PetInfoController extends GetxController {
   RxBool isSearchPhoto = false.obs;
   RxBool isChargingPhoto = false.obs;
   RxString urlImagePet = ''.obs;
-  RxInt petYears = 0.obs;
+  RxString petYears = ''.obs;
 
   void setPetId(String id) => petId = id;
 
@@ -49,6 +49,7 @@ class PetInfoController extends GetxController {
   Future<void> saveImage() async {
     try {
       isChargingPhoto.value = true;
+      urlImagePet.value = '';
       String newName =
           '${appController.userModel!.dni}${_petModel.id}${_petModel.name}'
               .replaceAll(' ', '');
@@ -65,6 +66,21 @@ class PetInfoController extends GetxController {
       _petModel.photoUrl = petUrlImage;
       await _infoPetProvider.updatePetData(selectPet.id, _petModel);
       await getUrlImage();
+      isChargingPhoto.value = false;
+    } catch (e) {
+      isChargingPhoto.value = false;
+      rethrow;
+    }
+  }
+
+  Future<void> deleteImage() async {
+    try {
+      urlImagePet.value = '';
+      isChargingPhoto.value = true;
+      _petModel.photoUrl = '';
+      await _infoPetProvider.deleteImagePetFirebase(
+          '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
+      await _infoPetProvider.updatePetData(selectPet.id, _petModel);
       isChargingPhoto.value = false;
     } catch (e) {
       isChargingPhoto.value = false;
@@ -101,7 +117,7 @@ class PetInfoController extends GetxController {
     }
   }
 
-  int calculateYars() {
+  String calculateYars() {
     String year = selectPet.birthDate.split('/')[2];
     String month = selectPet.birthDate.split('/')[1];
     String day = selectPet.birthDate.split('/')[0];
@@ -110,8 +126,18 @@ class PetInfoController extends GetxController {
         DateTime.now().difference(DateTime.parse('$year-$month-$day')).inDays;
 
     double difYears = difDays / 365;
-    log(difYears.toString());
-    return difYears.round();
+    if (difYears < 0.12) {
+      double difWeeks = difYears * 7;
+      int dif = int.parse(difWeeks.toString().split('.').last.substring(0, 1));
+      return dif == 1 ? '${dif.round()} semana' : '${dif.round()} semanas';
+    }
+    if (difYears < 1) {
+      double difMonths = difYears * 12;
+      String months = difMonths.toString().split('.').first;
+      return months == '1' ? '$months mes' : '$months meses';
+    }
+    String dif = difYears.toString().split('.').first;
+    return dif == '1' ? '$dif año' : '$dif años';
   }
 
   Future<void> getAlEvents() async {
@@ -170,9 +196,9 @@ class PetInfoController extends GetxController {
           break;
         case ReminderType.delete:
           log('id existente, se elimino el id ${reminderEvent.reminderId}');
-          selectPet.reminders
+          _petModel.reminders
               .removeWhere((element) => element == reminderEvent.reminderId);
-          await _infoPetProvider.updatePetData(selectPet.id!, selectPet);
+          await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
           lsEvents.clear();
           getAlEvents();
           break;
@@ -183,14 +209,6 @@ class PetInfoController extends GetxController {
           break;
         default:
       }
-      // if (!selectPet.reminders.contains(reminderEvent)) {
-      // } else {
-      // lsEvents.removeWhere((event) => event.id! == p0);
-      // lsEvents.refresh();
-      // Event eventRes = await reminderController.getReminderData(p0);
-      // lsEvents.add(eventRes);
-      // lsEvents.refresh();
-      // }
     });
     super.onReady();
   }

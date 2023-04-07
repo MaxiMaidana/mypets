@@ -37,6 +37,15 @@ class InfoPetProvider {
     }
   }
 
+  Future<void> deleteImagePetFirebase(String filePath) async {
+    try {
+      ResponseModel responseModel = await FirebaseDatasource()
+          .deleteImageFile(filePath: 'pets/$filePath');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updatePetData(uid, PetModel petModel) async {
     try {
       await FirebaseDatasource(collection: 'pets')

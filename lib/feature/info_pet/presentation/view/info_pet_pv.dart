@@ -32,7 +32,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
           children: [
             SingleChildScrollView(
               child: SizedBox(
-                height: 110.h,
+                height: 100.h,
                 child: Stack(
                   children: [
                     const PetImagePV(),

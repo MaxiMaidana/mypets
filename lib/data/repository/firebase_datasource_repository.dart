@@ -14,4 +14,5 @@ abstract class FirebaseDatasourceRepository {
       {required String folderName, required String imageName});
   Future<ResponseModel> postImageFile(
       {required File file, required String filePath});
+  Future<ResponseModel> deleteImageFile({required String filePath});
 }
