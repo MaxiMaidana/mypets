@@ -163,8 +163,9 @@ class ReminderController extends GetxController {
   Future<bool> insertReminder({required String petName}) async {
     try {
       String calendarId = "primary";
-      var httpClient = (await _googleSignIn.authenticatedClient())!;
-      calendarApi = CalendarApi(httpClient);
+      // var httpClient = (await _googleSignIn.authenticatedClient())!;
+      await initCalendarApi();
+      // calendarApi = CalendarApi(httpClient);
       Event eventRes = await calendarApi!.events.insert(
         Event(
           summary: '${typeController.text} - $petName',
@@ -203,6 +204,7 @@ class ReminderController extends GetxController {
       }
       return true;
     } catch (e) {
+      log('error al crear recordatorio = ${e.toString()}');
       return false;
     }
   }
@@ -210,8 +212,9 @@ class ReminderController extends GetxController {
   Future<Event> getReminderData(String id) async {
     try {
       String calendarId = "primary";
-      var httpClient = (await _googleSignIn.authenticatedClient())!;
-      calendarApi = CalendarApi(httpClient);
+      // var httpClient = (await _googleSignIn.authenticatedClient())!;
+      // calendarApi = CalendarApi(httpClient);
+      await initCalendarApi();
       Event eventRes = await calendarApi!.events.get(calendarId, id);
       return eventRes;
     } catch (e) {
@@ -224,8 +227,9 @@ class ReminderController extends GetxController {
   Future<bool> deleteReminder() async {
     try {
       String calendarId = "primary";
-      var httpClient = (await _googleSignIn.authenticatedClient())!;
-      calendarApi = CalendarApi(httpClient);
+      // var httpClient = (await _googleSignIn.authenticatedClient())!;
+      // calendarApi = CalendarApi(httpClient);
+      await initCalendarApi();
       await calendarApi!.events.delete(calendarId, eventId!);
       // idReminderCreated.value = eventId!;
       idReminderCreated.value = ReminderEvent(
@@ -243,8 +247,9 @@ class ReminderController extends GetxController {
   Future<bool> editReminder({required String petName}) async {
     try {
       String calendarId = "primary";
-      var httpClient = (await _googleSignIn.authenticatedClient())!;
-      calendarApi = CalendarApi(httpClient);
+      // var httpClient = (await _googleSignIn.authenticatedClient())!;
+      // calendarApi = CalendarApi(httpClient);
+      await initCalendarApi();
       Event eventRes = await calendarApi!.events.update(
         Event(
           summary: '${typeController.text} - $petName',

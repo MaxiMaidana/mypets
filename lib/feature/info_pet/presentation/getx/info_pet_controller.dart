@@ -174,7 +174,7 @@ class PetInfoController extends GetxController {
     if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
       return true;
     }
-    if (toEvaluate.day < now.day && toEvaluate.month >= now.month) {
+    if (toEvaluate.day < now.day && toEvaluate.month < now.month) {
       return true;
     }
     return false;

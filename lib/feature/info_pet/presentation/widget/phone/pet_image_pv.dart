@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../../core/widgets/dialog_custom.dart';
 import '../../getx/info_pet_controller.dart';
@@ -17,7 +18,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: 40.h,
+      height: 30.h,
       width: double.infinity,
       child: Obx(
         () => controller.isSearchPhoto.value

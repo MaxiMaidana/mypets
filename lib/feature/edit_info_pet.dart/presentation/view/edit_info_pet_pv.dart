@@ -7,7 +7,7 @@ class EditInfoPetPV extends GetWidget<EditInfoPetController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return const SizedBox(
       child: Text('seguir por aca'),
     );
   }

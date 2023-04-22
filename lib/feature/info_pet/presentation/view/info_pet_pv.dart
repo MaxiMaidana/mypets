@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +19,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
 
   @override
   Widget build(BuildContext context) {
+    log(Get.height.toString());
     return WillPopScope(
       onWillPop: () async {
         if (controller.reminderController.heightTotal.value > 0.0) {
@@ -66,6 +69,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                       left: 0,
                       right: 0,
                       child: Container(
+                        height: 78.h,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -99,7 +103,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                                 color: Colors.black),
                             const SizedBox(height: 10),
                             const RowRemindersPV(),
-                            const SizedBox(height: 30),
+                            SizedBox(height: Get.height < 720 ? 30 : 8.5.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
                               child: ButtonCustom.principal(
@@ -119,7 +123,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                                     }).toString()),
                               ),
                             ),
-                            SizedBox(height: 2.h),
+                            // SizedBox(height: 2.h),
                           ],
                         ),
                       ),
