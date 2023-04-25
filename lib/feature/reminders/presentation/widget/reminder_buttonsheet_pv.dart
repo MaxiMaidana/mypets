@@ -88,7 +88,6 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                       controller.timeInitToReminder.value =
                           await showTimePicker(
                         context: context,
-                        initialEntryMode: TimePickerEntryMode.input,
                         helpText: 'Hora de inicio',
                         initialTime: controller.timeInitController.text == ''
                             ? TimeOfDay(
@@ -104,7 +103,6 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                       controller.timeFinishToReminder.value =
                           await showTimePicker(
                         context: context,
-                        initialEntryMode: TimePickerEntryMode.input,
                         helpText: 'Hora de fin',
                         initialTime: controller.timeInitToReminder.value!,
                       );
