@@ -58,25 +58,28 @@ definitions:
       notify:
         success: true
         failure: true
-
-  publish_firebase_android: &publish_firebase_android
+  
+  firebase_app_distribution: &firebase_app_distribution
     firebase:
-      firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
-      android:
-        app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
-        groups:
-          - android_testers
-        artifact_type: 'apk'
-
-workflows:
-  firebase_android_qa:
-    name: MyPets Qa
-    environment:
+        firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
+        android:
+          app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
+          groups:
+            - android_testers
+          artifact_type: 'apk'
+  
+  environment: &enviroments
       flutter: stable
       xcode: latest
       cocoapods: default
       # android_signing:
       #   - keystore_reference
+
+workflows:
+  firebase_android_qa:
+    name: MyPets Qa
+    environment:
+      <<: *enviroments
       groups:
         - keystore_credentials
         - discord_credentials
@@ -95,26 +98,13 @@ workflows:
       # - app/build/outputs/**/*.aab
       # - build/app/outputs/bundle/release/app-release.aab
 
-
     publishing:
-      firebase:
-        firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
-        android:
-          app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
-          groups:
-            - android_testers
-          artifact_type: 'apk'
-      email:
-        recipients:
-          - maidana1454@gmail.com
-        notify:
-          success: true
-          failure: true
-      # <<: *email_release
-      # <<: *publish_firebase_android
+      <<: [
+        *firebase_app_distribution,
+        *email_release
+        ]
       scripts:
         - *discord_notification_build_android
-
     triggering:
       events:
         - push
@@ -123,94 +113,3 @@ workflows:
           include: true
           source: true
       cancel_previous_builds: true
-  # android-workflow:
-  #   name: MyPets Android
-  #   environment:
-  #     flutter: stable
-  #     xcode: latest
-  #     cocoapods: default
-  #     # android_signing:
-  #     #   - keystore_reference
-  #     groups:
-  #       - keystore_credentials
-  #       - discord_credentials
-  #       - firebase_credentials
-  #       # - keystore_reference
-      
-  #   scripts:
-  #   - name: Set up keystore
-  #     script: |
-  #         echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
-  #   - name: Set up local.properties
-  #     script: | 
-  #       echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
-  #   - name: Get Flutter packages
-  #     script: | 
-  #       flutter packages pub get
-  #   # - name: Flutter analyze
-  #   #   script: | 
-  #   #       flutter analyze
-  #   - name: Build APK with Flutter
-  #     script: | 
-  #       flutter build apk --flavor prod --release
-  #   - name: Create a changelog
-  #     script: | 
-  #       if [[ -z ${CM_PREVIOUS_COMMIT} ]]
-  #         then
-  #           echo "No finished builds found to generate changelog" | tee release_notes.txt
-  #         else
-  #           echo "$(git-changelog generate --previous-commit $CM_PREVIOUS_COMMIT)" | tee release_notes.txt
-  #       fi
-        
-    
-  #   artifacts:
-  #     - app/build/outputs/**/**/*.apk
-  #     - build/app/outputs/flutter-apk/app-prod-release.apk
-  #     - flutter_drive.log
-
-  #   publishing:
-  #     firebase:
-  #       firebase_service_account: $FIREBASE_SERVICE_ACCOUNT
-  #       android:
-  #         app_id: 1:212788224879:android:85e1b0e58b07f594a3fe9a 
-  #         groups:
-  #           - android_testers
-  #         artifact_type: 'apk'
-  #     scripts:
-  #     - name: Discord notification
-  #       script: | 
-  #         set -ex
-  #         APP_LINK=$(echo $CM_ARTIFACT_LINKS | jq -r '.[] | select(.name=="app-release.apk") | .url')
-        
-  #         # Get first 7 digits of commit number
-  #         COMMIT=$(echo "${CM_COMMIT}" | sed 's/^\(........\).*/\1/;q')
-
-  #         # Get commit message
-  #         COMMIT_MESSAGE=$(git log --format=%B -n 1 $CM_COMMIT)
-          
-  #         # Get commit author
-  #         AUTHOR=$(git show -s --format='%ae' $CM_COMMIT)
-          
-  #         # Publish the notification
-  #         curl -H "Content-Type: multipart/form-data" \
-  #         -F 'payload_json={"username" : "Aki-Android", "content": "**Commit:** `'"$COMMIT"'`\n\n**Commit message:** '"$COMMIT_MESSAGE"'\n\n**Branch:** '"$CM_BRANCH"'\n\n**Author:** '"$AUTHOR"'\n\n**Artifacts: **\n\n'"$APP_LINK"'\n\n"}' \
-  #         -F "file1=@release_notes.txt" \
-  #         $WEBHOOK_URL
-  #     email:
-  #       recipients:
-  #         - maidana1454@agmail.com
-  #       notify:
-  #         success: true
-  #         failure: true
-    
-  #   triggering:
-  #     events:
-  #       - push
-  #     branch_patterns:
-  #       - pattern: 'qa'
-  #         include: true
-  #         source: true
-  #     cancel_previous_builds: true
-# artifacts:
-#     - app/build/outputs/**/**/*.apk
-#     - build/app/outputs/flutter-apk/app-release.apk
