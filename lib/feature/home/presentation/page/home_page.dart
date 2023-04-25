@@ -46,7 +46,7 @@ class HomePage extends GetWidget<HomeController> {
                     children: [
                       Center(
                         child: Text(
-                          'My Pets',
+                          'PetBook',
                           style: GoogleFonts.sora(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,

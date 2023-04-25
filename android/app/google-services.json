@@ -8,26 +8,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:212788224879:android:85e1b0e58b07f594a3fe9a",
+        "mobilesdk_app_id": "1:212788224879:android:9a8e519c2980e78fa3fe9a",
         "android_client_info": {
-          "package_name": "ar.com.mypets"
+          "package_name": "ar.com.petbook"
         }
       },
       "oauth_client": [
         {
-          "client_id": "212788224879-93811ua5e4ol8m47a6qf0grggvvll1fb.apps.googleusercontent.com",
+          "client_id": "212788224879-ajjgmqc59ohbmlt6dsv94vjch7viov9o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ar.com.mypets",
-            "certificate_hash": "8051ea3c6579d28ab7a81272e73988051f72fbea"
+            "package_name": "ar.com.petbook",
+            "certificate_hash": "ed2b1e6a9699c820c6b72dde65646b5a0085f92b"
           }
         },
         {
-          "client_id": "212788224879-forcdj8c7deej0btpge4ubh1bqkgcrfm.apps.googleusercontent.com",
+          "client_id": "212788224879-puv3r0rk3lu8o2euhg480mrdvvukevtc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ar.com.mypets",
-            "certificate_hash": "ed2b1e6a9699c820c6b72dde65646b5a0085f92b"
+            "package_name": "ar.com.petbook",
+            "certificate_hash": "8051ea3c6579d28ab7a81272e73988051f72fbea"
           }
         },
         {
@@ -48,10 +48,10 @@
               "client_type": 3
             },
             {
-              "client_id": "212788224879-h3j7gnkpejs23d04rh0jql7gvk633p1h.apps.googleusercontent.com",
+              "client_id": "212788224879-4khrjjhrvga2aoqhgjmek4ntj0dvanqm.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "ar.com.mypets"
+                "bundle_id": "ar.com.petbook"
               }
             }
           ]

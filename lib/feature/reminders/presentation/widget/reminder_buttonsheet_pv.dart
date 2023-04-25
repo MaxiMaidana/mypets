@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +5,8 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/core/widgets/input_custom.dart';
+import 'package:mypets/feature/reminders/presentation/widget/row_item_date.dart';
+import 'package:mypets/feature/reminders/presentation/widget/row_item_time.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../new_pet/presentation/widget/drop_down_menu_custom.dart';
@@ -56,7 +56,7 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                     ),
                   ),
                   SizedBox(height: 3.h),
-                  _rowItemDate(
+                  RowItemDate(
                     textController: controller.dateController,
                     hint: 'Fecha del recordatorio*',
                     icon: const Icon(
@@ -77,9 +77,9 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  _rowItemTime(
-                    textControllerInit: controller.timeInitController,
-                    textControllerFinish: controller.timeFinishController,
+                  RowItemTime(
+                    textInit: controller.timeInitController,
+                    textFinish: controller.timeFinishController,
                     icon: const Icon(
                       Icons.watch_later,
                       size: 40,
@@ -204,70 +204,70 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
     );
   }
 
-  Widget _rowItemDate({
-    required TextEditingController textController,
-    required String hint,
-    required Icon icon,
-    required Function() function,
-  }) {
-    return GestureDetector(
-      onTap: function,
-      child: Row(
-        children: [
-          icon,
-          const Spacer(),
-          SizedBox(
-            width: 70.w,
-            child: InputCustom.base(
-              controller: textController,
-              hint: hint,
-              isEnable: false,
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _rowItemDate({
+  //   required TextEditingController textController,
+  //   required String hint,
+  //   required Icon icon,
+  //   required Function() function,
+  // }) {
+  //   return GestureDetector(
+  //     onTap: function,
+  //     child: Row(
+  //       children: [
+  //         icon,
+  //         const Spacer(),
+  //         SizedBox(
+  //           width: 70.w,
+  //           child: InputCustom.base(
+  //             controller: textController,
+  //             hint: hint,
+  //             isEnable: false,
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _rowItemTime({
-    required TextEditingController textControllerInit,
-    required TextEditingController textControllerFinish,
-    required Icon icon,
-    required Function() functionInit,
-    required Function() functionFinish,
-  }) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: functionInit,
-          child: Row(
-            children: [
-              icon,
-              SizedBox(width: 10.w),
-              SizedBox(
-                width: 30.w,
-                child: InputCustom.base(
-                  controller: textControllerInit,
-                  hint: 'Inicio',
-                  isEnable: false,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Spacer(),
-        GestureDetector(
-          onTap: functionFinish,
-          child: SizedBox(
-            width: 30.w,
-            child: InputCustom.base(
-              controller: textControllerFinish,
-              hint: 'Fin',
-              isEnable: false,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _rowItemTime({
+  //   required TextEditingController textControllerInit,
+  //   required TextEditingController textControllerFinish,
+  //   required Icon icon,
+  //   required Function() functionInit,
+  //   required Function() functionFinish,
+  // }) {
+  //   return Row(
+  //     children: [
+  //       GestureDetector(
+  //         onTap: functionInit,
+  //         child: Row(
+  //           children: [
+  //             icon,
+  //             SizedBox(width: 10.w),
+  //             SizedBox(
+  //               width: 30.w,
+  //               child: InputCustom.base(
+  //                 controller: textControllerInit,
+  //                 hint: 'Inicio',
+  //                 isEnable: false,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       const Spacer(),
+  //       GestureDetector(
+  //         onTap: functionFinish,
+  //         child: SizedBox(
+  //           width: 30.w,
+  //           child: InputCustom.base(
+  //             controller: textControllerFinish,
+  //             hint: 'Fin',
+  //             isEnable: false,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

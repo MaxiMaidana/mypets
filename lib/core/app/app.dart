@@ -26,7 +26,7 @@ class MyPetsApp extends StatelessWidget {
                 ),
               ),
               child: MaterialApp.router(
-                title: 'My Pets',
+                title: 'PetBook',
                 debugShowCheckedModeBanner: false,
                 routerConfig: goRouter,
                 theme: theme.getTheme(),

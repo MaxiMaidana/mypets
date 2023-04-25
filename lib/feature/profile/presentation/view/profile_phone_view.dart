@@ -159,7 +159,7 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Text('My Pets'),
+                const Text('PetBook'),
                 Text('Versión ${controller.appVersion}'),
               ],
             ),

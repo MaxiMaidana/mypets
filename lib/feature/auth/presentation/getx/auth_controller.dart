@@ -91,7 +91,9 @@ class AuthController extends GetxController {
       }
       errorModel = ErrorModel(code: title, message: message);
       userStatus.value = UserStatus.error;
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   Future<void> _loginWithGoogleWeb() async {

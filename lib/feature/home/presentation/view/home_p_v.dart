@@ -22,7 +22,7 @@ class HomePV extends GetWidget<HomeController> {
                 icon: const Icon(Icons.menu),
               ),
               Text(
-                'My Pets',
+                'PetBook',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               IconButton(

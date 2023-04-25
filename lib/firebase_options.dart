@@ -45,18 +45,18 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBmY-_6o_M1SsqlUsW0HM1ob23EaKGC-7E',
-    appId: '1:212788224879:web:3ed68afc95f14126a3fe9a',
+    appId: '1:212788224879:web:49f14d6fecc0f347a3fe9a',
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
     authDomain: 'mypets-healthbook.firebaseapp.com',
     databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
     storageBucket: 'mypets-healthbook.appspot.com',
-    measurementId: 'G-9MDXPMQYDV',
+    measurementId: 'G-KK7XV8TJHE',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAWQ_xNIsALlWH46nTz1L_aEIyvdki6OWo',
-    appId: '1:212788224879:android:85e1b0e58b07f594a3fe9a',
+    appId: '1:212788224879:android:9a8e519c2980e78fa3fe9a',
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
     databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
@@ -65,29 +65,25 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAAKWZokhHeLs9DOutU54VLPC1ckRGt45o',
-    appId: '1:212788224879:ios:b172d1909122059ca3fe9a',
+    appId: '1:212788224879:ios:65639c556dc763f9a3fe9a',
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
     databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
     storageBucket: 'mypets-healthbook.appspot.com',
-    androidClientId:
-        '212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com',
-    iosClientId:
-        '212788224879-h3j7gnkpejs23d04rh0jql7gvk633p1h.apps.googleusercontent.com',
-    iosBundleId: 'ar.com.mypets',
+    androidClientId: '212788224879-93811ua5e4ol8m47a6qf0grggvvll1fb.apps.googleusercontent.com',
+    iosClientId: '212788224879-4khrjjhrvga2aoqhgjmek4ntj0dvanqm.apps.googleusercontent.com',
+    iosBundleId: 'ar.com.petbook',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAAKWZokhHeLs9DOutU54VLPC1ckRGt45o',
-    appId: '1:212788224879:ios:b172d1909122059ca3fe9a',
+    appId: '1:212788224879:ios:65639c556dc763f9a3fe9a',
     messagingSenderId: '212788224879',
     projectId: 'mypets-healthbook',
     databaseURL: 'https://mypets-healthbook-default-rtdb.firebaseio.com',
     storageBucket: 'mypets-healthbook.appspot.com',
-    androidClientId:
-        '212788224879-svpv4pk28imd5967f5067la40tmtn867.apps.googleusercontent.com',
-    iosClientId:
-        '212788224879-h3j7gnkpejs23d04rh0jql7gvk633p1h.apps.googleusercontent.com',
-    iosBundleId: 'ar.com.mypets',
+    androidClientId: '212788224879-93811ua5e4ol8m47a6qf0grggvvll1fb.apps.googleusercontent.com',
+    iosClientId: '212788224879-4khrjjhrvga2aoqhgjmek4ntj0dvanqm.apps.googleusercontent.com',
+    iosBundleId: 'ar.com.petbook',
   );
 }

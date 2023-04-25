@@ -21,7 +21,7 @@ class LoginColumCV extends GetWidget<AuthController> {
       children: [
         SizedBox(height: 15.h),
         Text(
-          'Bienvenido a My Pets',
+          'Bienvenido a PetBook',
           style: Theme.of(context).textTheme.displaySmall,
           textAlign: TextAlign.left,
         ),
