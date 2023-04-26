@@ -9,8 +9,9 @@ import 'package:mypets/feature/reminders/presentation/widget/row_item_date.dart'
 import 'package:mypets/feature/reminders/presentation/widget/row_item_time.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../new_pet/presentation/widget/drop_down_menu_custom.dart';
-import '../getx/reminder_controller.dart';
+import '../../../../../core/service/focus_scope_node_out.dart';
+import '../../../../new_pet/presentation/widget/drop_down_menu_custom.dart';
+import '../../getx/reminder_controller.dart';
 
 class ReminderButtonSheetPV extends GetWidget<ReminderController> {
   final String petName;
@@ -20,12 +21,7 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
   Widget build(BuildContext context) {
     return Obx(
       () => GestureDetector(
-        onTap: () {
-          final FocusScopeNode focus = FocusScope.of(context);
-          if (!focus.hasPrimaryFocus && focus.hasFocus) {
-            FocusManager.instance.primaryFocus!.unfocus();
-          }
-        },
+        onTap: () => focusScopeNodeOut(context),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           height: controller.heightTotal.value,

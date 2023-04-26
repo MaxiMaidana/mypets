@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
-import '../view/phone/email_verified_p_v.dart';
-import '../view/phone/register_p_v.dart';
-import '../view/phone/steps_to_complete_data_p_v.dart';
-import '../view/phone/waithing_validation_p_v.dart';
+import '../view/phone/email_verified_pv.dart';
+import '../view/phone/register_pv.dart';
+import '../view/phone/steps_to_complete_data_pv.dart';
+import '../view/phone/waithing_validation_pv.dart';
 
 class RegisterPage extends GetView<RegisterController> {
   const RegisterPage({super.key});

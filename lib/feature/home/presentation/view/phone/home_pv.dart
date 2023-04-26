@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../ads/presentation/widget/ads_p_v.dart';
-import '../getx/home_controller.dart';
+import '../../../../ads/presentation/widget/ads_p_v.dart';
+import '../../getx/home_controller.dart';
 
 class HomePV extends GetWidget<HomeController> {
   const HomePV({super.key});

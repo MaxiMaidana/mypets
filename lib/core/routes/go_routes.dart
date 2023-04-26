@@ -26,6 +26,7 @@ import '../../feature/register/presentation/getx/register_controller.dart';
 import '../../feature/register/presentation/page/register_complete_page.dart';
 import '../../feature/register/presentation/page/register_page.dart';
 import '../../feature/reminders/presentation/getx/reminder_controller.dart';
+import '../../feature/reminders/presentation/getx/reminder_page_controller.dart';
 import '../../feature/web/presentation/page/main_web_page.dart';
 import '../service/local_storage.dart';
 
@@ -101,6 +102,7 @@ GoRouter goRouter = GoRouter(
         Get.put(ProfileController());
         Get.put(PetsController());
         Get.put(AdsController());
+        Get.put(ReminderPageController());
         final reminderController = Get.find<ReminderController>();
         reminderController.initCalendarApi();
         // Get.delete<RegisterController>(force: true);

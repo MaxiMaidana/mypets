@@ -7,7 +7,7 @@ import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../reminders/presentation/widget/reminder_buttonsheet_pv.dart';
+import '../../../reminders/presentation/widget/phone/reminder_buttonsheet_pv.dart';
 import '../getx/info_pet_controller.dart';
 import '../widget/phone/pet_image_pv.dart';
 import '../widget/phone/row_pet_info_pv.dart';
@@ -19,7 +19,6 @@ class InfoPetPV extends GetWidget<PetInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    log(Get.height.toString());
     return WillPopScope(
       onWillPop: () async {
         if (controller.reminderController.heightTotal.value > 0.0) {

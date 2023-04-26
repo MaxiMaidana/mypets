@@ -8,8 +8,8 @@ import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
 import '../../../profile/presentation/view/profile_phone_view.dart';
-import '../view/home_c_v.dart';
-import '../view/home_init_p_v.dart';
+import '../view/computer/home_cv.dart';
+import '../view/phone/home_init_pv.dart';
 
 class HomePage extends GetWidget<HomeController> {
   const HomePage({super.key});
