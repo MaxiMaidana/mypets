@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -64,7 +65,7 @@ class PetInfoController extends GetxController {
       String petUrlImage =
           await _infoPetProvider.postImagePetFirebase(file!, newName);
       _petModel.photoUrl = petUrlImage;
-      await _infoPetProvider.updatePetData(selectPet.id, _petModel);
+      await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
       await getUrlImage();
       isChargingPhoto.value = false;
     } catch (e) {
@@ -80,7 +81,7 @@ class PetInfoController extends GetxController {
       _petModel.photoUrl = '';
       await _infoPetProvider.deleteImagePetFirebase(
           '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
-      await _infoPetProvider.updatePetData(selectPet.id, _petModel);
+      await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
       isChargingPhoto.value = false;
     } catch (e) {
       isChargingPhoto.value = false;
@@ -95,7 +96,7 @@ class PetInfoController extends GetxController {
         urlImagePet.value = await _infoPetProvider.urlImagePet(
             '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
         _petModel.photoUrl = urlImagePet.value;
-        await _infoPetProvider.updatePetData(selectPet.id, _petModel);
+        await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
         isSearchPhoto.value = false;
       } else {
         urlImagePet.value = selectPet.photoUrl!;
@@ -108,9 +109,11 @@ class PetInfoController extends GetxController {
 
   Future<void> addReminterInPet(String idReminder) async {
     try {
-      PetModel newPetModel = selectPet;
-      newPetModel.reminders.add(idReminder);
-      _infoPetProvider.updatePetData(selectPet.id, newPetModel);
+      // PetModel newPetModel = selectPet;
+      selectPet.reminders.add(idReminder);
+      // newPetModel.reminders.add(idReminder);
+      // _infoPetProvider.updatePetData(selectPet.id, newPetModel);
+      _infoPetProvider.updatePetData(selectPet.id!, selectPet);
     } catch (e) {
       log('Rompio agregar reminder $e');
       return;
@@ -140,25 +143,32 @@ class PetInfoController extends GetxController {
     return dif == '1' ? '$dif año' : '$dif años';
   }
 
+  void chargeEvents() {
+    if (reminderController.petsReminders[selectPet] != null) {
+      lsEvents.addAll(reminderController.petsReminders[selectPet]!);
+    }
+  }
+
   Future<void> getAlEvents() async {
     try {
-      List<String> remindersToDelete = [];
+      // List<String> remindersToDelete = [];
       if (selectPet.reminders.isNotEmpty) {
         isSearchingReminder.value = true;
         for (String reminderId in selectPet.reminders) {
           Event eventRes = await reminderController.getReminderData(reminderId);
-          if (checkIfISValidDateTime(eventRes.end!.dateTime!)) {
-            lsEvents.add(eventRes);
-          } else {
-            remindersToDelete.add(reminderId);
-          }
+          lsEvents.add(eventRes);
+          // if (checkIfISValidDateTime(eventRes.end!.dateTime!)) {
+          //   lsEvents.add(eventRes);
+          // } else {
+          //   remindersToDelete.add(reminderId);
+          // }
         }
-        if (remindersToDelete.isNotEmpty) {
-          for (var reminderId in remindersToDelete) {
-            selectPet.reminders.removeWhere((element) => element == reminderId);
-          }
-          await _infoPetProvider.updatePetData(selectPet.id, selectPet);
-        }
+        // if (remindersToDelete.isNotEmpty) {
+        //   for (var reminderId in remindersToDelete) {
+        //     selectPet.reminders.removeWhere((element) => element == reminderId);
+        //   }
+        //   await _infoPetProvider.updatePetData(selectPet.id, selectPet);
+        // }
         isSearchingReminder.value = false;
       }
     } catch (e) {
@@ -166,7 +176,7 @@ class PetInfoController extends GetxController {
     }
   }
 
-  bool checkIfISValidDateTime(DateTime toEvaluate) {
+  bool checkISValidDateTimeEvent(DateTime toEvaluate) {
     DateTime now = DateTime.now();
     if (toEvaluate.year > now.year) {
       return true;
@@ -177,13 +187,21 @@ class PetInfoController extends GetxController {
     if (toEvaluate.day < now.day && toEvaluate.month < now.month) {
       return true;
     }
+    TimeOfDay timeNow = TimeOfDay.now();
+    if (timeNow.hour > toEvaluate.hour) {
+      return true;
+    }
+    if (timeNow.minute > toEvaluate.hour) {
+      return true;
+    }
     return false;
   }
 
   @override
   void onReady() {
     getUrlImage();
-    getAlEvents();
+    // getAlEvents();
+    chargeEvents();
     petYears.value = calculateYars();
     reminderController.idReminderCreated.listen((reminderEvent) async {
       switch (reminderEvent.type) {
@@ -193,19 +211,32 @@ class PetInfoController extends GetxController {
           Event eventRes = await reminderController
               .getReminderData(reminderEvent.reminderId);
           lsEvents.add(eventRes);
+          reminderController.petsReminders[selectPet]!.add(eventRes);
           break;
         case ReminderType.delete:
           log('id existente, se elimino el id ${reminderEvent.reminderId}');
           _petModel.reminders
               .removeWhere((element) => element == reminderEvent.reminderId);
           await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
-          lsEvents.clear();
-          getAlEvents();
+          isSearchingReminder.value = true;
+          lsEvents
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          isSearchingReminder.value = false;
+          // lsEvents.clear();
+          // getAlEvents();
           break;
         case ReminderType.update:
           log('id existente, se edito el id ${reminderEvent.reminderId}');
-          lsEvents.clear();
-          getAlEvents();
+          isSearchingReminder.value = true;
+          Event eventRes = await reminderController
+              .getReminderData(reminderEvent.reminderId);
+          lsEvents
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          lsEvents.add(eventRes);
+          isSearchingReminder.value = false;
+          // lsEvents.refresh();
+          // lsEvents.clear();
+          // getAlEvents();
           break;
         default:
       }

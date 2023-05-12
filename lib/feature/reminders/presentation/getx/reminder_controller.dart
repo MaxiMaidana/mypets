@@ -17,6 +17,7 @@ class ReminderController extends GetxController {
   Rx<ReminderEvent> idReminderCreated = ReminderEvent.init().obs;
   RxBool isEdit = false.obs;
   String? eventId;
+  RxMap<PetModel, List<Event>> petsReminders = <PetModel, List<Event>>{}.obs;
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeInitController = TextEditingController();
@@ -211,6 +212,7 @@ class ReminderController extends GetxController {
 
   Future<Event> getReminderData(String id) async {
     try {
+      log('se trae la info de las mascotas desde reminder controller');
       String calendarId = "primary";
       // var httpClient = (await _googleSignIn.authenticatedClient())!;
       // calendarApi = CalendarApi(httpClient);

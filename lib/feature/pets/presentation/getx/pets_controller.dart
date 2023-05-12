@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:mypets/data/models/pet/pet_model.dart';
 import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
@@ -23,12 +25,21 @@ class PetsController extends GetxController {
             .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
       }
       isChargingPets.value = true;
+      log('se traen todas las mascotas');
       petsLs.addAll(await _petsProvider.getPets(
           lsPetsId: _appController.userModel!.pets));
       isChargingPets.value = false;
     } catch (e) {
       isChargingPets.value = false;
       rethrow;
+    }
+  }
+
+  Future<void> updatePet(String uid, PetModel petModel) async {
+    try {
+      await _petsProvider.updateNewPet(uid, petModel);
+    } catch (e) {
+      return;
     }
   }
 

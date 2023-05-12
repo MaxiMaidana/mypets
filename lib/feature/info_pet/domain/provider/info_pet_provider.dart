@@ -46,7 +46,7 @@ class InfoPetProvider {
     }
   }
 
-  Future<void> updatePetData(uid, PetModel petModel) async {
+  Future<void> updatePetData(String uid, PetModel petModel) async {
     try {
       await FirebaseDatasource(collection: 'pets')
           .putData(uid: uid, data: petModel.toJson());
