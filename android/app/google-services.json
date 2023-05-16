@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "212788224879-n9mngcv90vpriqnlqqukqq78csc48ge5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.petbook",
+            "certificate_hash": "a38fee2b8502894b76e5f89e046b3bbe833aa4fc"
+          }
+        },
+        {
           "client_id": "212788224879-puv3r0rk3lu8o2euhg480mrdvvukevtc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

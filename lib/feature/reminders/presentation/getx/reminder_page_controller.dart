@@ -15,6 +15,7 @@ class ReminderPageController extends GetxController {
 
   RxList<PetReminder> lsPetReminders = <PetReminder>[].obs;
   RxBool isSearchingReminder = false.obs;
+  List<String> oldReminders = [];
 
   @override
   void onInit() {
@@ -30,13 +31,19 @@ class ReminderPageController extends GetxController {
             if (checkISValidDateTimeEvent(eventRes.end!.dateTime!)) {
               lsEvents.add(eventRes);
             } else {
-              log('se tendria que eliminar algo aca de ${pet.name}');
-              // PetModel petModel = pet;
-              // petModel.reminders
-              //     .removeWhere((element) => element == reminderId);
-              // await petsController.updatePet(pet.id!, petModel);
+              log(' === se reminder a eliminar de ${pet.name} === ');
+              oldReminders.add(reminderId);
             }
-            log('-------------- trajo los recordatorios de ${pet.name} --------------');
+            log('------ se trajo reminder de ${pet.name} con id = ${pet.id} ------');
+          }
+          if (oldReminders.isNotEmpty) {
+            PetModel petModel = pet;
+            for (String oldReminder in oldReminders) {
+              petModel.reminders
+                  .removeWhere((element) => element == oldReminder);
+            }
+            await petsController.updatePet(pet.id!, petModel);
+            oldReminders.clear();
           }
         }
         isSearchingReminder.value = false;
@@ -55,8 +62,8 @@ class ReminderPageController extends GetxController {
     if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
       return true;
     }
-    if (toEvaluate.day < now.day && toEvaluate.month < now.month) {
-      return true;
+    if (toEvaluate.day < now.day && toEvaluate.month <= now.month) {
+      return false;
     }
     TimeOfDay timeNow = TimeOfDay.now();
     if (timeNow.hour > toEvaluate.hour) {

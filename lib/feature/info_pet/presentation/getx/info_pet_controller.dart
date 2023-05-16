@@ -149,32 +149,32 @@ class PetInfoController extends GetxController {
     }
   }
 
-  Future<void> getAlEvents() async {
-    try {
-      // List<String> remindersToDelete = [];
-      if (selectPet.reminders.isNotEmpty) {
-        isSearchingReminder.value = true;
-        for (String reminderId in selectPet.reminders) {
-          Event eventRes = await reminderController.getReminderData(reminderId);
-          lsEvents.add(eventRes);
-          // if (checkIfISValidDateTime(eventRes.end!.dateTime!)) {
-          //   lsEvents.add(eventRes);
-          // } else {
-          //   remindersToDelete.add(reminderId);
-          // }
-        }
-        // if (remindersToDelete.isNotEmpty) {
-        //   for (var reminderId in remindersToDelete) {
-        //     selectPet.reminders.removeWhere((element) => element == reminderId);
-        //   }
-        //   await _infoPetProvider.updatePetData(selectPet.id, selectPet);
-        // }
-        isSearchingReminder.value = false;
-      }
-    } catch (e) {
-      return;
-    }
-  }
+  // Future<void> getAlEvents() async {
+  //   try {
+  //     // List<String> remindersToDelete = [];
+  //     if (selectPet.reminders.isNotEmpty) {
+  //       isSearchingReminder.value = true;
+  //       for (String reminderId in selectPet.reminders) {
+  //         Event eventRes = await reminderController.getReminderData(reminderId);
+  //         lsEvents.add(eventRes);
+  //         // if (checkIfISValidDateTime(eventRes.end!.dateTime!)) {
+  //         //   lsEvents.add(eventRes);
+  //         // } else {
+  //         //   remindersToDelete.add(reminderId);
+  //         // }
+  //       }
+  //       // if (remindersToDelete.isNotEmpty) {
+  //       //   for (var reminderId in remindersToDelete) {
+  //       //     selectPet.reminders.removeWhere((element) => element == reminderId);
+  //       //   }
+  //       //   await _infoPetProvider.updatePetData(selectPet.id, selectPet);
+  //       // }
+  //       isSearchingReminder.value = false;
+  //     }
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
 
   bool checkISValidDateTimeEvent(DateTime toEvaluate) {
     DateTime now = DateTime.now();
