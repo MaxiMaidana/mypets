@@ -23,7 +23,8 @@ class ReminderController extends GetxController {
   final TextEditingController timeInitController = TextEditingController();
   final TextEditingController timeFinishController = TextEditingController();
   final TextEditingController descController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController typeController =
+      TextEditingController(text: 'Tipo de recordatorio');
 
   List<String> types = [
     'Veterinario',
@@ -33,6 +34,7 @@ class ReminderController extends GetxController {
     'Peluqueria'
   ];
 
+  String calendarId = "primary";
   Rx<DateTime?> dateToReminder = DateTime(2000).obs;
   Rx<TimeOfDay?> timeInitToReminder = const TimeOfDay(hour: 0, minute: 0).obs;
   Rx<TimeOfDay?> timeFinishToReminder = const TimeOfDay(hour: 0, minute: 0).obs;
@@ -53,6 +55,7 @@ class ReminderController extends GetxController {
     typeController.text = 'Tipo de recordatorio';
     eventId = null;
     isEdit.value = false;
+    idReminderCreated.value = ReminderEvent.init();
   }
 
   String setDateText() {
@@ -163,10 +166,7 @@ class ReminderController extends GetxController {
 
   Future<bool> insertReminder({required String petName}) async {
     try {
-      String calendarId = "primary";
-      // var httpClient = (await _googleSignIn.authenticatedClient())!;
       await initCalendarApi();
-      // calendarApi = CalendarApi(httpClient);
       Event eventRes = await calendarApi!.events.insert(
         Event(
           summary: '${typeController.text} - $petName',
@@ -196,7 +196,6 @@ class ReminderController extends GetxController {
         sendUpdates: 'all',
       );
       if (eventRes.status == 'confirmed') {
-        // idReminderCreated.value = eventRes.id!;
         idReminderCreated.value = ReminderEvent(
           type: ReminderType.create,
           reminderId: eventRes.id!,
@@ -214,8 +213,6 @@ class ReminderController extends GetxController {
     try {
       log('se trae la info de las mascotas desde reminder controller');
       String calendarId = "primary";
-      // var httpClient = (await _googleSignIn.authenticatedClient())!;
-      // calendarApi = CalendarApi(httpClient);
       await initCalendarApi();
       Event eventRes = await calendarApi!.events.get(calendarId, id);
       return eventRes;
@@ -229,11 +226,8 @@ class ReminderController extends GetxController {
   Future<bool> deleteReminder() async {
     try {
       String calendarId = "primary";
-      // var httpClient = (await _googleSignIn.authenticatedClient())!;
-      // calendarApi = CalendarApi(httpClient);
       await initCalendarApi();
       await calendarApi!.events.delete(calendarId, eventId!);
-      // idReminderCreated.value = eventId!;
       idReminderCreated.value = ReminderEvent(
         type: ReminderType.delete,
         reminderId: eventId!,
@@ -249,8 +243,6 @@ class ReminderController extends GetxController {
   Future<bool> editReminder({required String petName}) async {
     try {
       String calendarId = "primary";
-      // var httpClient = (await _googleSignIn.authenticatedClient())!;
-      // calendarApi = CalendarApi(httpClient);
       await initCalendarApi();
       Event eventRes = await calendarApi!.events.update(
         Event(
@@ -289,7 +281,7 @@ class ReminderController extends GetxController {
       }
       return true;
     } catch (e) {
-      log('No se pudo editar el reminder');
+      log('No se pudo editar el reminder $e');
       return false;
     }
   }

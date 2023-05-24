@@ -21,7 +21,6 @@ class ReminderPageController extends GetxController {
   void onInit() {
     petsController.petsLs.listen((lsPets) async {
       for (PetModel pet in lsPets) {
-        // PetModel petModel = pet;
         List<Event> lsEvents = [];
         if (pet.reminders.isNotEmpty) {
           for (var reminderId in pet.reminders) {
