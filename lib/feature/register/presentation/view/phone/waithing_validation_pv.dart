@@ -34,25 +34,27 @@ class WaithingValidationPV extends GetWidget<RegisterController> {
               if (await controller.checkIfEmailIsVerify()) {
                 controller.statusRegister.value = StatusRegister.emailVerified;
               } else {
-                DialogCustom.infoDialogWhitOptionsCustom(
-                  context,
-                  title: controller.errorModel!.code,
-                  message: controller.errorModel!.message,
-                  barrierDismissible: false,
-                  actions: [
-                    ButtonCustom.text(
-                      text: 'Ir al login',
-                      onPress: () {
-                        context.go(Routes.main);
-                        Get.delete<RegisterController>();
-                      },
-                    ),
-                    ButtonCustom.principalShort(
-                      text: 'Volver a intentar',
-                      onPress: () => context.pop(),
-                    ),
-                  ],
-                );
+                if (context.mounted) {
+                  DialogCustom.infoDialogWhitOptionsCustom(
+                    context,
+                    title: controller.errorModel!.code,
+                    message: controller.errorModel!.message,
+                    barrierDismissible: false,
+                    actions: [
+                      ButtonCustom.text(
+                        text: 'Ir al login',
+                        onPress: () {
+                          context.go(Routes.main);
+                          Get.delete<RegisterController>();
+                        },
+                      ),
+                      ButtonCustom.principalShort(
+                        text: 'Volver a intentar',
+                        onPress: () => context.pop(),
+                      ),
+                    ],
+                  );
+                }
               }
             },
           ),

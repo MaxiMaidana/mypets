@@ -107,11 +107,13 @@ class RegisterPV extends GetWidget<RegisterController> {
                       // Get.delete<RegisterController>(force: true);
                     }
                     if (!res) {
-                      DialogCustom.infoDialog(
-                        context,
-                        title: controller.errorModel!.code,
-                        message: controller.errorModel!.message,
-                      );
+                      if (context.mounted) {
+                        DialogCustom.infoDialog(
+                          context,
+                          title: controller.errorModel!.code,
+                          message: controller.errorModel!.message,
+                        );
+                      }
                     }
                   },
                 ),

@@ -70,24 +70,34 @@ class LoginButtonSheetPV extends GetWidget<AuthController> {
                         context.loaderOverlay.show();
                         await controller.logIn(
                             loginType: LoginType.credentials);
-                        context.loaderOverlay.hide();
+                        if (context.mounted) {
+                          context.loaderOverlay.hide();
+                        }
                         switch (controller.userStatus.value) {
                           case UserStatus.dataCompleted:
-                            context.go(Routes.home);
+                            if (context.mounted) {
+                              context.go(Routes.home);
+                            }
                             Get.delete<AuthController>(force: true);
                             break;
                           case UserStatus.needCompleteData:
-                            context.push(Routes.register);
+                            if (context.mounted) {
+                              context.push(Routes.register);
+                            }
                             break;
                           case UserStatus.needValidateEmail:
-                            context.push(Routes.register);
+                            if (context.mounted) {
+                              context.push(Routes.register);
+                            }
                             break;
                           case UserStatus.error:
-                            DialogCustom.infoDialog(
-                              context,
-                              title: controller.errorModel!.code,
-                              message: controller.errorModel!.message,
-                            );
+                            if (context.mounted) {
+                              DialogCustom.infoDialog(
+                                context,
+                                title: controller.errorModel!.code,
+                                message: controller.errorModel!.message,
+                              );
+                            }
                             break;
                           default:
                         }
@@ -99,24 +109,34 @@ class LoginButtonSheetPV extends GetWidget<AuthController> {
                       onPress: () async {
                         context.loaderOverlay.show();
                         await controller.logIn(loginType: LoginType.google);
-                        context.loaderOverlay.hide();
+                        if (context.mounted) {
+                          context.loaderOverlay.hide();
+                        }
                         switch (controller.userStatus.value) {
                           case UserStatus.dataCompleted:
                             Get.delete<AuthController>(force: true);
-                            context.go(Routes.home);
+                            if (context.mounted) {
+                              context.go(Routes.home);
+                            }
                             break;
                           case UserStatus.needCompleteData:
-                            context.push(Routes.register);
+                            if (context.mounted) {
+                              context.push(Routes.register);
+                            }
                             break;
                           case UserStatus.needValidateEmail:
-                            context.push(Routes.register);
+                            if (context.mounted) {
+                              context.push(Routes.register);
+                            }
                             break;
                           case UserStatus.error:
-                            DialogCustom.infoDialog(
-                              context,
-                              title: controller.errorModel!.code,
-                              message: controller.errorModel!.message,
-                            );
+                            if (context.mounted) {
+                              DialogCustom.infoDialog(
+                                context,
+                                title: controller.errorModel!.code,
+                                message: controller.errorModel!.message,
+                              );
+                            }
                             break;
                           default:
                         }

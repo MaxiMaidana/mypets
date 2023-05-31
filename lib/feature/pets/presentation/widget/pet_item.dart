@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -16,9 +15,7 @@ class PetItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push(Uri(
           path: Routes.infoPet,
-          queryParameters: {
-            'id': petModel.id.toString()
-          }).toString()),
+          queryParameters: {'id': petModel.id.toString()}).toString()),
       child: Column(
         children: [
           Container(
@@ -51,15 +48,18 @@ class PetItem extends StatelessWidget {
                   children: [
                     SizedBox(width: 5.w),
                     Text(
-                      petModel.name[0].toUpperCase() + petModel.name.substring(1),
+                      petModel.name[0].toUpperCase() +
+                          petModel.name.substring(1),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
                 ),
-                 Expanded(
+                Expanded(
                   child: Center(
                     child: FaIcon(
-                      petModel.species == 'Dog' ? FontAwesomeIcons.dog : FontAwesomeIcons.cat,
+                      petModel.species == 'Dog'
+                          ? FontAwesomeIcons.dog
+                          : FontAwesomeIcons.cat,
                       size: 50,
                     ),
                   ),

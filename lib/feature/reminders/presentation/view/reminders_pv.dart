@@ -5,7 +5,6 @@ import 'package:mypets/feature/reminders/presentation/getx/reminder_page_control
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/service/focus_scope_node_out.dart';
 import '../../domain/model/pet_reminder.dart';
 import '../widget/add_remined_button.dart';
 import '../widget/phone/reminder_buttonsheet_pv.dart';

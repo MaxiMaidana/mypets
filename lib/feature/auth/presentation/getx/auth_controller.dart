@@ -141,7 +141,9 @@ class AuthController extends GetxController {
       }
       errorModel = ErrorModel(code: title, message: message);
       userStatus.value = UserStatus.error;
-    } catch (e) {}
+    } catch (e) {
+      return;
+    }
   }
 
   Future<void> newValidateUser() async {

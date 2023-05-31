@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:mypets/data/models/pet/pet_model.dart';
@@ -39,8 +38,7 @@ class InfoPetProvider {
 
   Future<void> deleteImagePetFirebase(String filePath) async {
     try {
-      ResponseModel responseModel = await FirebaseDatasource()
-          .deleteImageFile(filePath: 'pets/$filePath');
+      await FirebaseDatasource().deleteImageFile(filePath: 'pets/$filePath');
     } catch (e) {
       rethrow;
     }

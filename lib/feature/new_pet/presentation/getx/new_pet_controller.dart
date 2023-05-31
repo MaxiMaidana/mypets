@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,8 +19,6 @@ enum PetStep { selectSpecie, name, sex, birthDate, other, last, check }
 enum StepCreate { creating, getPets, allOkey, error }
 
 class NewPetController extends GetxController {
-  // File _imageFile;
-  // final picker = ImagePicker();
   final _firebaseController = Get.find<FirebaseController>();
 
   final TextEditingController nameController = TextEditingController();
@@ -53,9 +49,9 @@ class NewPetController extends GetxController {
   RxDouble sizeIcon = 25.h.obs;
   RxDouble sizeInputData = 55.h.obs;
 
-  List<String> _lsBreeds = [];
-  List<String> _lsFurs = [];
-  List<String> _lsSizes = [];
+  final List<String> _lsBreeds = [];
+  final List<String> _lsFurs = [];
+  final List<String> _lsSizes = [];
 
   @override
   void dispose() {

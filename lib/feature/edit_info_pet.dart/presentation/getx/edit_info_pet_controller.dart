@@ -4,5 +4,8 @@ import '../../../../data/models/pet/pet_model.dart';
 
 class EditInfoPetController extends GetxController {
   late PetModel _petModel;
+
   setPetModel(PetModel petModel) => _petModel = petModel;
+
+  PetModel get petModel => _petModel;
 }
