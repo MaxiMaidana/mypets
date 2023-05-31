@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mypets/feature/ads/domain/model/ad_model.dart';
 import 'package:mypets/feature/ads/domain/provider/ads_provider.dart';

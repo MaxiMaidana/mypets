@@ -1,5 +1,3 @@
-import '../pet/pet_model.dart';
-
 class UserModel {
   String? id;
   String name;

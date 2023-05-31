@@ -3,6 +3,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypets/core/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../routes/go_routes.dart';
