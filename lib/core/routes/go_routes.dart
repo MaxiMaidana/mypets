@@ -126,7 +126,7 @@ GoRouter goRouter = GoRouter(
     GoRoute(
       path: Routes.infoPet,
       builder: (context, state) {
-        final infoPetController = Get.put(PetInfoController());
+        final infoPetController = Get.put(InfoPetController());
         infoPetController.setPetId(state.queryParams['id']!);
         final petsController = Get.find<PetsController>();
 

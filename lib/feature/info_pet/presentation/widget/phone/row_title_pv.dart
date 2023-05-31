@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../getx/info_pet_controller.dart';
 
-class RowTitlePV extends GetWidget<PetInfoController> {
+class RowTitlePV extends GetWidget<InfoPetController> {
   const RowTitlePV({super.key});
 
   @override

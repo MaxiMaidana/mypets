@@ -25,7 +25,6 @@ class PetsController extends GetxController {
             .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
       }
       isChargingPets.value = true;
-      log('se traen todas las mascotas');
       petsLs.addAll(await _petsProvider.getPets(
           lsPetsId: _appController.userModel!.pets));
       isChargingPets.value = false;

@@ -11,7 +11,6 @@ class HomeController extends GetxController {
   void setIndex(int value) {
     // pageController = PageController(initialPage: value);
     // index.value = value;
-    // log(index.value.toString());
   }
   // RxInt actualPage = 0.obs;
 

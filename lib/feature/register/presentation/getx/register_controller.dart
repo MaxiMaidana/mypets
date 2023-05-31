@@ -185,7 +185,7 @@ class RegisterController extends GetxController {
       await _registerProvider.addUSer(
           _firebaseController.firebaseAuth.currentUser!.uid, userModel);
       _appController.userModel = userModel;
-      log('se creo el usuario');
+
       return true;
     } catch (e) {
       String title = '';
@@ -216,7 +216,7 @@ class RegisterController extends GetxController {
       await _registerProvider.updateUserData(
           _firebaseController.firebaseAuth.currentUser!.uid, userModel);
       _appController.userModel = userModel;
-      log('se actualizo el usuario');
+
       if (isLastStep) {
         LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
       }

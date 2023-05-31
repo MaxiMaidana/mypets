@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../../core/responsive/widget_tree.dart';
-import '../getx/info_pet_controller.dart';
 import '../view/info_pet_pv.dart';
 
-class InfoPetPage extends GetWidget<PetInfoController> {
+class InfoPetPage extends StatelessWidget {
   const InfoPetPage({super.key});
 
   @override

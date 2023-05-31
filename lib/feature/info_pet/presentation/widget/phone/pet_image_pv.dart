@@ -12,7 +12,7 @@ import 'package:sizer/sizer.dart';
 import '../../../../../core/widgets/dialog_custom.dart';
 import '../../getx/info_pet_controller.dart';
 
-class PetImagePV extends GetWidget<PetInfoController> {
+class PetImagePV extends GetWidget<InfoPetController> {
   const PetImagePV({super.key});
 
   @override
@@ -45,7 +45,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
                               text: 'Cambiar Foto',
                               onPress: () async {
                                 context.pop();
-                                _uploadFile(context);
+                                _uploadFile(context, controller);
                               },
                             )
                           ]);
@@ -71,7 +71,8 @@ class PetImagePV extends GetWidget<PetInfoController> {
                           children: [
                             ButtonCustom.principalShort(
                               text: 'Subir foto',
-                              onPress: () async => _uploadFile(context),
+                              onPress: () async =>
+                                  _uploadFile(context, controller),
                             )
                           ],
                         ),
@@ -80,7 +81,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
     );
   }
 
-  Future<void> _cropImage() async {
+  Future<void> _cropImage(InfoPetController controller) async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: controller.petImage.value.path,
       compressFormat: ImageCompressFormat.jpg,
@@ -93,7 +94,8 @@ class PetImagePV extends GetWidget<PetInfoController> {
     }
   }
 
-  Future<void> _uploadFile(BuildContext context) async {
+  Future<void> _uploadFile(
+      BuildContext context, InfoPetController controller) async {
     await controller.uploadImage();
     if (controller.petImage.value.path != '') {
       if (context.mounted) {
@@ -122,7 +124,7 @@ class PetImagePV extends GetWidget<PetInfoController> {
                   const SizedBox(height: 5),
                   ButtonCustom.principalShort(
                     text: 'Editar',
-                    onPress: () => _cropImage(),
+                    onPress: () => _cropImage(controller),
                   ),
                 ],
               ),

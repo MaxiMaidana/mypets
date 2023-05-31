@@ -128,7 +128,6 @@ class NewPetController extends GetxController {
         }
         break;
     }
-    log('se cargaron ${_lsBreeds.length} breeds');
     return _lsBreeds;
   }
 
@@ -150,7 +149,7 @@ class NewPetController extends GetxController {
         }
         break;
     }
-    log('se cargaron ${_lsFurs.length} furs');
+
     return _lsFurs;
   }
 
@@ -172,7 +171,7 @@ class NewPetController extends GetxController {
         }
         break;
     }
-    log('se cargaron ${_lsSizes.length} sizes');
+
     return _lsSizes;
   }
 }

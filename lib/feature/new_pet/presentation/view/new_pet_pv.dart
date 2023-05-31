@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -96,7 +98,7 @@ class NewPetsPV extends GetWidget<NewPetController> {
     );
   }
 
-  Future<void> _goToMain(BuildContext context) async {
+  void _goToMain(BuildContext context) {
     context.pop();
     context.pop();
     Get.delete<NewPetController>();

@@ -75,7 +75,6 @@ class FirebaseController extends GetxController {
         email: email,
         password: pass,
       );
-      log('login con credenciales');
       // await getUserData();
       res = true;
       return res;
@@ -120,7 +119,7 @@ class FirebaseController extends GetxController {
       );
       await _firebaseAuth.currentUser!
           .sendEmailVerification(actionCodeSettings);
-      log('se envio email para validar');
+
       return true;
     } on FirebaseAuthException catch (_) {
       await logoutGoogle();
@@ -137,7 +136,6 @@ class FirebaseController extends GetxController {
       await _firebaseAuth.signOut();
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: 'asd123');
-      log('se desloguea de firebase');
     } on FirebaseAuthException catch (e) {
       log(e.toString());
       if (e.code == 'wrong-password') {
@@ -158,7 +156,7 @@ class FirebaseController extends GetxController {
   Future<bool> changePasswordUser({required String pass}) async {
     try {
       await _firebaseAuth.currentUser!.updatePassword(pass);
-      log('se cambio la pass');
+
       return true;
     } catch (e) {
       return false;

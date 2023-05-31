@@ -15,7 +15,7 @@ class InfoPetProvider {
       if (responseModel.data != null) {
         urlImage = responseModel.data as String;
       }
-      log(urlImage);
+
       return urlImage;
     } catch (e) {
       rethrow;
@@ -30,7 +30,7 @@ class InfoPetProvider {
       if (responseModel.data != null) {
         urlImage = responseModel.data as String;
       }
-      log(urlImage);
+
       return urlImage;
     } catch (e) {
       rethrow;

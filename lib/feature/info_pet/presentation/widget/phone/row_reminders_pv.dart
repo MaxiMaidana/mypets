@@ -7,7 +7,7 @@ import '../../../../reminders/presentation/widget/add_remined_button.dart';
 import '../../../../reminders/presentation/widget/reminter_item.dart';
 import '../../getx/info_pet_controller.dart';
 
-class RowRemindersPV extends GetWidget<PetInfoController> {
+class RowRemindersPV extends GetWidget<InfoPetController> {
   const RowRemindersPV({super.key});
 
   @override

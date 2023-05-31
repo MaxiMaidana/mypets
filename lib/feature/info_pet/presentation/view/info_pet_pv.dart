@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +12,7 @@ import '../widget/phone/row_pet_info_pv.dart';
 import '../widget/phone/row_reminders_pv.dart';
 import '../widget/phone/row_title_pv.dart';
 
-class InfoPetPV extends GetWidget<PetInfoController> {
+class InfoPetPV extends GetWidget<InfoPetController> {
   const InfoPetPV({super.key});
 
   @override
@@ -25,7 +23,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
           controller.reminderController.cleanAllData();
         } else {
           context.pop();
-          Get.delete<PetInfoController>();
+          Get.delete<InfoPetController>();
         }
         return false;
       },
@@ -49,7 +47,7 @@ class InfoPetPV extends GetWidget<PetInfoController> {
                                 0.0;
                           } else {
                             context.pop();
-                            Get.delete<PetInfoController>();
+                            Get.delete<InfoPetController>(force: true);
                           }
                         },
                         child: Container(

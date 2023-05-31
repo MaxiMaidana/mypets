@@ -30,10 +30,8 @@ class ReminderPageController extends GetxController {
             if (checkISValidDateTimeEvent(eventRes.end!.dateTime!)) {
               lsEvents.add(eventRes);
             } else {
-              log(' === se reminder a eliminar de ${pet.name} === ');
               oldReminders.add(reminderId);
             }
-            log('------ se trajo reminder de ${pet.name} con id = ${pet.id} ------');
           }
           if (oldReminders.isNotEmpty) {
             PetModel petModel = pet;

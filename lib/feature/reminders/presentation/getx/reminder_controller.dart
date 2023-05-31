@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,11 +6,12 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
 
 import '../../../../data/models/pet/pet_model.dart';
 import '../../domain/model/reminder_event.dart';
 
-// import 'package:googleapis/calendar/v3.dart';
 enum TypeTime { init, finish }
 
 class ReminderController extends GetxController {
@@ -25,6 +27,8 @@ class ReminderController extends GetxController {
   final TextEditingController descController = TextEditingController();
   final TextEditingController typeController =
       TextEditingController(text: 'Tipo de recordatorio');
+  StreamController<ReminderEvent>? reminderEventController =
+      StreamController<ReminderEvent>();
 
   List<String> types = [
     'Veterinario',
@@ -39,6 +43,7 @@ class ReminderController extends GetxController {
   Rx<TimeOfDay?> timeInitToReminder = const TimeOfDay(hour: 0, minute: 0).obs;
   Rx<TimeOfDay?> timeFinishToReminder = const TimeOfDay(hour: 0, minute: 0).obs;
 
+  AuthClient? httpClient;
   CalendarApi? calendarApi;
   final GoogleSignIn _googleSignIn =
       GoogleSignIn(scopes: ['email', CalendarApi.calendarScope]);
@@ -56,6 +61,47 @@ class ReminderController extends GetxController {
     eventId = null;
     isEdit.value = false;
     idReminderCreated.value = ReminderEvent.init();
+  }
+
+  void closeStream() {
+    reminderEventController?.close();
+    // reminderEventController = null;
+    reminderEventController = StreamController<ReminderEvent>();
+  }
+
+  void openStream() {
+    reminderEventController?.stream.listen((reminderEvent) async {
+      final infoPetController = Get.find<InfoPetController>();
+      switch (reminderEvent.type) {
+        case ReminderType.create:
+          log('se creo con exito el recordatorio');
+          await infoPetController.addReminterInPet(reminderEvent.reminderId);
+          Event eventRes = await getReminderData(reminderEvent.reminderId);
+          infoPetController.lsEvents.add(eventRes);
+          petsReminders[infoPetController.selectPet]!.add(eventRes);
+          break;
+        case ReminderType.delete:
+          log('se elimino con exito el recordatorio');
+          infoPetController.selectPet.reminders
+              .removeWhere((element) => element == reminderEvent.reminderId);
+          infoPetController.isSearchingReminder.value = true;
+          await infoPetController.updateReminterInPet();
+          infoPetController.lsEvents
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          infoPetController.isSearchingReminder.value = false;
+          break;
+        case ReminderType.update:
+          log('se actualizo con exito el recordatorio');
+          infoPetController.isSearchingReminder.value = true;
+          Event eventRes = await getReminderData(reminderEvent.reminderId);
+          infoPetController.lsEvents
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          infoPetController.lsEvents.add(eventRes);
+          infoPetController.isSearchingReminder.value = false;
+          break;
+        default:
+      }
+    });
   }
 
   String setDateText() {
@@ -157,10 +203,10 @@ class ReminderController extends GetxController {
   }
 
   Future<void> initCalendarApi() async {
-    if (calendarApi == null) {
+    if (httpClient == null) {
       await _googleSignIn.signInSilently();
-      var httpClient = (await _googleSignIn.authenticatedClient())!;
-      calendarApi = CalendarApi(httpClient);
+      httpClient = (await _googleSignIn.authenticatedClient())!;
+      calendarApi = CalendarApi(httpClient!);
     }
   }
 
@@ -196,10 +242,14 @@ class ReminderController extends GetxController {
         sendUpdates: 'all',
       );
       if (eventRes.status == 'confirmed') {
-        idReminderCreated.value = ReminderEvent(
+        // idReminderCreated.value = ReminderEvent(
+        //   type: ReminderType.create,
+        //   reminderId: eventRes.id!,
+        // );
+        reminderEventController?.add(ReminderEvent(
           type: ReminderType.create,
           reminderId: eventRes.id!,
-        );
+        ));
         cleanAllData();
       }
       return true;
