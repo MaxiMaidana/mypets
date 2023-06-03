@@ -242,10 +242,6 @@ class ReminderController extends GetxController {
         sendUpdates: 'all',
       );
       if (eventRes.status == 'confirmed') {
-        // idReminderCreated.value = ReminderEvent(
-        //   type: ReminderType.create,
-        //   reminderId: eventRes.id!,
-        // );
         reminderEventController?.add(ReminderEvent(
           type: ReminderType.create,
           reminderId: eventRes.id!,
@@ -278,10 +274,10 @@ class ReminderController extends GetxController {
       String calendarId = "primary";
       await initCalendarApi();
       await calendarApi!.events.delete(calendarId, eventId!);
-      idReminderCreated.value = ReminderEvent(
+      reminderEventController?.add(ReminderEvent(
         type: ReminderType.delete,
         reminderId: eventId!,
-      );
+      ));
       cleanAllData();
       return true;
     } catch (e) {
@@ -323,10 +319,10 @@ class ReminderController extends GetxController {
         eventId!,
       );
       if (eventRes.status == 'confirmed') {
-        idReminderCreated.value = ReminderEvent(
+        reminderEventController?.add(ReminderEvent(
           type: ReminderType.update,
           reminderId: eventId!,
-        );
+        ));
         cleanAllData();
       }
       return true;
