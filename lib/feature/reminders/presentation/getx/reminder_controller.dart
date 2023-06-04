@@ -190,13 +190,13 @@ class ReminderController extends GetxController {
         hour = timeInitToReminder.value!.hour.toString();
         minute = timeInitToReminder.value!.minute == 0
             ? '00'
-            : timeInitToReminder.value!.minute.toString();
+            : transformMinutes(timeInitToReminder.value!);
         break;
       case TypeTime.finish:
         hour = timeFinishToReminder.value!.hour.toString();
         minute = timeFinishToReminder.value!.minute == 0
             ? '00'
-            : timeFinishToReminder.value!.minute.toString();
+            : transformMinutes(timeFinishToReminder.value!);
         break;
     }
     return '$hour:$minute';
@@ -205,9 +205,17 @@ class ReminderController extends GetxController {
   Future<void> initCalendarApi() async {
     if (httpClient == null) {
       await _googleSignIn.signInSilently();
-      httpClient = (await _googleSignIn.authenticatedClient())!;
+      httpClient = await _googleSignIn.authenticatedClient();
+      calendarApi = CalendarApi(httpClient!);
+    } else if (expiredTime(httpClient!.credentials.accessToken.expiry)) {
+      await _googleSignIn.signInSilently();
+      httpClient = await _googleSignIn.authenticatedClient();
       calendarApi = CalendarApi(httpClient!);
     }
+  }
+
+  bool expiredTime(DateTime dateTime) {
+    return dateTime.isBefore(DateTime.now());
   }
 
   Future<bool> insertReminder({required String petName}) async {
@@ -330,5 +338,12 @@ class ReminderController extends GetxController {
       log('No se pudo editar el reminder $e');
       return false;
     }
+  }
+
+  String transformMinutes(TimeOfDay? timeToReminder) {
+    if (timeToReminder!.minute < 10 && timeToReminder.minute > 0) {
+      return '0${timeToReminder.minute}';
+    }
+    return timeToReminder.minute.toString();
   }
 }

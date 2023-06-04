@@ -24,7 +24,7 @@ class InputCustom extends StatefulWidget {
   }) : super(key: key);
 
   factory InputCustom.base({
-    required controller,
+    required TextEditingController controller,
     bool isPassword = false,
     bool isEnable = true,
     String? hint,
