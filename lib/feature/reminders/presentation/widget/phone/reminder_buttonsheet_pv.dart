@@ -132,13 +132,16 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                                 if (context.mounted) {
                                   context.loaderOverlay.hide();
                                   if (res) {
-                                    DialogCustom.infoDialog(
+                                    _dialog(
                                       context,
-                                      title: 'Genial!',
-                                      message:
-                                          'Ya eliminaste tu recordatorio para $petName.',
-                                      barrierDismissible: true,
-                                      aceptar: () => context.pop(),
+                                      'Genial!',
+                                      'Ya eliminaste tu recordatorio para $petName.',
+                                    );
+                                  } else {
+                                    _dialog(
+                                      context,
+                                      'Ocurrio un error :(',
+                                      controller.errorModel!.message,
                                     );
                                   }
                                 }
@@ -153,13 +156,16 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                                 if (context.mounted) {
                                   context.loaderOverlay.hide();
                                   if (res) {
-                                    DialogCustom.infoDialog(
+                                    _dialog(
                                       context,
-                                      title: 'Genial!',
-                                      message:
-                                          'Ya editaste tu recordatorio de $petName.',
-                                      barrierDismissible: true,
-                                      aceptar: () => context.pop(),
+                                      'Genial!',
+                                      'Ya editaste tu recordatorio de $petName.',
+                                    );
+                                  } else {
+                                    _dialog(
+                                      context,
+                                      'Ocurrio un error :(',
+                                      controller.errorModel!.message,
                                     );
                                   }
                                 }
@@ -176,13 +182,16 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                             if (context.mounted) {
                               context.loaderOverlay.hide();
                               if (res) {
-                                DialogCustom.infoDialog(
+                                _dialog(
                                   context,
-                                  title: 'Genial!',
-                                  message:
-                                      'Ya creaste tu recordatorio para $petName.',
-                                  barrierDismissible: true,
-                                  aceptar: () => context.pop(),
+                                  'Genial!',
+                                  'Ya creaste tu recordatorio para $petName.',
+                                );
+                              } else {
+                                _dialog(
+                                  context,
+                                  'Ocurrio un error :(',
+                                  controller.errorModel!.message,
                                 );
                               }
                             }
@@ -195,6 +204,16 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
           ),
         ),
       ),
+    );
+  }
+
+  void _dialog(BuildContext context, String title, String message) {
+    DialogCustom.infoDialog(
+      context,
+      title: title,
+      message: message,
+      barrierDismissible: true,
+      aceptar: () => context.pop(),
     );
   }
 

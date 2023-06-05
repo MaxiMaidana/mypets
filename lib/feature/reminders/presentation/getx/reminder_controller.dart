@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,6 +10,7 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
 
+import '../../../../data/models/error_model.dart';
 import '../../../../data/models/pet/pet_model.dart';
 import '../../domain/model/reminder_event.dart';
 
@@ -20,6 +22,7 @@ class ReminderController extends GetxController {
   RxBool isEdit = false.obs;
   String? eventId;
   RxMap<PetModel, List<Event>> petsReminders = <PetModel, List<Event>>{}.obs;
+  ErrorModel? errorModel;
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeInitController = TextEditingController();
@@ -218,8 +221,80 @@ class ReminderController extends GetxController {
     return dateTime.isBefore(DateTime.now());
   }
 
+  bool ifChargedDate() {
+    return dateToReminder.value == DateTime(2000);
+  }
+
+  bool compareTimes() {
+    TimeOfDay timeToCompare = TimeOfDay.now();
+    int hourNowInMinutes = timeToCompare.hour * 60 + timeToCompare.minute;
+    int hourChargedInMinutes =
+        timeInitToReminder.value!.hour * 60 + timeInitToReminder.value!.minute;
+    if (hourChargedInMinutes <= hourNowInMinutes) {
+      return true;
+    }
+    return false;
+  }
+
+  bool compareTimesCharged() {
+    TimeOfDay initTimeCharged = timeInitToReminder.value!;
+    TimeOfDay finishTimeCharged = timeFinishToReminder.value!;
+    int initNowInMinutes = initTimeCharged.hour * 60 + initTimeCharged.minute;
+    int finishChargedInMinutes =
+        finishTimeCharged.hour * 60 + finishTimeCharged.minute;
+    if (finishChargedInMinutes <= initNowInMinutes) {
+      return true;
+    }
+    return false;
+  }
+
+  bool checkIfTimesIsOkey() {
+    if (dateToReminder.value!.day == DateTime.now().toUtc().day &&
+        dateToReminder.value!.month == DateTime.now().toUtc().month &&
+        dateToReminder.value!.year == DateTime.now().toUtc().year) {
+      TimeOfDay initTimeCharged = timeInitToReminder.value!;
+      if (initTimeCharged.hour < DateTime.now().toUtc().hour) {
+        log('el dia es el mismo, pero la hora es menor a  la de hoy');
+        return true;
+      } else if ((initTimeCharged.hour == DateTime.now().toUtc().hour) &&
+          (initTimeCharged.minute <= DateTime.now().toUtc().minute)) {
+        log('el dia es el mismo, la hora es igual, pero los minutos son menos a los de ahora');
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void checkDataToReminder() {
+    try {
+      if (ifChargedDate()) {
+        throw ErrorModel(
+            code: '100',
+            message: 'Debes seleccionar un dia para el recordatorio');
+      } else if (checkIfTimesIsOkey()) {
+        throw ErrorModel(
+            code: '100',
+            message:
+                'La hora de inicio no puede ser menor o igual a la actual');
+      } else if (compareTimesCharged()) {
+        throw ErrorModel(
+            code: '100',
+            message: 'La hora de fin no puede menor o igual a la de inicio');
+      } else if (timeFinishToReminder.value == null) {
+        throw ErrorModel(
+            code: '100', message: 'Es obligatorio una fecha de fin');
+      } else if (typeController.text == 'Tipo de recordatorio') {
+        throw ErrorModel(
+            code: '100', message: 'Debes elegir un tipo de recordatorio');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> insertReminder({required String petName}) async {
     try {
+      checkDataToReminder();
       await initCalendarApi();
       Event eventRes = await calendarApi!.events.insert(
         Event(
@@ -258,7 +333,13 @@ class ReminderController extends GetxController {
       }
       return true;
     } catch (e) {
-      log('error al crear recordatorio = ${e.toString()}');
+      if (e is FirebaseException) {
+        errorModel =
+            ErrorModel(code: '200', message: 'Error al crear recordatorio');
+        log('error al crear recordatorio = ${e.toString()}');
+      } else if (e is ErrorModel) {
+        errorModel = e;
+      }
       return false;
     }
   }
