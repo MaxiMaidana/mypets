@@ -143,6 +143,8 @@ GoRouter goRouter = GoRouter(
 
         editInfoPetController
             .setPetModel(petsController.searchPet(state.queryParams['id']!));
+        editInfoPetController.setData();
+        // editInfoPetController.petModelEdited = editInfoPetController.petModel;
         return const EditInfoPetPage();
       },
     ),
