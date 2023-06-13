@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -9,7 +8,6 @@ import 'package:mypets/core/widgets/dialog_custom.dart';
 import 'package:mypets/feature/auth/presentation/getx/auth_controller.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/widgets/input_custom.dart';
 import 'login_button_sheet_p_v.dart';
 
 class LoginColumnPV extends GetWidget<AuthController> {

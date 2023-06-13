@@ -1,21 +1,23 @@
+import 'package:equatable/equatable.dart';
+
 import 'vaccine_model.dart';
 
-class PetModel {
-  String species;
-  String name;
-  String sex;
-  List<String> owners;
-  String birthDate;
-  List<String> reminders;
-  String? id;
-  String? breed;
-  String? photoUrl;
-  String? fur;
-  String? size;
-  String? weigth;
-  VaccineModel? vaccine;
+class PetModel extends Equatable {
+  final String species;
+  final String name;
+  final String sex;
+  final List<String> owners;
+  final String birthDate;
+  final List<String> reminders;
+  final String? id;
+  final String? breed;
+  final String? photoUrl;
+  final String? fur;
+  final String? size;
+  final String? weigth;
+  final VaccineModel? vaccine;
 
-  PetModel({
+  const PetModel({
     required this.species,
     required this.name,
     required this.sex,
@@ -30,6 +32,57 @@ class PetModel {
     this.weigth,
     this.vaccine,
   });
+
+  PetModel copyWith({
+    String? species,
+    String? name,
+    String? sex,
+    List<String>? owners,
+    String? birthDate,
+    List<String>? reminders,
+    String? id,
+    String? breed,
+    String? photoUrl,
+    String? fur,
+    String? size,
+    String? weigth,
+    VaccineModel? vaccine,
+  }) =>
+      PetModel(
+        species: species ?? this.species,
+        name: name ?? this.name,
+        sex: sex ?? this.sex,
+        owners: owners ?? this.owners,
+        birthDate: birthDate ?? this.birthDate,
+        reminders: reminders ?? this.reminders,
+        id: id ?? this.id,
+        breed: breed ?? this.breed,
+        photoUrl: photoUrl ?? this.photoUrl,
+        fur: fur ?? this.fur,
+        size: size ?? this.size,
+        weigth: weigth ?? this.weigth,
+        vaccine: vaccine ?? this.vaccine,
+      );
+
+  @override
+  List<Object?> get props => [
+        species,
+        name,
+        sex,
+        owners,
+        birthDate,
+        reminders,
+        id,
+        breed,
+        photoUrl,
+        fur,
+        size,
+        weigth,
+        vaccine
+      ];
+
+  @override
+  bool? get stringify => true;
 
   static PetModel fromJson(Map<String, dynamic> json) => PetModel(
         species: json['species'],
