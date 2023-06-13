@@ -14,8 +14,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import '../getx/profile_controller.dart';
 
-class ProfilePhoneView extends GetWidget<ProfileController> {
-  const ProfilePhoneView({super.key});
+class ProfilePV extends GetWidget<ProfileController> {
+  const ProfilePV({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class ProfilePhoneView extends GetWidget<ProfileController> {
                   ],
                   image: DecorationImage(
                     image: imageProvider,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

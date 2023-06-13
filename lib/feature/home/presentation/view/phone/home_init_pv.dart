@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 
 import '../../../../pets/presentation/view/pets_phone_view.dart';
-import '../../../../profile/presentation/view/profile_phone_view.dart';
+import '../../../../profile/presentation/view/profile_p_v.dart';
 import '../../../../reminders/presentation/page/reminder_page.dart';
 import '../../widget/bottom_nav_bar_pv.dart';
 import 'home_pv.dart';
@@ -22,7 +22,7 @@ class HomeInitPV extends GetWidget<HomeController> {
             HomePV(),
             PetsPhoneView(),
             ReminderPage(),
-            ProfilePhoneView(),
+            ProfilePV(),
           ],
         ),
         const Positioned(
