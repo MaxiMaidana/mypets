@@ -7,7 +7,7 @@ import 'package:mypets/feature/home/presentation/getx/home_controller.dart';
 import 'package:mypets/feature/pets/presentation/view/pets_phone_view.dart';
 
 import '../../../../core/responsive/widget_tree.dart';
-import '../../../profile/presentation/view/profile_phone_view.dart';
+import '../../../profile/presentation/view/profile_p_v.dart';
 import '../view/computer/home_cv.dart';
 import '../view/phone/home_init_pv.dart';
 
@@ -27,7 +27,7 @@ class HomePage extends GetWidget<HomeController> {
               children: const [
                 HomeInitPV(),
                 PetsPhoneView(),
-                ProfilePhoneView(),
+                ProfilePV(),
               ],
             ),
           ),
