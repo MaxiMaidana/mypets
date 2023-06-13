@@ -88,7 +88,8 @@ class ReminderController extends GetxController {
           infoPetController.selectPet.reminders
               .removeWhere((element) => element == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = true;
-          await infoPetController.updateReminterInPet();
+          await infoPetController.updatePetInfo(
+              infoPetController.selectPet.id!, infoPetController.selectPet);
           infoPetController.lsEvents
               .removeWhere((element) => element.id == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = false;
