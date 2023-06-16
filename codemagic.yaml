@@ -69,7 +69,7 @@ definitions:
           artifact_type: 'apk'
   
   environment: &enviroments
-      flutter: stable
+      flutter: 3.7.12
       xcode: latest
       cocoapods: default
       # android_signing:
