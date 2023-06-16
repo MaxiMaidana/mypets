@@ -48,6 +48,8 @@ class NewPetController extends GetxController {
   RxString textError = ''.obs;
   RxDouble sizeIcon = 25.h.obs;
   RxDouble sizeInputData = 55.h.obs;
+  RxString specieSelected = ''.obs;
+  RxString sexSelected = ''.obs;
 
   final List<String> _lsBreeds = [];
   final List<String> _lsFurs = [];
@@ -70,17 +72,33 @@ class NewPetController extends GetxController {
     String month = temp.split('-')[1];
     String day = temp.split('-')[2];
     res = '$day/$month/$year';
-    petModel.value.birthDate = res;
+    // petModel.value.birthDate = res;
+    PetModel newPetModel = petModel.value.copyWith(birthDate: res);
+    petModel.value = newPetModel;
     petModel.refresh();
     return res;
   }
 
+  PetModel _createPetModel(String uidUser) => petModel.value.copyWith(
+        name: nameController.text,
+        birthDate: convertDateTimeToString(),
+        breed: breedController.text,
+        fur: furController.text,
+        size: sizeController.text,
+        sex: sexSelected.value,
+        species: specieSelected.value,
+        weigth: weigthController.text,
+        owners: [uidUser],
+        reminders: [],
+        vaccine: null,
+      );
+
   Future<void> addPet() async {
     try {
-      petModel.value.owners
-          .add(_firebaseController.firebaseAuth.currentUser!.uid);
-      PetModel petModelRes = await _newPetProvider.addNewPet(
-          _firebaseController.firebaseAuth.currentUser!.uid, petModel.value);
+      String uidUser = _firebaseController.firebaseAuth.currentUser!.uid;
+      PetModel newPetModel = _createPetModel(uidUser);
+      PetModel petModelRes =
+          await _newPetProvider.addNewPet(uidUser, newPetModel);
       _appController.userModel!.pets.add(petModelRes.id!);
       await _newPetProvider.updateUserData(
           _firebaseController.firebaseAuth.currentUser!.uid,
@@ -108,7 +126,7 @@ class NewPetController extends GetxController {
 
   List<String> chargeListBreeds() {
     _lsBreeds.clear();
-    switch (petModel.value.species) {
+    switch (specieSelected.value) {
       case 'Dog':
         for (var element in _petInfoSupportController.lsSpecies) {
           if (element.type == 'Dog') {
@@ -129,7 +147,7 @@ class NewPetController extends GetxController {
 
   List<String> chargeFurList() {
     _lsFurs.clear();
-    switch (petModel.value.species) {
+    switch (specieSelected.value) {
       case 'Dog':
         for (var element in _petInfoSupportController.lsFurs) {
           if (element.type == 'Dog') {
@@ -151,7 +169,7 @@ class NewPetController extends GetxController {
 
   List<String> chargeSizesList() {
     _lsSizes.clear();
-    switch (petModel.value.species) {
+    switch (specieSelected.value) {
       case 'Dog':
         for (var element in _petInfoSupportController.lsSizes) {
           if (element.type == 'Dog') {

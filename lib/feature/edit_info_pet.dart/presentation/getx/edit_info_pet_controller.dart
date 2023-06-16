@@ -14,10 +14,9 @@ class EditInfoPetController extends GetxController {
 
   PetModel get petModel => _petModel;
   PetModel? petModelEdited;
-  RxString actualSpecie = ''.obs;
 
   final _petInfoSupportController = Get.find<PetInfoSupportController>();
-  final _infoPetProvider = Get.find<InfoPetController>();
+  final _infoPetController = Get.find<InfoPetController>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController weigthController = TextEditingController();
@@ -34,6 +33,9 @@ class EditInfoPetController extends GetxController {
 
   List<String> species = ['Perro', 'Gato'];
 
+  RxString specieSelected = ''.obs;
+  RxString sexSelected = ''.obs;
+
   @override
   void dispose() {
     nameController.dispose();
@@ -46,13 +48,14 @@ class EditInfoPetController extends GetxController {
 
   void setData() {
     nameController.text = _petModel.name;
+    specieSelected.value = _petModel.species;
+    sexSelected.value = _petModel.sex;
+    dateTimeToBirthDate.value = DateTime.parse(convertStringToDateTimeFormat());
+    dateTimeController.value.text = convertDateTimeToString();
     breedController.text = _petModel.breed ?? '';
     sizeController.text = _petModel.size ?? '';
     furController.text = _petModel.fur ?? '';
-    actualSpecie.value = _petModel.species;
     weigthController.text = _petModel.weigth ?? '';
-    dateTimeToBirthDate.value = DateTime.parse(convertStringToDateTimeFormat());
-    dateTimeController.value.text = convertDateTimeToString();
   }
 
   String convertStringToDateTimeFormat() {
@@ -74,21 +77,24 @@ class EditInfoPetController extends GetxController {
     return res;
   }
 
-  Future<void> editPet() async {
-    try {
-      petModelEdited = _petModel.copyWith(
+  PetModel _petEdited() => _petModel.copyWith(
+        name: nameController.text,
+        species: specieSelected.value,
         birthDate: dateTimeController.value.text,
+        sex: sexSelected.value,
         breed: breedController.text,
         fur: furController.text,
-        name: nameController.text,
         weigth: weigthController.text,
-        species: sizeController.text,
         size: sizeController.text,
-        sex: _petModel.sex,
         photoUrl: _petModel.photoUrl,
       );
-      log(petModelEdited!.toString());
-      // await _infoPetProvider.updatePetInfo(petModel.id!, petModelEdited!);
+
+  Future<void> editPet() async {
+    try {
+      petModelEdited = _petEdited();
+      await _infoPetController.updatePetInfo(petModel.id!, petModelEdited!);
+      _infoPetController.setPetModel(petModelEdited!);
+      Get.delete<InfoPetController>();
     } catch (e) {
       rethrow;
     }
@@ -96,15 +102,15 @@ class EditInfoPetController extends GetxController {
 
   List<String> chargeListBreeds() {
     _lsBreeds.clear();
-    switch (petModelEdited!.species) {
-      case 'Dog':
+    switch (specieSelected.value) {
+      case 'Perro':
         for (var element in _petInfoSupportController.lsSpecies) {
           if (element.type == 'Dog') {
             _lsBreeds.addAll(element.breeds);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsSpecies) {
           if (element.type == 'Cat') {
             _lsBreeds.addAll(element.breeds);
@@ -115,27 +121,17 @@ class EditInfoPetController extends GetxController {
     return _lsBreeds;
   }
 
-  void editSpecie(String specie) {
-    if (specie == 'Perro') {
-      petModelEdited = _petModel.copyWith(species: 'Dog');
-    } else {
-      petModelEdited = _petModel.copyWith(species: 'Cat');
-      // petModelEdited!.copyWith(species: 'Cat');
-      // petModelEdited!.species = 'Cat';
-    }
-  }
-
   List<String> chargeFurList() {
     _lsFurs.clear();
-    switch (_petModel.species) {
-      case 'Dog':
+    switch (specieSelected.value) {
+      case 'Perro':
         for (var element in _petInfoSupportController.lsFurs) {
           if (element.type == 'Dog') {
             _lsFurs.addAll(element.furs);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsFurs) {
           if (element.type == 'Cat') {
             _lsFurs.addAll(element.furs);
@@ -149,15 +145,15 @@ class EditInfoPetController extends GetxController {
 
   List<String> chargeSizesList() {
     _lsSizes.clear();
-    switch (_petModel.species) {
-      case 'Dog':
+    switch (specieSelected.value) {
+      case 'Perro':
         for (var element in _petInfoSupportController.lsSizes) {
           if (element.type == 'Dog') {
             _lsSizes.addAll(element.sizes);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsSizes) {
           if (element.type == 'Cat') {
             _lsSizes.addAll(element.sizes);

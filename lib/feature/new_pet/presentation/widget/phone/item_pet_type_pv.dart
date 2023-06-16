@@ -28,10 +28,10 @@ class ItemPetType extends GetWidget<NewPetController> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25.h),
             color: typeSelect == 'Sex'
-                ? controller.petModel.value.sex == type
+                ? controller.sexSelected.value == type
                     ? Colors.green
                     : Colors.transparent
-                : controller.petModel.value.species == type
+                : controller.specieSelected.value == type
                     ? Colors.green
                     : Colors.transparent,
           ),

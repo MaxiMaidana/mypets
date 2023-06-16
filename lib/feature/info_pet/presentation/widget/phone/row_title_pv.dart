@@ -19,11 +19,11 @@ class RowTitlePV extends GetWidget<InfoPetController> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(width: 10),
-          controller.selectPet.species == 'Dog'
+          controller.selectPet.species == 'Perro'
               ? const FaIcon(FontAwesomeIcons.dog)
               : const FaIcon(FontAwesomeIcons.cat),
           const SizedBox(width: 10),
-          controller.selectPet.sex == 'Male'
+          controller.selectPet.sex == 'Macho'
               ? const Icon(Icons.male)
               : const Icon(Icons.female),
           // const Spacer(),

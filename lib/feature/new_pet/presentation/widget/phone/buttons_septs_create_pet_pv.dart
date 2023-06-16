@@ -75,27 +75,24 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
   Future<void> switchNext(BuildContext context) async {
     switch (controller.petStepToCreate.value) {
       case PetStep.selectSpecie:
-        if (controller.petModel.value.species != '') {
+        if (controller.specieSelected.value != '') {
           controller.petStepToCreate.value = PetStep.name;
         }
         break;
       case PetStep.name:
         if (controller.nameController.text != '') {
-          controller.petModel.value.name =
-              controller.nameController.text[0].toUpperCase() +
-                  controller.nameController.text.substring(1);
           controller.petStepToCreate.value = PetStep.sex;
         }
         break;
       case PetStep.sex:
-        if (controller.petModel.value.sex != '') {
+        if (controller.sexSelected.value != '') {
           controller.petStepToCreate.value = PetStep.birthDate;
         }
         break;
       case PetStep.birthDate:
-        if (controller.petModel.value.species == 'Dog' ||
-            controller.petModel.value.species == 'Cat') {
-          if (controller.petModel.value.birthDate != '') {
+        if (controller.specieSelected.value == 'Perro' ||
+            controller.specieSelected.value == 'Gato') {
+          if (controller.dateTimeToBirthDate.value!.year > 2000) {
             controller.petStepToCreate.value = PetStep.other;
           }
         } else {
@@ -103,13 +100,9 @@ class ButtonsStepsCreatePets extends GetWidget<NewPetController> {
         }
         break;
       case PetStep.other:
-        controller.petModel.value.breed = controller.breedController.text;
-        controller.petModel.value.fur = controller.furController.text;
         controller.petStepToCreate.value = PetStep.last;
         break;
       case PetStep.last:
-        controller.petModel.value.size = controller.sizeController.text;
-        controller.petModel.value.weigth = controller.weigthController.text;
         controller.sizeIcon.value = 0;
         controller.petStepToCreate.value = PetStep.check;
         controller.sizeInputData.value = 90.h;

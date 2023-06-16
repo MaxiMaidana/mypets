@@ -29,8 +29,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                         size: 80,
                       ),
                       onTap: () {
-                        controller.petModel.value.species = 'Dog';
-                        controller.petModel.refresh();
+                        controller.specieSelected.value = 'Perro';
                       },
                       type: 'Dog',
                       typeSelect: 'Sepecie',
@@ -41,29 +40,13 @@ class StepToCreate extends GetWidget<NewPetController> {
                         size: 80,
                       ),
                       onTap: () {
-                        controller.petModel.value.species = 'Cat';
-                        controller.petModel.refresh();
+                        controller.specieSelected.value = 'Gato';
                       },
                       type: 'Cat',
                       typeSelect: 'Sepecie',
                     )
                   ],
                 ),
-                // Container(
-                //   height: 100,
-                //   width: 100,
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(25.h),
-                //     color:
-                //         Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                //   ),
-                //   child: const Center(
-                //     child: Icon(
-                //       Icons.more_horiz,
-                //       size: 30,
-                //     ),
-                //   ),
-                // ),
               ],
             )
           : controller.petStepToCreate.value == PetStep.name
@@ -84,8 +67,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                                 size: 80,
                               ),
                               onTap: () {
-                                controller.petModel.value.sex = 'Male';
-                                controller.petModel.refresh();
+                                controller.sexSelected.value = 'Macho';
                               },
                               type: 'Male',
                               typeSelect: 'Sex',
@@ -96,8 +78,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                                 size: 80,
                               ),
                               onTap: () {
-                                controller.petModel.value.sex = 'Female';
-                                controller.petModel.refresh();
+                                controller.sexSelected.value = 'Hembra';
                               },
                               type: 'Female',
                               typeSelect: 'Sex',

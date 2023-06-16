@@ -67,8 +67,10 @@ class InfoPetController extends GetxController {
       }
       String petUrlImage =
           await _infoPetProvider.postImagePetFirebase(file!, newName);
-      _petModel.photoUrl = petUrlImage;
-      await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
+      PetModel newPetModel = _petModel.copyWith(photoUrl: petUrlImage);
+      await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
+      // _petModel.photoUrl = petUrlImage;
+      // await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
       await getUrlImage();
       isChargingPhoto.value = false;
     } catch (e) {
@@ -81,10 +83,11 @@ class InfoPetController extends GetxController {
     try {
       urlImagePet.value = '';
       isChargingPhoto.value = true;
-      _petModel.photoUrl = '';
+      // _petModel.photoUrl = '';
+      PetModel newPetModel = _petModel.copyWith(photoUrl: '');
       await _infoPetProvider.deleteImagePetFirebase(
-          '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
-      await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
+          '${appController.userModel!.dni}${newPetModel.id}${newPetModel.name}');
+      await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
       isChargingPhoto.value = false;
     } catch (e) {
       isChargingPhoto.value = false;
@@ -98,8 +101,9 @@ class InfoPetController extends GetxController {
         isSearchPhoto.value = true;
         urlImagePet.value = await _infoPetProvider.urlImagePet(
             '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
-        _petModel.photoUrl = urlImagePet.value;
-        await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
+        // _petModel.photoUrl = urlImagePet.value;
+        PetModel newPetModel = _petModel.copyWith(photoUrl: urlImagePet.value);
+        await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
         isSearchPhoto.value = false;
       } else {
         urlImagePet.value = selectPet.photoUrl!;
@@ -116,16 +120,17 @@ class InfoPetController extends GetxController {
       selectPet.reminders.add(idReminder);
       // newPetModel.reminders.add(idReminder);
       // _infoPetProvider.updatePetData(selectPet.id, newPetModel);
-      _infoPetProvider.updatePetData(selectPet.id!, selectPet);
+      // _infoPetProvider.updatePetData(selectPet.id!, selectPet);
+      await updatePetInfo(selectPet.id!, selectPet);
     } catch (e) {
       log('Rompio agregar reminder $e');
       return;
     }
   }
 
-  Future<void> updateReminterInPet() async {
+  Future<void> updatePetInfo(String id, PetModel petModel) async {
     try {
-      await _infoPetProvider.updatePetData(selectPet.id!, selectPet);
+      await _infoPetProvider.updatePetData(id, petModel);
     } catch (e) {
       log('Rompio agregar reminder $e');
       return;
