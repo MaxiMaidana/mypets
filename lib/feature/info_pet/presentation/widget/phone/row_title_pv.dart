@@ -14,16 +14,18 @@ class RowTitlePV extends GetWidget<InfoPetController> {
       padding: EdgeInsets.only(top: 5.w, left: 5.w, right: 5.w),
       child: Row(
         children: [
-          Text(
-            controller.selectPet.name,
-            style: Theme.of(context).textTheme.titleLarge,
+          Obx(
+            () => Text(
+              controller.selectPet.value.name,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           const SizedBox(width: 10),
-          controller.selectPet.species == 'Perro'
+          controller.selectPet.value.species == 'Perro'
               ? const FaIcon(FontAwesomeIcons.dog)
               : const FaIcon(FontAwesomeIcons.cat),
           const SizedBox(width: 10),
-          controller.selectPet.sex == 'Macho'
+          controller.selectPet.value.sex == 'Macho'
               ? const Icon(Icons.male)
               : const Icon(Icons.female),
           // const Spacer(),

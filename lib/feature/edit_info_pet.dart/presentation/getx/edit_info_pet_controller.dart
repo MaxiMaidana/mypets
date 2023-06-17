@@ -94,7 +94,9 @@ class EditInfoPetController extends GetxController {
       petModelEdited = _petEdited();
       await _infoPetController.updatePetInfo(petModel.id!, petModelEdited!);
       _infoPetController.setPetModel(petModelEdited!);
-      Get.delete<InfoPetController>();
+      _infoPetController.selectPet.refresh();
+      setPetModel(petModelEdited!);
+      // Get.delete<InfoPetController>();
     } catch (e) {
       rethrow;
     }

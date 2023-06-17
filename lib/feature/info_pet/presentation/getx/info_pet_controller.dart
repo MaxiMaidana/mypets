@@ -26,7 +26,7 @@ class InfoPetController extends GetxController {
 
   RxList<Event> lsEvents = RxList<Event>();
   RxBool isSearchingReminder = false.obs;
-  late PetModel _petModel;
+  Rx<PetModel> _petModel = PetModel.init().obs;
   Rx<CroppedFile> croppedFile = CroppedFile('').obs;
   Rx<XFile> petImage = XFile('').obs;
   final picker = ImagePicker();
@@ -38,9 +38,9 @@ class InfoPetController extends GetxController {
 
   void setPetId(String id) => petId = id;
 
-  setPetModel(PetModel petModel) => _petModel = petModel;
+  void setPetModel(PetModel petModel) => _petModel.value = petModel;
 
-  PetModel get selectPet => _petModel;
+  Rx<PetModel> get selectPet => _petModel;
 
   Future<void> uploadImage() async {
     final pickedFile =
@@ -55,7 +55,7 @@ class InfoPetController extends GetxController {
       isChargingPhoto.value = true;
       urlImagePet.value = '';
       String newName =
-          '${appController.userModel!.dni}${_petModel.id}${_petModel.name}'
+          '${appController.userModel!.dni}${_petModel.value.id}${_petModel.value.name}'
               .replaceAll(' ', '');
       File? file;
       if (croppedFile.value.path != '') {
@@ -67,8 +67,8 @@ class InfoPetController extends GetxController {
       }
       String petUrlImage =
           await _infoPetProvider.postImagePetFirebase(file!, newName);
-      PetModel newPetModel = _petModel.copyWith(photoUrl: petUrlImage);
-      await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
+      PetModel newPetModel = _petModel.value.copyWith(photoUrl: petUrlImage);
+      await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
       // _petModel.photoUrl = petUrlImage;
       // await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
       await getUrlImage();
@@ -84,10 +84,10 @@ class InfoPetController extends GetxController {
       urlImagePet.value = '';
       isChargingPhoto.value = true;
       // _petModel.photoUrl = '';
-      PetModel newPetModel = _petModel.copyWith(photoUrl: '');
+      PetModel newPetModel = _petModel.value.copyWith(photoUrl: '');
       await _infoPetProvider.deleteImagePetFirebase(
           '${appController.userModel!.dni}${newPetModel.id}${newPetModel.name}');
-      await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
+      await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
       isChargingPhoto.value = false;
     } catch (e) {
       isChargingPhoto.value = false;
@@ -97,16 +97,17 @@ class InfoPetController extends GetxController {
 
   Future<void> getUrlImage() async {
     try {
-      if (selectPet.photoUrl == '') {
+      if (selectPet.value.photoUrl == '') {
         isSearchPhoto.value = true;
         urlImagePet.value = await _infoPetProvider.urlImagePet(
-            '${appController.userModel!.dni}${_petModel.id}${_petModel.name}');
+            '${appController.userModel!.dni}${_petModel.value.id}${_petModel.value.name}');
         // _petModel.photoUrl = urlImagePet.value;
-        PetModel newPetModel = _petModel.copyWith(photoUrl: urlImagePet.value);
-        await _infoPetProvider.updatePetData(selectPet.id!, newPetModel);
+        PetModel newPetModel =
+            _petModel.value.copyWith(photoUrl: urlImagePet.value);
+        await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
         isSearchPhoto.value = false;
       } else {
-        urlImagePet.value = selectPet.photoUrl!;
+        urlImagePet.value = selectPet.value.photoUrl!;
       }
     } catch (e) {
       isSearchPhoto.value = false;
@@ -117,11 +118,11 @@ class InfoPetController extends GetxController {
   Future<void> addReminterInPet(String idReminder) async {
     try {
       // PetModel newPetModel = selectPet;
-      selectPet.reminders.add(idReminder);
+      selectPet.value.reminders.add(idReminder);
       // newPetModel.reminders.add(idReminder);
       // _infoPetProvider.updatePetData(selectPet.id, newPetModel);
       // _infoPetProvider.updatePetData(selectPet.id!, selectPet);
-      await updatePetInfo(selectPet.id!, selectPet);
+      await updatePetInfo(selectPet.value.id!, selectPet.value);
     } catch (e) {
       log('Rompio agregar reminder $e');
       return;
@@ -138,9 +139,9 @@ class InfoPetController extends GetxController {
   }
 
   String calculateYars() {
-    String year = selectPet.birthDate.split('/')[2];
-    String month = selectPet.birthDate.split('/')[1];
-    String day = selectPet.birthDate.split('/')[0];
+    String year = selectPet.value.birthDate.split('/')[2];
+    String month = selectPet.value.birthDate.split('/')[1];
+    String day = selectPet.value.birthDate.split('/')[0];
 
     int difDays =
         DateTime.now().difference(DateTime.parse('$year-$month-$day')).inDays;
@@ -161,8 +162,8 @@ class InfoPetController extends GetxController {
   }
 
   void chargeEvents() {
-    if (reminderController.petsReminders[selectPet] != null) {
-      lsEvents.addAll(reminderController.petsReminders[selectPet]!);
+    if (reminderController.petsReminders[selectPet.value] != null) {
+      lsEvents.addAll(reminderController.petsReminders[selectPet.value]!);
     }
   }
 

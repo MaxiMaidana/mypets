@@ -18,25 +18,33 @@ class RowPetInfoPV extends GetWidget<InfoPetController> {
           info: controller.petYears.value.toString(),
         ),
       ),
-      if (controller.selectPet.breed != '')
-        PetInfoItem(
-          title: 'Raza',
-          info: controller.selectPet.breed!,
+      if (controller.selectPet.value.breed != '')
+        Obx(
+          () => PetInfoItem(
+            title: 'Raza',
+            info: controller.selectPet.value.breed!,
+          ),
         ),
-      if (controller.selectPet.fur != '')
-        PetInfoItem(
-          title: 'Pelaje',
-          info: controller.selectPet.fur!,
+      if (controller.selectPet.value.fur != '')
+        Obx(
+          () => PetInfoItem(
+            title: 'Pelaje',
+            info: controller.selectPet.value.fur!,
+          ),
         ),
-      if (controller.selectPet.size != '')
-        PetInfoItem(
-          title: 'Tamaño',
-          info: controller.selectPet.size!,
+      if (controller.selectPet.value.size != '')
+        Obx(
+          () => PetInfoItem(
+            title: 'Tamaño',
+            info: controller.selectPet.value.size!,
+          ),
         ),
-      if (controller.selectPet.weigth != '')
-        PetInfoItem(
-          title: 'Peso',
-          info: '${controller.selectPet.weigth!} Kg',
+      if (controller.selectPet.value.weigth != '')
+        Obx(
+          () => PetInfoItem(
+            title: 'Peso',
+            info: '${controller.selectPet.value.weigth!} Kg',
+          ),
         ),
     ];
     return SingleChildScrollView(
