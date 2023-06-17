@@ -33,17 +33,19 @@ class StepsToCompleteDataPV extends GetWidget<RegisterController> {
                       context,
                       title: 'Cancelar?',
                       actions: [
-                        SizedBox(
-                          width: 26.w,
-                          child: ButtonCustom.text(
-                            text: 'Cancelar',
-                            onPress: () async => _goToMain(context),
-                          ),
-                        ),
-                        ButtonCustom.principalShort(
-                          text: 'Continuar',
-                          onPress: () => context.pop(),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ButtonCustom.principalShort(
+                              text: 'Cancelar',
+                              onPress: () async => _goToMain(context),
+                            ),
+                            ButtonCustom.principalShort(
+                              text: 'Continuar',
+                              onPress: () => context.pop(),
+                            ),
+                          ],
+                        )
                       ],
                       content: [
                         Text(

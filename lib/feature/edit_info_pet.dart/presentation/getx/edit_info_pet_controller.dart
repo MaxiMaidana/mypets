@@ -1,9 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/utils/image_compress.dart';
 import '../../../../data/models/pet/pet_model.dart';
+import '../../../app/presentation/getx/app_controller.dart';
 import '../../../info_pet/presentation/getx/info_pet_controller.dart';
 import '../../../info_pet_support/presentation/getx/pet_info_support_controller.dart';
 
@@ -17,6 +22,7 @@ class EditInfoPetController extends GetxController {
 
   final _petInfoSupportController = Get.find<PetInfoSupportController>();
   final _infoPetController = Get.find<InfoPetController>();
+  final _appController = Get.find<AppController>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController weigthController = TextEditingController();
@@ -31,10 +37,16 @@ class EditInfoPetController extends GetxController {
   final List<String> _lsFurs = [];
   final List<String> _lsSizes = [];
 
-  List<String> species = ['Perro', 'Gato'];
+  List<String> speciesList = ['Perro', 'Gato'];
+  List<String> sexList = ['Macho', 'Hembra'];
 
   RxString specieSelected = ''.obs;
   RxString sexSelected = ''.obs;
+  RxString photoUrl = ''.obs;
+  Rx<CroppedFile> croppedFile = CroppedFile('').obs;
+  Rx<XFile> petImage = XFile('').obs;
+  RxBool havePhotoEdited = false.obs;
+  final picker = ImagePicker();
 
   @override
   void dispose() {
@@ -55,7 +67,8 @@ class EditInfoPetController extends GetxController {
     breedController.text = _petModel.breed ?? '';
     sizeController.text = _petModel.size ?? '';
     furController.text = _petModel.fur ?? '';
-    weigthController.text = _petModel.weigth ?? '';
+    weigthController.text = _petModel.weigth ?? '0.0';
+    photoUrl.value = _petModel.photoUrl ?? '';
   }
 
   String convertStringToDateTimeFormat() {
@@ -86,16 +99,68 @@ class EditInfoPetController extends GetxController {
         fur: furController.text,
         weigth: weigthController.text,
         size: sizeController.text,
-        photoUrl: _petModel.photoUrl,
+        photoUrl: photoUrl.value,
       );
 
   Future<void> editPet() async {
     try {
+      photoUrl.value = await saveImage();
       petModelEdited = _petEdited();
       await _infoPetController.updatePetInfo(petModel.id!, petModelEdited!);
       _infoPetController.setPetModel(petModelEdited!);
-      Get.delete<InfoPetController>();
+      _infoPetController.selectPet.refresh();
+      setPetModel(petModelEdited!);
+      // Get.delete<InfoPetController>();
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteImage() async {
+    try {
+      photoUrl.value = '';
+      // await _infoPetController.deleteImage();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> uploadImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      petImage.value = pickedFile;
+    }
+  }
+
+  Future<String> saveImage() async {
+    try {
+      _infoPetController.isChargingPhoto.value = true;
+      photoUrl.value = '';
+      String newName =
+          '${_appController.userModel!.dni}${petModelEdited!.id}${petModelEdited!.name}'
+              .replaceAll(' ', '');
+      File? file;
+      if (croppedFile.value.path != '') {
+        file = await ImageCompress.compressAndGetFile(
+            File(croppedFile.value.path), newName);
+      } else {
+        file = await ImageCompress.compressAndGetFile(
+            File(petImage.value.path), newName);
+      }
+      String res =
+          await _infoPetController.postImagePetFirebase(file!, newName);
+      // PetModel newPetModel = _petModel.value.copyWith(photoUrl: petUrlImage);
+      // await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
+      // setPetModel(newPetModel);
+      // photoUrl.value = petUrlImage;
+      // _petModel.photoUrl = petUrlImage;
+      // await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
+      // await getUrlImage();
+      _infoPetController.isChargingPhoto.value = false;
+      return res;
+    } catch (e) {
+      _infoPetController.isChargingPhoto.value = false;
       rethrow;
     }
   }

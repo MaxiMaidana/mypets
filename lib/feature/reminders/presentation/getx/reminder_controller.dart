@@ -81,15 +81,16 @@ class ReminderController extends GetxController {
           await infoPetController.addReminterInPet(reminderEvent.reminderId);
           Event eventRes = await getReminderData(reminderEvent.reminderId);
           infoPetController.lsEvents.add(eventRes);
-          petsReminders[infoPetController.selectPet]!.add(eventRes);
+          petsReminders[infoPetController.selectPet.value]!.add(eventRes);
           break;
         case ReminderType.delete:
           log('se elimino con exito el recordatorio');
-          infoPetController.selectPet.reminders
+          infoPetController.selectPet.value.reminders
               .removeWhere((element) => element == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = true;
           await infoPetController.updatePetInfo(
-              infoPetController.selectPet.id!, infoPetController.selectPet);
+              infoPetController.selectPet.value.id!,
+              infoPetController.selectPet.value);
           infoPetController.lsEvents
               .removeWhere((element) => element.id == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = false;

@@ -81,14 +81,16 @@ class InfoPetPV extends GetWidget<InfoPetController> {
                             const SizedBox(height: 7),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
-                              child: Text(
-                                controller.selectPet.birthDate,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Colors.black.withOpacity(0.5),
-                                    ),
+                              child: Obx(
+                                () => Text(
+                                  controller.selectPet.value.birthDate,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Colors.black.withOpacity(0.5),
+                                      ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -116,7 +118,8 @@ class InfoPetPV extends GetWidget<InfoPetController> {
                                 onPress: () => context.push(Uri(
                                     path: Routes.editInfoPet,
                                     queryParameters: {
-                                      'id': controller.selectPet.id.toString()
+                                      'id': controller.selectPet.value.id
+                                          .toString()
                                     }).toString()),
                               ),
                             ),
@@ -131,7 +134,8 @@ class InfoPetPV extends GetWidget<InfoPetController> {
             ),
             Positioned(
               bottom: 0.0,
-              child: ReminderButtonSheetPV(petName: controller.selectPet.name),
+              child: ReminderButtonSheetPV(
+                  petName: controller.selectPet.value.name),
             ),
           ],
         ),
