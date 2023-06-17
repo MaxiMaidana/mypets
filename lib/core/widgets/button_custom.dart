@@ -78,7 +78,7 @@ class ButtonCustom extends StatelessWidget {
           onPressed: onPress,
           child: SizedBox(
             height: 5.h,
-            width: 30.w,
+            width: 25.w,
             child: Center(
               child: Text(text!),
             ),

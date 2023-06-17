@@ -28,27 +28,29 @@ class PetImagePV extends GetWidget<InfoPetController> {
             : controller.urlImagePet.value != ''
                 ? GestureDetector(
                     onLongPress: () {
-                      DialogCustom.infoDialogWhitOptionsCustom(context,
-                          title: '¿Que hacemos?',
-                          actions: [],
-                          content: [
-                            ButtonCustom.principal(
-                              text: 'Eliminar Foto',
-                              onPress: () {
-                                controller.deleteImage();
-                                if (context.mounted) {
-                                  context.pop();
-                                }
-                              },
-                            ),
-                            ButtonCustom.principal(
-                              text: 'Cambiar Foto',
-                              onPress: () async {
+                      DialogCustom.infoDialogWhitOptionsCustom(
+                        context,
+                        title: '¿Que hacemos?',
+                        actions: [],
+                        content: [
+                          ButtonCustom.principal(
+                            text: 'Eliminar Foto',
+                            onPress: () {
+                              controller.deleteImage();
+                              if (context.mounted) {
                                 context.pop();
-                                _uploadFile(context, controller);
-                              },
-                            )
-                          ]);
+                              }
+                            },
+                          ),
+                          ButtonCustom.principal(
+                            text: 'Cambiar Foto',
+                            onPress: () async {
+                              context.pop();
+                              _uploadFile(context, controller);
+                            },
+                          )
+                        ],
+                      );
                     },
                     child: SizedBox(
                       height: 300,

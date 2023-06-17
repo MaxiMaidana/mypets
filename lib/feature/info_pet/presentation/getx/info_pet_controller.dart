@@ -65,10 +65,11 @@ class InfoPetController extends GetxController {
         file = await ImageCompress.compressAndGetFile(
             File(petImage.value.path), newName);
       }
-      String petUrlImage =
-          await _infoPetProvider.postImagePetFirebase(file!, newName);
+      String petUrlImage = await postImagePetFirebase(file!, newName);
       PetModel newPetModel = _petModel.value.copyWith(photoUrl: petUrlImage);
       await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
+      setPetModel(newPetModel);
+      urlImagePet.value = petUrlImage;
       // _petModel.photoUrl = petUrlImage;
       // await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
       await getUrlImage();
@@ -79,11 +80,19 @@ class InfoPetController extends GetxController {
     }
   }
 
+  Future<String> postImagePetFirebase(File file, String newName) async {
+    try {
+      String res = await _infoPetProvider.postImagePetFirebase(file, newName);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> deleteImage() async {
     try {
       urlImagePet.value = '';
       isChargingPhoto.value = true;
-      // _petModel.photoUrl = '';
       PetModel newPetModel = _petModel.value.copyWith(photoUrl: '');
       await _infoPetProvider.deleteImagePetFirebase(
           '${appController.userModel!.dni}${newPetModel.id}${newPetModel.name}');
@@ -97,18 +106,18 @@ class InfoPetController extends GetxController {
 
   Future<void> getUrlImage() async {
     try {
-      if (selectPet.value.photoUrl == '') {
-        isSearchPhoto.value = true;
-        urlImagePet.value = await _infoPetProvider.urlImagePet(
-            '${appController.userModel!.dni}${_petModel.value.id}${_petModel.value.name}');
-        // _petModel.photoUrl = urlImagePet.value;
-        PetModel newPetModel =
-            _petModel.value.copyWith(photoUrl: urlImagePet.value);
-        await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
-        isSearchPhoto.value = false;
-      } else {
-        urlImagePet.value = selectPet.value.photoUrl!;
-      }
+      // if (selectPet.value.photoUrl == '') {
+      //   isSearchPhoto.value = true;
+      //   urlImagePet.value = await _infoPetProvider.urlImagePet(
+      //       '${appController.userModel!.dni}${_petModel.value.id}${_petModel.value.name}');
+      //   // _petModel.photoUrl = urlImagePet.value;
+      //   PetModel newPetModel =
+      //       _petModel.value.copyWith(photoUrl: urlImagePet.value);
+      //   await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
+      //   isSearchPhoto.value = false;
+      // } else {
+      urlImagePet.value = selectPet.value.photoUrl!;
+      // }
     } catch (e) {
       isSearchPhoto.value = false;
       return;

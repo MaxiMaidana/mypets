@@ -31,7 +31,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                       onTap: () {
                         controller.specieSelected.value = 'Perro';
                       },
-                      type: 'Dog',
+                      type: 'Perro',
                       typeSelect: 'Sepecie',
                     ),
                     ItemPetType(
@@ -42,7 +42,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                       onTap: () {
                         controller.specieSelected.value = 'Gato';
                       },
-                      type: 'Cat',
+                      type: 'Gato',
                       typeSelect: 'Sepecie',
                     )
                   ],
@@ -69,7 +69,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                               onTap: () {
                                 controller.sexSelected.value = 'Macho';
                               },
-                              type: 'Male',
+                              type: 'Macho',
                               typeSelect: 'Sex',
                             ),
                             ItemPetType(
@@ -80,7 +80,7 @@ class StepToCreate extends GetWidget<NewPetController> {
                               onTap: () {
                                 controller.sexSelected.value = 'Hembra';
                               },
-                              type: 'Female',
+                              type: 'Hembra',
                               typeSelect: 'Sex',
                             ),
                           ],

@@ -122,9 +122,9 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                   const SizedBox(height: 30),
                   controller.isEdit.value
                       ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ButtonCustom.text(
+                            ButtonCustom.principalShort(
                               text: 'Eliminar',
                               onPress: () async {
                                 context.loaderOverlay.show();
