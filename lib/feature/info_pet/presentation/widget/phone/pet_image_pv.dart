@@ -58,6 +58,8 @@ class PetImagePV extends GetWidget<InfoPetController> {
                         alignment: Alignment.topCenter,
                         imageUrl: controller.urlImagePet.value,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
                       ),
                     ),
                   )

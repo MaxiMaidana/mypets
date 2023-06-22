@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import '../../../../data/models/pet/pet_model.dart';
 import '../../../app/presentation/getx/app_controller.dart';
 import '../../../info_pet/presentation/getx/info_pet_controller.dart';
 import '../../../info_pet_support/presentation/getx/pet_info_support_controller.dart';
+import '../../../pets/presentation/getx/pets_controller.dart';
 
 class EditInfoPetController extends GetxController {
   late PetModel _petModel;
@@ -23,6 +25,7 @@ class EditInfoPetController extends GetxController {
   final _petInfoSupportController = Get.find<PetInfoSupportController>();
   final _infoPetController = Get.find<InfoPetController>();
   final _appController = Get.find<AppController>();
+  final _petsController = Get.find<PetsController>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController weigthController = TextEditingController();
@@ -103,13 +106,29 @@ class EditInfoPetController extends GetxController {
       );
 
   Future<void> editPet() async {
+    String newUrl = '';
+    PetModel newPetModelEdited;
     try {
-      photoUrl.value = await saveImage();
       petModelEdited = _petEdited();
-      await _infoPetController.updatePetInfo(petModel.id!, petModelEdited!);
-      _infoPetController.setPetModel(petModelEdited!);
+      if (havePhotoEdited.value) {
+        newUrl = await saveImage();
+        newPetModelEdited = petModelEdited!.copyWith(photoUrl: newUrl);
+      } else {
+        newPetModelEdited = petModelEdited!;
+      }
+      await _infoPetController.updatePetInfo(petModel.id!, newPetModelEdited);
+      if (havePhotoEdited.value) {
+        _infoPetController.isSearchPhoto.value = true;
+        _infoPetController.urlImagePet.value = newUrl;
+        _infoPetController.isSearchPhoto.value = false;
+      }
+      _infoPetController.setPetModel(newPetModelEdited);
       _infoPetController.selectPet.refresh();
-      setPetModel(petModelEdited!);
+      setPetModel(newPetModelEdited);
+      _petsController.petsLs
+          .removeWhere((element) => element.id == newPetModelEdited.id);
+      _petsController.petsLs.add(newPetModelEdited);
+      _petsController.petsLs.refresh();
       // Get.delete<InfoPetController>();
     } catch (e) {
       rethrow;
@@ -138,7 +157,7 @@ class EditInfoPetController extends GetxController {
       _infoPetController.isChargingPhoto.value = true;
       photoUrl.value = '';
       String newName =
-          '${_appController.userModel!.dni}${petModelEdited!.id}${petModelEdited!.name}'
+          '${_appController.userModel!.dni}${petModelEdited!.id}${petModelEdited!.name}${Random().nextInt(100)}'
               .replaceAll(' ', '');
       File? file;
       if (croppedFile.value.path != '') {

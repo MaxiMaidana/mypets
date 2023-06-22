@@ -13,16 +13,18 @@ class PetList extends GetWidget<PetsController> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100.h,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          ...List.generate(
-            controller.petsLs.length,
-            (i) => PetItem(petModel: controller.petsLs[i]),
-          ),
-          const AddPetButton(),
-          SizedBox(height: 20.h),
-        ],
+      child: Obx(
+        () => ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ...List.generate(
+              controller.petsLs.length,
+              (i) => PetItem(petModel: controller.petsLs[i]),
+            ),
+            const AddPetButton(),
+            SizedBox(height: 20.h),
+          ],
+        ),
       ),
     );
   }

@@ -14,6 +14,7 @@ class ReminderPageController extends GetxController {
   RxList<PetReminder> lsPetReminders = <PetReminder>[].obs;
   RxBool isSearchingReminder = false.obs;
   List<String> oldReminders = [];
+  List<String> remindersCharged = [];
 
   @override
   void onInit() {
@@ -21,24 +22,27 @@ class ReminderPageController extends GetxController {
       for (PetModel pet in lsPets) {
         List<Event> lsEvents = [];
         if (pet.reminders.isNotEmpty) {
-          for (var reminderId in pet.reminders) {
-            isSearchingReminder.value = true;
-            Event eventRes =
-                await reminderController.getReminderData(reminderId);
-            if (checkISValidDateTimeEvent(eventRes.end!.dateTime!)) {
-              lsEvents.add(eventRes);
-            } else {
-              oldReminders.add(reminderId);
+          if (!remindersCharged.contains(pet.id)) {
+            for (var reminderId in pet.reminders) {
+              isSearchingReminder.value = true;
+              Event eventRes =
+                  await reminderController.getReminderData(reminderId);
+              if (checkISValidDateTimeEvent(eventRes.end!.dateTime!)) {
+                lsEvents.add(eventRes);
+                remindersCharged.add(pet.id!);
+              } else {
+                oldReminders.add(reminderId);
+              }
             }
-          }
-          if (oldReminders.isNotEmpty) {
-            PetModel petModel = pet;
-            for (String oldReminder in oldReminders) {
-              petModel.reminders
-                  .removeWhere((element) => element == oldReminder);
+            if (oldReminders.isNotEmpty) {
+              PetModel petModel = pet;
+              for (String oldReminder in oldReminders) {
+                petModel.reminders
+                    .removeWhere((element) => element == oldReminder);
+              }
+              await petsController.updatePet(pet.id!, petModel);
+              oldReminders.clear();
             }
-            await petsController.updatePet(pet.id!, petModel);
-            oldReminders.clear();
           }
         }
         isSearchingReminder.value = false;
