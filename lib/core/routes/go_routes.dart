@@ -7,7 +7,6 @@ import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
-import '../../cameraaa.dart';
 import '../../feature/ads/presentation/getx/ads_controller.dart';
 import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
@@ -62,12 +61,6 @@ GoRouter goRouter = GoRouter(
         }
         return const WebMainPage();
         // return const TestCameraPage();
-      },
-    ),
-    GoRoute(
-      path: Routes.camera,
-      builder: (context, state) {
-        return const Cameraaa();
       },
     ),
     GoRoute(
