@@ -12,4 +12,5 @@ class Routes {
   static const String editInfoPet = '/editPet';
   static const String map = '/map';
   static const String errorPage = '/error';
+  static const String camera = '/camera';
 }
