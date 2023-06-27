@@ -13,6 +13,7 @@ import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.da
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/dialog_custom.dart';
 import '../../../new_pet/presentation/widget/custom_search_delegate.dart';
 import '../../../new_pet/presentation/widget/drop_down_menu_custom.dart';
@@ -363,8 +364,8 @@ class EditInfoPetPV extends GetWidget<EditInfoPetController> {
                 InputCustom.base(controller: controller.nameController),
                 SizedBox(height: 1.5.h),
                 DropDownMenuCustom(
-                  initTitle: controller.petModel.species,
-                  valueCharged: controller.petModel.species,
+                  initTitle: controller.specieSelected.value,
+                  valueCharged: controller.specieSelected.value,
                   items: controller.speciesList,
                   function: (v) => controller.specieSelected.value = v,
                 ),
@@ -450,6 +451,7 @@ class EditInfoPetPV extends GetWidget<EditInfoPetController> {
                   onPress: () {
                     controller.editPet();
                     context.pop();
+                    controller.cleanController();
                   },
                 ),
                 SizedBox(height: 5.h),

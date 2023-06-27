@@ -7,6 +7,7 @@ import 'package:mypets/feature/intro/presentation/page/intro_page.dart';
 import 'package:mypets/feature/map/presentation/page/map_page.dart';
 import 'package:mypets/feature/pets/presentation/getx/pets_controller.dart';
 
+import '../../cameraaa.dart';
 import '../../feature/ads/presentation/getx/ads_controller.dart';
 import '../../feature/auth/presentation/getx/auth_controller.dart';
 import '../../feature/auth/presentation/page/auth_page.dart';
@@ -60,6 +61,13 @@ GoRouter goRouter = GoRouter(
           );
         }
         return const WebMainPage();
+        // return const TestCameraPage();
+      },
+    ),
+    GoRoute(
+      path: Routes.camera,
+      builder: (context, state) {
+        return const Cameraaa();
       },
     ),
     GoRoute(
@@ -129,7 +137,6 @@ GoRouter goRouter = GoRouter(
         final infoPetController = Get.put(InfoPetController());
         infoPetController.setPetId(state.queryParams['id']!);
         final petsController = Get.find<PetsController>();
-
         infoPetController
             .setPetModel(petsController.searchPet(state.queryParams['id']!));
         return const InfoPetPage();
@@ -140,11 +147,8 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) {
         final editInfoPetController = Get.put(EditInfoPetController());
         final petsController = Get.find<PetsController>();
-
         editInfoPetController
             .setPetModel(petsController.searchPet(state.queryParams['id']!));
-        editInfoPetController.setData();
-        // editInfoPetController.petModelEdited = editInfoPetController.petModel;
         return const EditInfoPetPage();
       },
     ),

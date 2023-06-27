@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 
@@ -15,11 +14,9 @@ import '../../../info_pet_support/presentation/getx/pet_info_support_controller.
 import '../../../pets/presentation/getx/pets_controller.dart';
 
 class EditInfoPetController extends GetxController {
-  late PetModel _petModel;
+  late PetModel? _petModel;
 
-  setPetModel(PetModel petModel) => _petModel = petModel;
-
-  PetModel get petModel => _petModel;
+  PetModel get petModel => _petModel!;
   PetModel? petModelEdited;
 
   final _petInfoSupportController = Get.find<PetInfoSupportController>();
@@ -61,24 +58,31 @@ class EditInfoPetController extends GetxController {
     super.dispose();
   }
 
-  void setData() {
-    nameController.text = _petModel.name;
-    specieSelected.value = _petModel.species;
-    sexSelected.value = _petModel.sex;
-    dateTimeToBirthDate.value = DateTime.parse(convertStringToDateTimeFormat());
-    dateTimeController.value.text = convertDateTimeToString();
-    breedController.text = _petModel.breed ?? '';
-    sizeController.text = _petModel.size ?? '';
-    furController.text = _petModel.fur ?? '';
-    weigthController.text = _petModel.weigth ?? '0.0';
-    photoUrl.value = _petModel.photoUrl ?? '';
+  void setPetModel(PetModel? petModel) {
+    _petModel = petModel;
+    nameController.text = _petModel?.name ?? '';
+    specieSelected.value = _petModel?.species ?? '';
+    sexSelected.value = _petModel?.sex ?? '';
+    dateTimeToBirthDate.value = petModel == null
+        ? DateTime.now()
+        : DateTime.parse(convertStringToDateTimeFormat());
+    dateTimeController.value.text =
+        petModel == null ? '' : convertDateTimeToString();
+    breedController.text = _petModel?.breed ?? '';
+    sizeController.text = _petModel?.size ?? '';
+    furController.text = _petModel?.fur ?? '';
+    weigthController.text = _petModel?.weigth ?? '0.0';
+    photoUrl.value = _petModel?.photoUrl ?? '';
   }
+
+  // void setData() {
+  // }
 
   String convertStringToDateTimeFormat() {
     String res = '';
-    String year = _petModel.birthDate.split('/')[2];
-    String month = _petModel.birthDate.split('/')[1];
-    String day = _petModel.birthDate.split('/')[1];
+    String year = _petModel!.birthDate.split('/')[2];
+    String month = _petModel!.birthDate.split('/')[1];
+    String day = _petModel!.birthDate.split('/')[1];
     res = '$year-$month-$day';
     return res;
   }
@@ -93,7 +97,7 @@ class EditInfoPetController extends GetxController {
     return res;
   }
 
-  PetModel _petEdited() => _petModel.copyWith(
+  PetModel _petEdited() => _petModel!.copyWith(
         name: nameController.text,
         species: specieSelected.value,
         birthDate: dateTimeController.value.text,
@@ -104,36 +108,6 @@ class EditInfoPetController extends GetxController {
         size: sizeController.text,
         photoUrl: photoUrl.value,
       );
-
-  Future<void> editPet() async {
-    String newUrl = '';
-    PetModel newPetModelEdited;
-    try {
-      petModelEdited = _petEdited();
-      if (havePhotoEdited.value) {
-        newUrl = await saveImage();
-        newPetModelEdited = petModelEdited!.copyWith(photoUrl: newUrl);
-      } else {
-        newPetModelEdited = petModelEdited!;
-      }
-      await _infoPetController.updatePetInfo(petModel.id!, newPetModelEdited);
-      if (havePhotoEdited.value) {
-        _infoPetController.isSearchPhoto.value = true;
-        _infoPetController.urlImagePet.value = newUrl;
-        _infoPetController.isSearchPhoto.value = false;
-      }
-      _infoPetController.setPetModel(newPetModelEdited);
-      _infoPetController.selectPet.refresh();
-      setPetModel(newPetModelEdited);
-      _petsController.petsLs
-          .removeWhere((element) => element.id == newPetModelEdited.id);
-      _petsController.petsLs.add(newPetModelEdited);
-      _petsController.petsLs.refresh();
-      // Get.delete<InfoPetController>();
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   Future<void> deleteImage() async {
     try {
@@ -182,6 +156,52 @@ class EditInfoPetController extends GetxController {
       _infoPetController.isChargingPhoto.value = false;
       rethrow;
     }
+  }
+
+  Future<void> editPet() async {
+    String newUrl = '';
+    PetModel newPetModelEdited;
+    try {
+      petModelEdited = _petEdited();
+      if (havePhotoEdited.value) {
+        newUrl = await saveImage();
+        newPetModelEdited = petModelEdited!.copyWith(photoUrl: newUrl);
+      } else {
+        newPetModelEdited = petModelEdited!;
+      }
+      await _infoPetController.updatePetInfo(petModel.id!, newPetModelEdited);
+      if (havePhotoEdited.value) {
+        _infoPetController.isSearchPhoto.value = true;
+        _infoPetController.urlImagePet.value = newUrl;
+        _infoPetController.isSearchPhoto.value = false;
+      }
+      _infoPetController.setPetModel(newPetModelEdited);
+      _infoPetController.selectPet.refresh();
+
+      setPetModel(newPetModelEdited);
+      _petsController.petsLs
+          .removeWhere((element) => element.id == newPetModelEdited.id);
+      _petsController.petsLs.add(newPetModelEdited);
+      _petsController.petsLs.refresh();
+      // Get.delete<InfoPetController>();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void cleanController() {
+    petModelEdited = null;
+    setPetModel(null);
+    // nameController.text = _petModel!.name;
+    // specieSelected.value = _petModel!.species;
+    // sexSelected.value = _petModel!.sex;
+    // dateTimeToBirthDate.value = DateTime.parse(convertStringToDateTimeFormat());
+    // dateTimeController.value.text = convertDateTimeToString();
+    // breedController.text = _petModel!.breed ?? '';
+    // sizeController.text = _petModel!.size ?? '';
+    // furController.text = _petModel!.fur ?? '';
+    // weigthController.text = _petModel!.weigth ?? '0.0';
+    // photoUrl.value = _petModel!.photoUrl ?? '';
   }
 
   List<String> chargeListBreeds() {

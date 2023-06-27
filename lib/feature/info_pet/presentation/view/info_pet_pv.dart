@@ -5,6 +5,7 @@ import 'package:mypets/core/routes/routes.dart';
 import 'package:mypets/core/widgets/button_custom.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../edit_info_pet.dart/presentation/getx/edit_info_pet_controller.dart';
 import '../../../reminders/presentation/widget/phone/reminder_buttonsheet_pv.dart';
 import '../getx/info_pet_controller.dart';
 import '../widget/phone/pet_image_pv.dart';
@@ -47,6 +48,7 @@ class InfoPetPV extends GetWidget<InfoPetController> {
                                 0.0;
                           } else {
                             context.pop();
+                            Get.delete<EditInfoPetController>(force: true);
                             Get.delete<InfoPetController>(force: true);
                           }
                         },

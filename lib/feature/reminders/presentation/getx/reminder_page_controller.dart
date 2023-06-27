@@ -15,6 +15,7 @@ class ReminderPageController extends GetxController {
   RxBool isSearchingReminder = false.obs;
   List<String> oldReminders = [];
   List<String> remindersCharged = [];
+  List<String> petIdCharged = [];
 
   @override
   void onInit() {
@@ -43,11 +44,11 @@ class ReminderPageController extends GetxController {
               await petsController.updatePet(pet.id!, petModel);
               oldReminders.clear();
             }
+            isSearchingReminder.value = false;
+            reminderController.petsReminders[pet] = lsEvents;
+            lsPetReminders.add(PetReminder(petModel: pet, lsEvents: lsEvents));
           }
         }
-        isSearchingReminder.value = false;
-        reminderController.petsReminders[pet] = lsEvents;
-        lsPetReminders.add(PetReminder(petModel: pet, lsEvents: lsEvents));
       }
     });
     super.onInit();
