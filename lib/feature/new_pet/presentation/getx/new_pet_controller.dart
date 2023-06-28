@@ -127,16 +127,16 @@ class NewPetController extends GetxController {
   List<String> chargeListBreeds() {
     _lsBreeds.clear();
     switch (specieSelected.value) {
-      case 'Dog':
+      case 'Perro':
         for (var element in _petInfoSupportController.lsSpecies) {
-          if (element.type == 'Dog') {
+          if (element.type == 'Perro') {
             _lsBreeds.addAll(element.breeds);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsSpecies) {
-          if (element.type == 'Cat') {
+          if (element.type == 'Gato') {
             _lsBreeds.addAll(element.breeds);
           }
         }
@@ -148,16 +148,16 @@ class NewPetController extends GetxController {
   List<String> chargeFurList() {
     _lsFurs.clear();
     switch (specieSelected.value) {
-      case 'Dog':
+      case 'Perro':
         for (var element in _petInfoSupportController.lsFurs) {
-          if (element.type == 'Dog') {
+          if (element.type == 'Perro') {
             _lsFurs.addAll(element.furs);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsFurs) {
-          if (element.type == 'Cat') {
+          if (element.type == 'Gato') {
             _lsFurs.addAll(element.furs);
           }
         }
@@ -170,16 +170,16 @@ class NewPetController extends GetxController {
   List<String> chargeSizesList() {
     _lsSizes.clear();
     switch (specieSelected.value) {
-      case 'Dog':
+      case 'Perro':
         for (var element in _petInfoSupportController.lsSizes) {
-          if (element.type == 'Dog') {
+          if (element.type == 'Perro') {
             _lsSizes.addAll(element.sizes);
           }
         }
         break;
-      case 'Cat':
+      case 'Gato':
         for (var element in _petInfoSupportController.lsSizes) {
-          if (element.type == 'Cat') {
+          if (element.type == 'Gato') {
             _lsSizes.addAll(element.sizes);
           }
         }
