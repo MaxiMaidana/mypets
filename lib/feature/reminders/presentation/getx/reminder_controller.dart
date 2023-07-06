@@ -9,7 +9,6 @@ import 'package:googleapis/calendar/v3.dart';
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
-
 import '../../../../data/models/error_model.dart';
 import '../../../../data/models/pet/pet_model.dart';
 import '../../domain/model/reminder_event.dart';
@@ -68,7 +67,6 @@ class ReminderController extends GetxController {
 
   void closeStream() {
     reminderEventController?.close();
-    // reminderEventController = null;
     reminderEventController = StreamController<ReminderEvent>();
   }
 
@@ -78,21 +76,27 @@ class ReminderController extends GetxController {
       switch (reminderEvent.type) {
         case ReminderType.create:
           log('se creo con exito el recordatorio');
-          await infoPetController.addReminterInPet(reminderEvent.reminderId);
           Event eventRes = await getReminderData(reminderEvent.reminderId);
           infoPetController.lsEvents.add(eventRes);
+          if (!petsReminders.keys.contains(infoPetController.selectPet.value)) {
+            petsReminders[infoPetController.selectPet.value] = [];
+          }
           petsReminders[infoPetController.selectPet.value]!.add(eventRes);
+          await infoPetController.addReminterInPet(reminderEvent.reminderId);
           break;
         case ReminderType.delete:
           log('se elimino con exito el recordatorio');
           infoPetController.selectPet.value.reminders
               .removeWhere((element) => element == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = true;
+          infoPetController.lsEvents
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          List<Event> events = [];
+          events.addAll(infoPetController.lsEvents);
+          petsReminders[infoPetController.selectPet.value] = events;
           await infoPetController.updatePetInfo(
               infoPetController.selectPet.value.id!,
               infoPetController.selectPet.value);
-          infoPetController.lsEvents
-              .removeWhere((element) => element.id == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = false;
           break;
         case ReminderType.update:

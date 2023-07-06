@@ -26,30 +26,32 @@ class RemindersPV extends GetWidget<ReminderPageController> {
         onTap: () => controller.reminderController.cleanAllData(),
         child: Stack(
           children: [
-            SingleChildScrollView(
-              child: SizedBox(
-                width: 100.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 25),
-                    Text(
-                      'Recordatorios',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 40),
-                    if (controller.petsController.petsLs.isNotEmpty)
-                      ...List.generate(
-                        controller.lsPetReminders.length,
-                        (i) => _petItem(
-                          context,
-                          controller.lsPetReminders[i],
-                        ),
+            SizedBox(
+              height: 100.h,
+              child: SingleChildScrollView(
+                child: Obx(
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 25),
+                      Text(
+                        'Recordatorios',
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-                    controller.petsController.petsLs.length > 4
-                        ? const SizedBox(height: 80)
-                        : const SizedBox(height: 40),
-                  ],
+                      const SizedBox(height: 40),
+                      if (controller.petsController.petsLs.isNotEmpty)
+                        ...List.generate(
+                          controller.lsPetReminders.length,
+                          (i) => _petItem(
+                            context,
+                            controller.lsPetReminders[i],
+                          ),
+                        ),
+                      controller.petsController.petsLs.length > 4
+                          ? const SizedBox(height: 80)
+                          : const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -91,26 +93,26 @@ class RemindersPV extends GetWidget<ReminderPageController> {
             scrollDirection: Axis.horizontal,
             child: Obx(
               () => !controller.isSearchingReminder.value
-                  ? petReminder.lsEvents.isNotEmpty
-                      ? Row(
-                          children: [
-                            SizedBox(width: 5.w),
-                            ...List.generate(
-                                petReminder.lsEvents.length,
-                                (i) => ReminderItem(
-                                    event: petReminder.lsEvents[i],
-                                    petModel: PetModel.init())),
-                            const AddReminderButton(),
-                            const SizedBox(width: 10),
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            SizedBox(width: 5.w),
-                            const AddReminderButton(),
-                            const SizedBox(width: 10),
-                          ],
-                        )
+                  // ? petReminder.lsEvents.isNotEmpty
+                  ? Row(
+                      children: [
+                        SizedBox(width: 5.w),
+                        ...List.generate(
+                            petReminder.lsEvents.length,
+                            (i) => ReminderItem(
+                                event: petReminder.lsEvents[i],
+                                petModel: PetModel.init())),
+                        const AddReminderButton(),
+                        const SizedBox(width: 10),
+                      ],
+                    )
+                  // : Row(
+                  //     children: [
+                  //       SizedBox(width: 5.w),
+                  //       const AddReminderButton(),
+                  //       const SizedBox(width: 10),
+                  //     ],
+                  //   )
                   : _shimmer(),
             ),
           ),
