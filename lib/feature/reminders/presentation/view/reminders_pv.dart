@@ -29,28 +29,30 @@ class RemindersPV extends GetWidget<ReminderPageController> {
             SizedBox(
               height: 100.h,
               child: SingleChildScrollView(
-                child: Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 25),
-                      Text(
-                        'Recordatorios',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 40),
-                      if (controller.petsController.petsLs.isNotEmpty)
-                        ...List.generate(
-                          controller.lsPetReminders.length,
-                          (i) => _petItem(
-                            context,
-                            controller.lsPetReminders[i],
-                          ),
+                child: SizedBox(
+                  width: 100.w,
+                  child: Obx(
+                    () => Column(
+                      children: [
+                        const SizedBox(height: 25),
+                        Text(
+                          'Recordatorios',
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
-                      controller.petsController.petsLs.length > 4
-                          ? const SizedBox(height: 80)
-                          : const SizedBox(height: 40),
-                    ],
+                        const SizedBox(height: 40),
+                        if (controller.petsController.petsLs.isNotEmpty)
+                          ...List.generate(
+                            controller.lsPetReminders.length,
+                            (i) => _petItem(
+                              context,
+                              controller.lsPetReminders[i],
+                            ),
+                          ),
+                        controller.petsController.petsLs.length > 4
+                            ? const SizedBox(height: 80)
+                            : const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -72,7 +74,7 @@ class RemindersPV extends GetWidget<ReminderPageController> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: Text(
-            petReminder.petModel.name,
+            petReminder.name,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),

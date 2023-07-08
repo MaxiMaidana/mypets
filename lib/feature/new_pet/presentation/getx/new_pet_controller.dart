@@ -89,7 +89,7 @@ class NewPetController extends GetxController {
         species: specieSelected.value,
         weigth: weigthController.text,
         owners: [uidUser],
-        reminders: [],
+        remindersId: [],
         vaccine: null,
       );
 

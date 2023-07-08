@@ -85,7 +85,7 @@ class InfoPetPV extends GetWidget<InfoPetController> {
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
                               child: Obx(
                                 () => Text(
-                                  controller.selectPet.value.birthDate,
+                                  controller.selectedPet.value.birthDate,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -120,7 +120,7 @@ class InfoPetPV extends GetWidget<InfoPetController> {
                                 onPress: () => context.push(Uri(
                                     path: Routes.editInfoPet,
                                     queryParameters: {
-                                      'id': controller.selectPet.value.id
+                                      'id': controller.selectedPet.value.id
                                           .toString()
                                     }).toString()),
                               ),
@@ -137,7 +137,7 @@ class InfoPetPV extends GetWidget<InfoPetController> {
             Positioned(
               bottom: 0.0,
               child: ReminderButtonSheetPV(
-                  petName: controller.selectPet.value.name),
+                  petName: controller.selectedPet.value.name),
             ),
           ],
         ),

@@ -40,7 +40,7 @@ class InfoPetController extends GetxController {
 
   void setPetModel(PetModel petModel) => _petModel.value = petModel;
 
-  Rx<PetModel> get selectPet => _petModel;
+  Rx<PetModel> get selectedPet => _petModel;
 
   Future<void> uploadImage() async {
     final pickedFile =
@@ -67,7 +67,7 @@ class InfoPetController extends GetxController {
       }
       String petUrlImage = await postImagePetFirebase(file!, newName);
       PetModel newPetModel = _petModel.value.copyWith(photoUrl: petUrlImage);
-      await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
+      await _infoPetProvider.updatePetData(selectedPet.value.id!, newPetModel);
       setPetModel(newPetModel);
       urlImagePet.value = petUrlImage;
       // _petModel.photoUrl = petUrlImage;
@@ -96,7 +96,7 @@ class InfoPetController extends GetxController {
       PetModel newPetModel = _petModel.value.copyWith(photoUrl: '');
       await _infoPetProvider.deleteImagePetFirebase(
           '${appController.userModel!.dni}${newPetModel.id}${newPetModel.name}');
-      await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
+      await _infoPetProvider.updatePetData(selectedPet.value.id!, newPetModel);
       isChargingPhoto.value = false;
     } catch (e) {
       isChargingPhoto.value = false;
@@ -116,7 +116,7 @@ class InfoPetController extends GetxController {
       //   await _infoPetProvider.updatePetData(selectPet.value.id!, newPetModel);
       //   isSearchPhoto.value = false;
       // } else {
-      urlImagePet.value = selectPet.value.photoUrl!;
+      urlImagePet.value = selectedPet.value.photoUrl!;
       // }
     } catch (e) {
       isSearchPhoto.value = false;
@@ -127,11 +127,11 @@ class InfoPetController extends GetxController {
   Future<void> addReminterInPet(String idReminder) async {
     try {
       // PetModel newPetModel = selectPet;
-      selectPet.value.reminders.add(idReminder);
+      selectedPet.value.remindersId.add(idReminder);
       // newPetModel.reminders.add(idReminder);
       // _infoPetProvider.updatePetData(selectPet.id, newPetModel);
       // _infoPetProvider.updatePetData(selectPet.id!, selectPet);
-      await updatePetInfo(selectPet.value.id!, selectPet.value);
+      await updatePetInfo(selectedPet.value.id!, selectedPet.value);
     } catch (e) {
       log('Rompio agregar reminder $e');
       return;
@@ -148,9 +148,9 @@ class InfoPetController extends GetxController {
   }
 
   String calculateYars() {
-    String year = selectPet.value.birthDate.split('/')[2];
-    String month = selectPet.value.birthDate.split('/')[1];
-    String day = selectPet.value.birthDate.split('/')[0];
+    String year = selectedPet.value.birthDate.split('/')[2];
+    String month = selectedPet.value.birthDate.split('/')[1];
+    String day = selectedPet.value.birthDate.split('/')[0];
 
     int difDays =
         DateTime.now().difference(DateTime.parse('$year-$month-$day')).inDays;
@@ -171,9 +171,12 @@ class InfoPetController extends GetxController {
   }
 
   void chargeEvents() {
-    if (reminderController.petsReminders[selectPet.value] != null) {
-      lsEvents.addAll(reminderController.petsReminders[selectPet.value]!);
+    if (selectedPet.value.lsEvents!.isNotEmpty) {
+      lsEvents.addAll(selectedPet.value.lsEvents!);
     }
+    // if (reminderController.petsReminders[selectPet.value] != null) {
+    //   lsEvents.addAll(reminderController.petsReminders[selectPet.value]!);
+    // }
   }
 
   bool checkISValidDateTimeEvent(DateTime toEvaluate) {
@@ -209,41 +212,6 @@ class InfoPetController extends GetxController {
     chargeEvents();
     petYears.value = calculateYars();
     reminderController.openStream();
-    // idRememberCreated = reminderController.idReminderCreated.stream;
-    // idRememberCreated!.listen((reminderEvent) async {
-    //   switch (reminderEvent.type) {
-    //     case ReminderType.create:
-    //       log('id nuevo, se creo un nuevo evento ${reminderEvent.reminderId}');
-    //       await addReminterInPet(reminderEvent.reminderId);
-    //       Event eventRes = await reminderController
-    //           .getReminderData(reminderEvent.reminderId);
-    //       lsEvents.add(eventRes);
-    //       reminderController.petsReminders[selectPet]!.add(eventRes);
-    //       break;
-    //     case ReminderType.delete:
-    //       log('id existente, se elimino el id ${reminderEvent.reminderId}');
-    //       _petModel.reminders
-    //           .removeWhere((element) => element == reminderEvent.reminderId);
-    //       isSearchingReminder.value = true;
-    //       await _infoPetProvider.updatePetData(selectPet.id!, _petModel);
-    //       lsEvents
-    //           .removeWhere((element) => element.id == reminderEvent.reminderId);
-    //       isSearchingReminder.value = false;
-    //       break;
-    //     case ReminderType.update:
-    //       log('id existente, se edito el id ${reminderEvent.reminderId}');
-    //       isSearchingReminder.value = true;
-    //       Event eventRes = await reminderController
-    //           .getReminderData(reminderEvent.reminderId);
-    //       lsEvents
-    //           .removeWhere((element) => element.id == reminderEvent.reminderId);
-    //       lsEvents.add(eventRes);
-    //       isSearchingReminder.value = false;
-    //       break;
-    //     default:
-    //   }
-    // });
-
     super.onReady();
   }
 }

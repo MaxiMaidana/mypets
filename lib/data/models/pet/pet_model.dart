@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:googleapis/calendar/v3.dart';
 
 import 'vaccine_model.dart';
 
@@ -8,7 +9,7 @@ class PetModel extends Equatable {
   final String sex;
   final List<String> owners;
   final String birthDate;
-  final List<String> reminders;
+  final List<String> remindersId;
   final String? id;
   final String? breed;
   final String? photoUrl;
@@ -16,6 +17,7 @@ class PetModel extends Equatable {
   final String? size;
   final String? weigth;
   final VaccineModel? vaccine;
+  final List<Event>? lsEvents;
 
   const PetModel({
     required this.species,
@@ -23,7 +25,7 @@ class PetModel extends Equatable {
     required this.sex,
     required this.owners,
     required this.birthDate,
-    required this.reminders,
+    required this.remindersId,
     this.id,
     this.breed,
     this.photoUrl,
@@ -31,6 +33,7 @@ class PetModel extends Equatable {
     this.size,
     this.weigth,
     this.vaccine,
+    this.lsEvents,
   });
 
   PetModel copyWith({
@@ -39,7 +42,7 @@ class PetModel extends Equatable {
     String? sex,
     List<String>? owners,
     String? birthDate,
-    List<String>? reminders,
+    List<String>? remindersId,
     String? id,
     String? breed,
     String? photoUrl,
@@ -47,6 +50,7 @@ class PetModel extends Equatable {
     String? size,
     String? weigth,
     VaccineModel? vaccine,
+    List<Event>? lsEvents,
   }) =>
       PetModel(
         species: species ?? this.species,
@@ -54,7 +58,7 @@ class PetModel extends Equatable {
         sex: sex ?? this.sex,
         owners: owners ?? this.owners,
         birthDate: birthDate ?? this.birthDate,
-        reminders: reminders ?? this.reminders,
+        remindersId: remindersId ?? this.remindersId,
         id: id ?? this.id,
         breed: breed ?? this.breed,
         photoUrl: photoUrl ?? this.photoUrl,
@@ -62,6 +66,7 @@ class PetModel extends Equatable {
         size: size ?? this.size,
         weigth: weigth ?? this.weigth,
         vaccine: vaccine ?? this.vaccine,
+        lsEvents: lsEvents ?? this.lsEvents,
       );
 
   @override
@@ -71,14 +76,15 @@ class PetModel extends Equatable {
         sex,
         owners,
         birthDate,
-        reminders,
+        remindersId,
         id,
         breed,
         photoUrl,
         fur,
         size,
         weigth,
-        vaccine
+        vaccine,
+        lsEvents
       ];
 
   @override
@@ -90,7 +96,7 @@ class PetModel extends Equatable {
         sex: json['sex'],
         owners: List<String>.from(json['owners']),
         birthDate: json['birthDate'],
-        reminders: List<String>.from(json['reminders']),
+        remindersId: List<String>.from(json['reminders']),
         id: json['id'],
         breed: json['breed'],
         photoUrl: json['photoUrl'],
@@ -98,6 +104,7 @@ class PetModel extends Equatable {
         size: json['size'],
         weigth: json['weigth'],
         vaccine: json['vaccine'],
+        lsEvents: [],
       );
 
   static PetModel init() => PetModel(
@@ -106,7 +113,7 @@ class PetModel extends Equatable {
         sex: '',
         owners: [],
         birthDate: '',
-        reminders: [],
+        remindersId: [],
         id: '',
         breed: '',
         photoUrl: '',
@@ -114,6 +121,7 @@ class PetModel extends Equatable {
         size: '',
         weigth: '',
         vaccine: VaccineModel.init(),
+        lsEvents: [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,7 +130,7 @@ class PetModel extends Equatable {
         'sex': sex,
         'owners': owners,
         'birthDate': birthDate,
-        'reminders': reminders,
+        'reminders': remindersId,
         'id': id,
         'breed': breed,
         'photoUrl': photoUrl,

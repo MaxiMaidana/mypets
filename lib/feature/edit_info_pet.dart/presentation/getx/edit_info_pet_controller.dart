@@ -176,7 +176,7 @@ class EditInfoPetController extends GetxController {
         _infoPetController.isSearchPhoto.value = false;
       }
       _infoPetController.setPetModel(newPetModelEdited);
-      _infoPetController.selectPet.refresh();
+      _infoPetController.selectedPet.refresh();
 
       setPetModel(newPetModelEdited);
       _petsController.petsLs

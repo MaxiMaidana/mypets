@@ -13,7 +13,6 @@ import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.da
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/dialog_custom.dart';
 import '../../../new_pet/presentation/widget/custom_search_delegate.dart';
 import '../../../new_pet/presentation/widget/drop_down_menu_custom.dart';

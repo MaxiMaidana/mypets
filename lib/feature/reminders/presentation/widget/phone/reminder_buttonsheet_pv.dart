@@ -87,8 +87,8 @@ class ReminderButtonSheetPV extends GetWidget<ReminderController> {
                         helpText: 'Hora de inicio',
                         initialTime: controller.timeInitController.text == ''
                             ? TimeOfDay(
-                                hour: DateTime.now().hour,
-                                minute: DateTime.now().minute,
+                                hour: DateTime.now().toLocal().hour,
+                                minute: DateTime.now().toLocal().minute,
                               )
                             : controller.timeInitToReminder.value!,
                       );

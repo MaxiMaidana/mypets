@@ -1,27 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:googleapis/calendar/v3.dart';
-import 'package:mypets/data/models/pet/pet_model.dart';
 
 class PetReminder extends Equatable {
-  final PetModel petModel;
+  final String idPet;
+  final String name;
   final List<Event> lsEvents;
 
   const PetReminder({
-    required this.petModel,
+    required this.idPet,
+    required this.name,
     required this.lsEvents,
   });
 
   PetReminder copyWith({
-    PetModel? petModel,
+    String? idPet,
+    String? name,
     List<Event>? lsEvents,
   }) =>
       PetReminder(
-        petModel: petModel ?? this.petModel,
+        idPet: idPet ?? this.idPet,
+        name: name ?? this.name,
         lsEvents: lsEvents ?? this.lsEvents,
       );
 
   @override
-  List<Object?> get props => [petModel, lsEvents];
+  List<Object?> get props => [idPet, lsEvents];
 
   @override
   bool? get stringify => true;

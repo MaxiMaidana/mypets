@@ -16,16 +16,16 @@ class RowTitlePV extends GetWidget<InfoPetController> {
         children: [
           Obx(
             () => Text(
-              controller.selectPet.value.name,
+              controller.selectedPet.value.name,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           const SizedBox(width: 10),
-          controller.selectPet.value.species == 'Perro'
+          controller.selectedPet.value.species == 'Perro'
               ? const FaIcon(FontAwesomeIcons.dog)
               : const FaIcon(FontAwesomeIcons.cat),
           const SizedBox(width: 10),
-          controller.selectPet.value.sex == 'Macho'
+          controller.selectedPet.value.sex == 'Macho'
               ? const Icon(Icons.male)
               : const Icon(Icons.female),
           // const Spacer(),

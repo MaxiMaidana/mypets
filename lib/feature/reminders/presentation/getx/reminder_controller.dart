@@ -11,7 +11,9 @@ import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:mypets/feature/info_pet/presentation/getx/info_pet_controller.dart';
 import '../../../../data/models/error_model.dart';
 import '../../../../data/models/pet/pet_model.dart';
+import '../../domain/model/pet_reminder.dart';
 import '../../domain/model/reminder_event.dart';
+import 'reminder_page_controller.dart';
 
 enum TypeTime { init, finish }
 
@@ -22,6 +24,8 @@ class ReminderController extends GetxController {
   String? eventId;
   RxMap<PetModel, List<Event>> petsReminders = <PetModel, List<Event>>{}.obs;
   ErrorModel? errorModel;
+
+  // Rx<List<Event>> listEvents = <Event>[].obs;
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeInitController = TextEditingController();
@@ -73,30 +77,48 @@ class ReminderController extends GetxController {
   void openStream() {
     reminderEventController?.stream.listen((reminderEvent) async {
       final infoPetController = Get.find<InfoPetController>();
+      final reminderPageController = Get.find<ReminderPageController>();
       switch (reminderEvent.type) {
         case ReminderType.create:
           log('se creo con exito el recordatorio');
+          infoPetController.isSearchingReminder.value = true;
           Event eventRes = await getReminderData(reminderEvent.reminderId);
+          final oldEvents = infoPetController.selectedPet.value.lsEvents!;
+          oldEvents.add(eventRes);
           infoPetController.lsEvents.add(eventRes);
-          if (!petsReminders.keys.contains(infoPetController.selectPet.value)) {
-            petsReminders[infoPetController.selectPet.value] = [];
+          PetModel newModel =
+              infoPetController.selectedPet.value.copyWith(lsEvents: oldEvents);
+          infoPetController.setPetModel(newModel);
+          List<String> lsIds = [];
+          for (var petReminder in reminderPageController.lsPetReminders) {
+            lsIds.add(petReminder.idPet);
           }
-          petsReminders[infoPetController.selectPet.value]!.add(eventRes);
+          bool haveModel = lsIds.contains(newModel.id);
+          if (!haveModel) {
+            reminderPageController.lsPetReminders.add(PetReminder(
+              idPet: newModel.id!,
+              lsEvents: newModel.lsEvents!,
+              name: newModel.name,
+            ));
+          }
           await infoPetController.addReminterInPet(reminderEvent.reminderId);
+          infoPetController.isSearchingReminder.value = false;
           break;
         case ReminderType.delete:
           log('se elimino con exito el recordatorio');
-          infoPetController.selectPet.value.reminders
+          infoPetController.selectedPet.value.remindersId
               .removeWhere((element) => element == reminderEvent.reminderId);
           infoPetController.isSearchingReminder.value = true;
           infoPetController.lsEvents
               .removeWhere((element) => element.id == reminderEvent.reminderId);
-          List<Event> events = [];
-          events.addAll(infoPetController.lsEvents);
-          petsReminders[infoPetController.selectPet.value] = events;
+          infoPetController.selectedPet.value.lsEvents!
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
+          // List<Event> events = [];
+          // events.addAll(infoPetController.lsEvents);
+          // petsReminders[infoPetController.selectedPet.value] = events;
           await infoPetController.updatePetInfo(
-              infoPetController.selectPet.value.id!,
-              infoPetController.selectPet.value);
+              infoPetController.selectedPet.value.id!,
+              infoPetController.selectedPet.value);
           infoPetController.isSearchingReminder.value = false;
           break;
         case ReminderType.update:
@@ -105,7 +127,10 @@ class ReminderController extends GetxController {
           Event eventRes = await getReminderData(reminderEvent.reminderId);
           infoPetController.lsEvents
               .removeWhere((element) => element.id == reminderEvent.reminderId);
+          infoPetController.selectedPet.value.lsEvents!
+              .removeWhere((element) => element.id == reminderEvent.reminderId);
           infoPetController.lsEvents.add(eventRes);
+          infoPetController.selectedPet.value.lsEvents!.add(eventRes);
           infoPetController.isSearchingReminder.value = false;
           break;
         default:
@@ -213,13 +238,19 @@ class ReminderController extends GetxController {
 
   Future<void> initCalendarApi() async {
     if (httpClient == null) {
-      await _googleSignIn.signInSilently();
-      httpClient = await _googleSignIn.authenticatedClient();
-      calendarApi = CalendarApi(httpClient!);
+      _refreshToken();
     } else if (expiredTime(httpClient!.credentials.accessToken.expiry)) {
+      _refreshToken();
+    }
+  }
+
+  Future<void> _refreshToken() async {
+    try {
       await _googleSignIn.signInSilently();
       httpClient = await _googleSignIn.authenticatedClient();
       calendarApi = CalendarApi(httpClient!);
+    } catch (e) {
+      log(e.toString());
     }
   }
 
@@ -255,15 +286,15 @@ class ReminderController extends GetxController {
   }
 
   bool checkIfTimesIsOkey() {
-    if (dateToReminder.value!.day == DateTime.now().toUtc().day &&
-        dateToReminder.value!.month == DateTime.now().toUtc().month &&
-        dateToReminder.value!.year == DateTime.now().toUtc().year) {
+    if (dateToReminder.value!.day == DateTime.now().toLocal().day &&
+        dateToReminder.value!.month == DateTime.now().toLocal().month &&
+        dateToReminder.value!.year == DateTime.now().toLocal().year) {
       TimeOfDay initTimeCharged = timeInitToReminder.value!;
-      if (initTimeCharged.hour < DateTime.now().toUtc().hour) {
+      if (initTimeCharged.hour < DateTime.now().toLocal().hour) {
         log('el dia es el mismo, pero la hora es menor a  la de hoy');
         return true;
-      } else if ((initTimeCharged.hour == DateTime.now().toUtc().hour) &&
-          (initTimeCharged.minute <= DateTime.now().toUtc().minute)) {
+      } else if ((initTimeCharged.hour == DateTime.now().toLocal().hour) &&
+          (initTimeCharged.minute <= DateTime.now().toLocal().minute)) {
         log('el dia es el mismo, la hora es igual, pero los minutos son menos a los de ahora');
         return true;
       }
@@ -345,14 +376,19 @@ class ReminderController extends GetxController {
         log('error al crear recordatorio = ${e.toString()}');
       } else if (e is ErrorModel) {
         errorModel = e;
+      } else if (e is AccessDeniedException) {
+        if (e.message.contains('error="invalid_token"')) {
+          _refreshToken();
+          insertReminder(petName: petName);
+        }
       }
+      log('fallo eliminar reminder\n$e');
       return false;
     }
   }
 
   Future<Event> getReminderData(String id) async {
     try {
-      log('se trae la info de las mascotas desde reminder controller');
       String calendarId = "primary";
       await initCalendarApi();
       Event eventRes = await calendarApi!.events.get(calendarId, id);
@@ -376,7 +412,13 @@ class ReminderController extends GetxController {
       cleanAllData();
       return true;
     } catch (e) {
-      log('fallo eliminar reminder');
+      if (e is AccessDeniedException) {
+        if (e.message.contains('error="invalid_token"')) {
+          _refreshToken();
+          deleteReminder();
+        }
+      }
+      log('fallo eliminar reminder\n$e');
       return false;
     }
   }
