@@ -38,12 +38,11 @@ class PetsController extends GetxController {
         if (pet.remindersId.isNotEmpty) {
           for (var id in pet.remindersId) {
             final eventRes = await _reminderController.getReminderData(id);
-            if (checkISValidDateTimeEvent(eventRes.end!.dateTime!)) {
-              pet.lsEvents!.add(eventRes);
-            } else {
-              log('entro por el else ${pet.name} con ${pet.lsEvents!.length}');
+            if (eventRes.end!.dateTime!.isBefore(DateTime.now())) {
               pet.lsEvents!.removeWhere((event) => event.id == eventRes.id);
               await updatePet(pet.id!, pet);
+            } else {
+              pet.lsEvents!.add(eventRes);
             }
           }
         }
@@ -67,26 +66,29 @@ class PetsController extends GetxController {
   PetModel searchPet(String id) =>
       petsLs.firstWhere((element) => element.id == id);
 
-  bool checkISValidDateTimeEvent(DateTime toEvaluate) {
-    DateTime now = DateTime.now();
-    if (toEvaluate.year > now.year) {
-      return true;
-    }
-    if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
-      return true;
-    }
-    if (toEvaluate.day < now.day && toEvaluate.month <= now.month) {
-      return false;
-    }
-    TimeOfDay timeNow = TimeOfDay.now();
-    if (timeNow.hour > toEvaluate.hour) {
-      return true;
-    }
-    if (timeNow.minute > toEvaluate.hour) {
-      return true;
-    }
-    return false;
-  }
+  // bool checkISValidDateTimeEvent(DateTime toEvaluate) {
+  //   log('se evalua $toEvaluate y retorna ${toEvaluate.isBefore(DateTime.now())}');
+  // DateTime now = DateTime.now();
+  // return toEvaluate.isBefore(DateTime.now());
+
+  // if (toEvaluate.year > now.year) {
+  //   return true;
+  // }
+  // if (toEvaluate.day > now.day && toEvaluate.month <= now.month) {
+  //   return true;
+  // }
+  // if (toEvaluate.day < now.day && toEvaluate.month <= now.month) {
+  //   return false;
+  // }
+  // TimeOfDay timeNow = TimeOfDay.now();
+  // if (timeNow.hour > toEvaluate.hour) {
+  //   return true;
+  // }
+  // if (timeNow.minute > toEvaluate.hour) {
+  //   return true;
+  // }
+  // return false;
+  // }
 
   @override
   void onInit() {
