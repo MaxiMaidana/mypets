@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:mypets/core/service/local_storage.dart';
 import 'package:mypets/feature/register/presentation/getx/register_controller.dart';
 
+import '../../../../core/service/request_manager.dart';
+import '../../../../core/utils/connection/connection_status_service.dart';
 import '../../../../data/models/error_model.dart';
 import '../../../app/presentation/getx/app_controller.dart';
 import '../../../firebase/getx/firebase_controller.dart';
@@ -39,8 +41,11 @@ class AuthController extends GetxController {
     super.dispose();
   }
 
-  Future<void> logIn(
-      {required LoginType loginType, String? email, String? pass}) async {
+  Future<void> logIn({
+    required LoginType loginType,
+    String? email,
+    String? pass,
+  }) async {
     try {
       if (GetPlatform.isWeb) {
         switch (loginType) {
@@ -53,25 +58,36 @@ class AuthController extends GetxController {
           default:
         }
       } else {
-        switch (loginType) {
-          case LoginType.google:
-            await _loginWithGoogle();
-            break;
-          case LoginType.credentials:
-            await _loginWithCredentials();
-            break;
-          default:
-        }
+        await RequestManger().request(
+          functionOnline: () => selectLoginMethod(loginType)!,
+          functionOffline: () => chargeError('Error de conexion',
+              'Parece que no tenes conexion a internet, intenta mas tarde.'),
+        );
       }
     } catch (e) {
       rethrow;
     }
   }
 
+  Future<void> chargeError(String code, String message) async {
+    errorModel = ErrorModel(code: code, message: message);
+    userStatus.value = UserStatus.error;
+  }
+
+  Future<void>? selectLoginMethod(LoginType loginType) {
+    switch (loginType) {
+      case LoginType.google:
+        return _loginWithGoogle();
+      case LoginType.credentials:
+        return _loginWithCredentials();
+      default:
+    }
+    return null;
+  }
+
   Future<void> _loginWithGoogle() async {
     try {
       await _firebaseController.loginWithGoogle();
-      // await validateDataUser();
       await newValidateUser();
     } on FirebaseAuthException catch (e) {
       log(e.toString());
@@ -89,8 +105,7 @@ class AuthController extends GetxController {
           break;
         default:
       }
-      errorModel = ErrorModel(code: title, message: message);
-      userStatus.value = UserStatus.error;
+      chargeError(title, message);
     } catch (e) {
       log(e.toString());
     }
@@ -102,9 +117,7 @@ class AuthController extends GetxController {
       LocalStorage.setPref(setPref: SetPref.auth, dataBool: true);
     } catch (e) {
       log(e.toString());
-      errorModel!.code = 'Error';
-      errorModel!.message = 'No pudimos iniciar sesion';
-      userStatus.value = UserStatus.error;
+      chargeError('Error', 'No pudimos iniciar sesion');
     }
   }
 
@@ -139,8 +152,7 @@ class AuthController extends GetxController {
           break;
         default:
       }
-      errorModel = ErrorModel(code: title, message: message);
-      userStatus.value = UserStatus.error;
+      chargeError(title, message);
     } catch (e) {
       return;
     }
@@ -156,10 +168,6 @@ class AuthController extends GetxController {
       registerController.completedDataStatus.value =
           CompletedDataStatus.secondStep;
       userStatus.value = UserStatus.needCompleteData;
-      // registerController.nameController.text =
-      //     user.displayName!.split(' ').first;
-      // registerController.lastNameController.text =
-      //     user.displayName!.split(' ').last;
       return;
     } else {
       log('all okey');
