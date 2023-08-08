@@ -39,38 +39,7 @@ class LoginColumnPV extends GetWidget<AuthController> {
                   await controller.logIn(loginType: LoginType.google);
                   if (context.mounted) {
                     context.loaderOverlay.hide();
-                  }
-                  switch (controller.userStatus.value) {
-                    case UserStatus.dataCompleted:
-                      Get.delete<AuthController>(force: true);
-                      if (context.mounted) {
-                        context.go(Routes.home);
-                      }
-                      break;
-                    case UserStatus.needCompleteData:
-                      if (context.mounted) {
-                        context.push(Routes.register);
-                      }
-                      break;
-                    case UserStatus.needValidateEmail:
-                      if (context.mounted) {
-                        context.push(Routes.register);
-                      }
-                      break;
-                    case UserStatus.error:
-                      if (context.mounted) {
-                        DialogCustom.infoDialog(
-                          context,
-                          title: controller.errorModel!.code,
-                          message: controller.errorModel!.message,
-                          aceptar: () {
-                            controller.errorModel = null;
-                            context.pop();
-                          },
-                        );
-                      }
-                      break;
-                    default:
+                    goToPage(context);
                   }
                 },
               ),
@@ -105,5 +74,32 @@ class LoginColumnPV extends GetWidget<AuthController> {
         ),
       ],
     );
+  }
+
+  void goToPage(BuildContext context) {
+    switch (controller.userStatus.value) {
+      case UserStatus.dataCompleted:
+        Get.delete<AuthController>(force: true);
+        context.go(Routes.home);
+        break;
+      case UserStatus.needCompleteData:
+        context.push(Routes.register);
+        break;
+      case UserStatus.needValidateEmail:
+        context.push(Routes.register);
+        break;
+      case UserStatus.error:
+        DialogCustom.infoDialog(
+          context,
+          title: controller.errorModel!.code,
+          message: controller.errorModel!.message,
+          aceptar: () {
+            controller.errorModel = null;
+            context.pop();
+          },
+        );
+        break;
+      default:
+    }
   }
 }
