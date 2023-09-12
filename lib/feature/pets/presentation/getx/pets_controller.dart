@@ -6,6 +6,7 @@ import 'package:mypets/feature/app/presentation/getx/app_controller.dart';
 import 'package:mypets/feature/firebase/getx/firebase_controller.dart';
 import 'package:mypets/feature/pets/domain/provider/pets_provider.dart';
 
+import '../../../../core/service/request_manager.dart';
 import '../../../info_pet_support/presentation/getx/pet_info_support_controller.dart';
 import '../../../reminders/presentation/getx/reminder_controller.dart';
 
@@ -25,8 +26,13 @@ class PetsController extends GetxController {
       log('=========se pide info de mascotas=========');
       petsLs.clear();
       if (_appController.userModel == null) {
-        await _appController
-            .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
+        await RequestManger().request(
+          functionOnline: () => _appController
+              .getUserData(_firebaseController.firebaseAuth.currentUser!.uid),
+          // functionOffline: () => null,
+        );
+        // await _appController
+        //     .getUserData(_firebaseController.firebaseAuth.currentUser!.uid);
       }
       isChargingPets.value = true;
       petsLs.addAll(await _petsProvider.getPets(
